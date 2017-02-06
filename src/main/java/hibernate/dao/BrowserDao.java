@@ -28,7 +28,7 @@ public class BrowserDao extends BaseDao<Integer,BrowserEntity> {
 
     @Override
     public BrowserEntity findById(Integer key) {
-        Query query = getCurrentSession().createQuery("from BrowserEntity where browserId =: key");
+        Query query = getCurrentSession().createQuery("from BrowserEntity where browserId =:key");
         query.setParameter("key", key);
         BrowserEntity browser = (BrowserEntity) query.uniqueResult();
         return browser;
