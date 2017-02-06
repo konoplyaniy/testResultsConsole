@@ -3,16 +3,19 @@
         "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:h="http://java.sun.com/jsf/html" xmlns:p="http://primefaces.org/ui">
+      xmlns:h="http://java.sun.com/jsf/html" xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
 <h:head>
     <h:outputStylesheet library="css" name="styles.css"/>
 </h:head>
 <h:body style="background-image: url(#{resource['images:background_image.jpg']})">
-    <h:graphicImage name="images/crazy_logo_com.png"/>
     <title>Dreamscape Networks | QA | Calendar testing</title>
     <h:form id="form">
         <p:growl id="msgs" showDetail="true"/>
-
+        <meta http-equiv="refresh" content="20" />
+        <ui:insert name="header">
+            <ui:include src="resources/templates/headers.xhtml"/>
+        </ui:insert>
         <h:panelGrid columns="2" cellpadding="5">
 
             <p:outputLabel for="datetime" value="Start Date:"/>
