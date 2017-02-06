@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+<h:head></h:head>
+<h:body>
+    <h:form>
+    <h:graphicImage name="images/crazy_logo_com.png"/>
+    </h:form>
+    <!--Links to another tables-->
+    <p:button id="mainPageLink"
+              value="Main table"
+              href="/mainpage.xhtml"/>
+    <p:button id="browserLink"
+              value="Browser table"
+              href="/browser.xhtml"/>
+    <p:button id="syswebLink"
+              value="Sysweb table"
+              href="/sysweb.xhtml"/>
+
+    <p:button id="localeLink"
+              value="Locale table"
+              href="/locale.xhtml"
+              disabled="true"/>
+
+    <p:button id="classLink"
+              value="Class table"
+              href="/class.xhtml"/>
+
+    <p:button id="testLink"
+              value="Test table"
+              href="/test.xhtml"/>
+    <p:button id="groupLink"
+              value="Group table"
+              href="/group.xhtml"/>
+    <p:button id="eventLink"
+              value="Event table"
+              href="/event.xhtml"
+              disabled="true"/>
+
+    <!--Tool tips for buttons-->
+    <p:tooltip id="toolTipLocale" for="localeLink" value="This table is opened for now" position="top"/>
+    <p:tooltip id="toolTipEvent" for="eventLink" value="Event table is unavailable for now" position="top"/>
+</h:body>
+</html>

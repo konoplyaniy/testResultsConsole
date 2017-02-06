@@ -3,12 +3,13 @@
         "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:h="http://java.sun.com/jsf/html" xmlns:p="http://primefaces.org/ui">
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
 <h:head>
     <h:outputStylesheet library="css" name="styles.css"/>
 </h:head>
 <h:body style="background-image: url(#{resource['images:background_image.jpg']})">
-    <h:graphicImage name="images/crazy_logo_com.png"/>
     <title>Dreamscape Networks | QA | Main</title>
     <meta http-equiv="refresh" content="300"/>
 
@@ -18,58 +19,10 @@
 
     <p:commandButton value="Show" onclick="PF('bar').show()" type="button" icon="ui-icon-arrow-1-s"/>
     <p:commandButton value="Hide" onclick="PF('bar').hide()" type="button" icon="ui-icon-arrow-1-n"/>-->
+    <ui:insert name="header">
+        <ui:include src="resources/templates/headers.xhtml"/>
+    </ui:insert>
     <h:form>
-        <p:button id="mainPageLink"
-                  value="Main table"
-                  href="/mainpage.xhtml"
-                  disabled="true"
-        />
-        <p:button id="browserLink"
-                  value="Browser table"
-                  href="/browser.xhtml"
-                  style="color: blue;
-                                        background-color: #33FF33;
-                                        border-color: #0066ff;"/>
-        <p:button id="syswebLink"
-                  value="Sysweb table"
-                  href="/sysweb.xhtml"
-                  style="color: blue;
-                                        background-color: #33FF33;
-                                        border-color: #0066ff;"/>
-        <p:button id="localeLink"
-                  value="Locale table"
-                  href="/locale.xhtml"
-                  style="color: blue;
-                                        background-color: #33FF33;
-                                        border-color: #0066ff;"/>
-        <p:button id="classLink"
-                  value="Class table"
-                  href="/class.xhtml"
-                  style="color: blue;
-                                        background-color: #33FF33;
-                                        border-color: #0066ff;"/>
-        <p:button id="testLink"
-                  value="Test table"
-                  href="/test.xhtml"
-                  style="color: blue;
-                                        background-color: #33FF33;
-                                        border-color: #0066ff;"/>
-        <p:button id="groupLink"
-                  value="Group table"
-                  href="/group.xhtml"
-                  style="color: blue;
-                                        background-color: #33FF33;
-                                        border-color: #0066ff;"/>
-        <p:button id="eventLink"
-                  value="Event table"
-                  href="/event.xhtml"
-                  style="color: blue;
-                                        background-color: #33FF33;
-                                        border-color: #0066ff;"/>
-
-        <!--Tool tips for buttons-->
-        <p:tooltip id="toolTipEvent" for="eventLink" value="Event table is unavailable for now" position="top"/>
-        <p:tooltip id="toolTipMainPage" for="mainPageLink" value="This able is opened fr now" position="top"/>
         <p:dataTable id="main_form"
                      var="console"
                      value="#{mainTable.reports}"
