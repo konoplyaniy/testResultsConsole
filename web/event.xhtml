@@ -22,7 +22,9 @@
                     List of classes
                 </f:facet>
 
-                <p:column sortBy="#{event.data}">
+                <p:column sortBy="#{event.data}"
+                filterBy="#{event.data}"
+                filterFunction="">
                     <f:facet name="header">
                         <h:outputText value="Date"/>
                     </f:facet>

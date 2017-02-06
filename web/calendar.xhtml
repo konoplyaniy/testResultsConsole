@@ -3,50 +3,136 @@
         "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:h="http://java.sun.com/jsf/html" xmlns:p="http://primefaces.org/ui"
-      xmlns:ui="http://java.sun.com/jsf/facelets">
+      xmlns:h="http://java.sun.com/jsf/html" xmlns:p="http://primefaces.org/ui">
 <h:head>
     <h:outputStylesheet library="css" name="styles.css"/>
 </h:head>
 <h:body style="background-image: url(#{resource['images:background_image.jpg']})">
-    <title>Dreamscape Networks | QA | Browser table</title>
-    <meta http-equiv="refresh" content="20" />
-    <ui:insert name="header">
-        <ui:include src="resources/templates/headers.xhtml"/>
-    </ui:insert>
-    <h:form>
+    <h:graphicImage name="images/crazy_logo_com.png"/>
+    <title>Dreamscape Networks | QA | Calendar testing</title>
+    <h:form id="form">
+        <p:growl id="msgs" showDetail="true"/>
 
-        <h:form>
-            <p:dataTable id="browser_form"
-                         var="browser"
-                         value="#{browserTableExporter.browsers}"
-                         paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} "
-                         paginator="true"
-                         rows="20"
-                         style="margin-bottom:15px">
+        <h:panelGrid columns="2" cellpadding="5">
+
+            <p:outputLabel for="datetime" value="Start Date:"/>
+            <p:calendar id="datetime"
+                        value="#{calendarView.startDate}"
+                        pattern="MM-dd-yyyy HH:mm:ss"/>
+
+            <p:outputLabel for="datetime" value="End Date:"/>
+            <p:calendar id="datetime2" value="#{calendarView.endDate}" pattern="MM-dd-yyyy HH:mm:ss"/>
+
+        </h:panelGrid>
+
+        <p:commandButton value="Submit"
+                         update="table-wrapper"
+                         actionListener="#{calendarView.click}" icon="ui-icon-check">
+        </p:commandButton>
+
+        <!--Popup with calendar-->
+        <p:dialog modal="true" resizable="false" header="Values" widgetVar="dlg" showEffect="fold">
+            <p:panelGrid id="display" columns="2" columnClasses="label,value">
+
+                <h:outputText value="Datetime start:"/>
+                <h:outputText value="#{calendarView.startDate}">
+                    <f:convertDateTime pattern="MM-dd-yyyy HH:mm:ss"/>
+                </h:outputText>
+
+                <h:outputText value="Datetime end:"/>
+                <h:outputText value="#{calendarView.endDate}">
+                    <f:convertDateTime pattern="MM-dd-yyyy HH:mm:ss"/>
+                </h:outputText>
+            </p:panelGrid>
+        </p:dialog>
+    </h:form>
+
+
+    <h:panelGroup id="table-wrapper">
+        <p:dataTable id="event_form"
+                     var="event"
+                     value="#{calendarView.events}"
+                     rendered="#{calendarView.visible}"
+                     paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+                     paginator="true" rows="20" style="margin-bottom:15px">
+            <f:facet name="header">
+                Search results:
+            </f:facet>
+
+            <p:column sortBy="#{event.data}"
+                      filterBy="#{event.data}">
                 <f:facet name="header">
-                    List of browsers
+                    <h:outputText value="Date"/>
                 </f:facet>
+                <h:outputText value="#{event.data}"/>
+            </p:column>
 
-                <p:column sortBy="#{browser.browserId}"
-                          filterBy="#{browser.browserId}"
-                          style="width: 100px;
-                            text-align: center">
-                    <f:facet name="header">
-                        <h:outputText value="Id"/>
-                    </f:facet>
-                    <h:outputText value="#{browser.browserId}"/>
-                </p:column>
-                <p:column sortBy="#{browser.browser}"
-                          filterBy="#{browser.browser}"
-                          filterMatchMode="contains">
-                    <f:facet name="header">
-                        <h:outputText value="Browser name and version"/>
-                    </f:facet>
-                    <h:outputText value="#{browser.browser}"/>
-                </p:column>
-            </p:dataTable>
-        </h:form>
+            <p:column>
+                <f:facet name="header">
+                    <h:outputText value="Locale"/>
+                </f:facet>
+                <h:outputText value="#{localeService.findById(event.localeId).locale}"/>
+            </p:column>
+
+            <p:column>
+                <f:facet name="header">
+                    <h:outputText value="Browser"/>
+                </f:facet>
+                <h:outputText value="#{browserService.findById(event.browserId).browser}"/>
+            </p:column>
+
+            <p:column>
+                <f:facet name="header">
+                    <h:outputText value="PC"/>
+                </f:facet>
+                <h:outputText value="#{pcService.findById(event.pcId).name} #{pcService.findById(event.pcId).os}"/>
+            </p:column>
+
+
+            <p:column>
+                <f:facet name="header">
+                    <h:outputText value="Class name"/>
+                </f:facet>
+                <h:outputText var="id" value="#{testService.findById(event.testId).className}"/>
+            </p:column>
+
+            <p:column>
+                <f:facet name="header">
+                    <h:outputText value="Group name"/>
+                </f:facet>
+                <h:outputText var="id" value="#{testService.findById(event.testId).groupName}"/>
+            </p:column>
+
+            <p:column>
+                <f:facet name="header">
+                    <h:outputText value="Test name"/>
+                </f:facet>
+                <h:outputText var="id" value="#{testService.findById(event.testId).name} "/>
+            </p:column>
+
+            <p:column>
+                <f:facet name="header">
+                    <h:outputText value="Sysweb"/>
+                </f:facet>
+                <h:outputText value="#{syswebService.findById(event.syswebId).name}"/>
+            </p:column>
+
+            <p:column>
+                <f:facet name="header">
+                    <h:outputText value="Params"/>
+                </f:facet>
+                <h:outputText value="#{event.params}"/>
+            </p:column>
+
+            <p:column>
+                <f:facet name="header">
+                    <h:outputText value="URL"/>
+                </f:facet>
+                <h:outputText value="#{event.url}"/>
+            </p:column>
+        </p:dataTable>
+    </h:panelGroup>
+    <h:form>
     </h:form>
 </h:body>
 </html>

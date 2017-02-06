@@ -3,6 +3,7 @@ package hibernate.dao;
 import hibernate.entities.EventEntity;
 import org.hibernate.Query;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -10,7 +11,7 @@ import java.util.List;
  */
 public class EventDao extends BaseDao<Integer, EventEntity> {
     public void persist(EventEntity event) {
-            getCurrentSession().save(event);
+        getCurrentSession().save(event);
     }
 
     public void update(EventEntity entity) {
@@ -28,9 +29,22 @@ public class EventDao extends BaseDao<Integer, EventEntity> {
     // by locale
     // by sysweb
     // by test group
+
+//    select Date, TotalAllowance from Calculation where EmployeeId = 1
+//    and Date between '2011/02/25' and '2011/02/27'
+
     //
 
-    public List<EventEntity> findByTestName(String testName){
+    public List<EventEntity> findByDate(Date startSate, Date endDate) {
+        Query query = getCurrentSession().createQuery("from EventEntity where data between :startDate and :endDate");
+        query.setParameter("startDate", startSate);
+        query.setParameter("endDate", endDate);
+        List<EventEntity> events = (List<EventEntity>) query.list();
+        return events;
+    }
+
+
+    public List<EventEntity> findByTestName(String testName) {
         List<EventEntity> events = getCurrentSession().createQuery("from EventEntity inner join TestEntity on EventEntity.testId = TestEntity.testId").list();
         return events;
     }

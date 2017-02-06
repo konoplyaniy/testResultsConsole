@@ -4,10 +4,12 @@ import hibernate.entities.*;
 import hibernate.service.*;
 import hibernate.utils.DBLogger;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
+import java.util.Date;
 
 
 /**
@@ -16,11 +18,27 @@ import java.util.List;
 public class TestTbWork {
     public static void main(String[] args) throws InterruptedException {
 
-        TestService service = new TestService();
-        ArrayList<String> tests = service.getAllTestsData();
-        for (String test : tests) {
-            System.out.println(test);
-        }
+
+//        EventService service = new EventService();
+//        LocalDateTime start = LocalDateTime.parse("2017-01-26 16:14:29", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+//        LocalDateTime end = LocalDateTime.parse("2017-01-26 17:58:32", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+//
+//        try {
+//            Date startDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(start.toString().replace("T", " "));
+//            Date endDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(end.toString().replace("T", " "));
+//            List<EventEntity> events = service.findBetweenDates(startDate, endDate);
+//            for (EventEntity event : events) {
+//                System.out.println("Date: " + event.getData() + " id: " + event.getEventId());
+//            }
+//        } catch (ParseException e) {
+//            e.printStackTrace();
+//        }
+
+//        TestService service = new TestService();
+//        ArrayList<String> tests = service.getAllTestsData();
+//        for (String test : tests) {
+//            System.out.println(test);
+//        }
 
 //        System.out.println(new ClazzEntity(new ClazzService().findByName("LogoDesignBuyingProcess").getClassId(), new ClazzService().findByName("LogoDesignBuyingProcess").getName()));
 //        System.out.println(new ClazzEntity(new ClazzService().findByName("Email Hosting").getClassId(), new ClazzService().findByName("Email Hosting").getName()));
@@ -68,7 +86,7 @@ public class TestTbWork {
                 .build();
 
         EventEntity event2 = EventEntity.newBuilder()
-                .setData(getCurrentTime())
+//                .setData(getCurrentTime())
                 .setLocaleId(".com.au")
                 .setTestId(test1)
                 .setSyswebId("sysweb3.syrahost.com.au")
@@ -79,7 +97,7 @@ public class TestTbWork {
         eventService.persist(event2);
 
         EventEntity event = EventEntity.newBuilder()
-                .setData(getCurrentTime())
+//                .setData(getCurrentTime())
                 .setLocaleId(".com.au")
                 .setTestId(builder)
                 .setSyswebId("sysweb3.syrahost.com.au")
@@ -89,7 +107,7 @@ public class TestTbWork {
         eventService.persist(event);
 
         event = EventEntity.newBuilder()
-                .setData(getCurrentTime())
+//                .setData(getCurrentTime())
                 .setLocaleId(".com.au")
                 .setTestId(10)
                 .setSyswebId("sysweb3.syrahost.com.au")
@@ -103,6 +121,8 @@ public class TestTbWork {
     public static String getCurrentTime() {
         Calendar calendar = Calendar.getInstance();
         String date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(calendar.getTime());
+        LocalDateTime datetime = LocalDateTime.parse(date, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+        System.out.println(datetime.toString().replace("T", " "));
         return date;
     }
 

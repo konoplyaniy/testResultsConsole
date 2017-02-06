@@ -3,6 +3,8 @@ package hibernate.entities;
 import hibernate.service.*;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -12,7 +14,7 @@ import java.util.List;
 @Table(name = "event", schema = "crazydomains")
 public class EventEntity {
     private int eventId;
-    private String data;
+    private Date data;
     private int testId;
     private int localeId;
     private int syswebId;
@@ -34,10 +36,15 @@ public class EventEntity {
         private Builder() {
         }
 
-        public Builder setData(String date) {
-            EventEntity.this.setData(date);
+        public Builder setData(Date data){
+            EventEntity.this.setData(data);
             return this;
         }
+
+//        public Builder setData(String date) {
+//            EventEntity.this.setData(date);
+//            return this;
+//        }
 
         public Builder setEventId(int eventId) {
             EventEntity.this.setEventId(eventId);
@@ -127,11 +134,15 @@ public class EventEntity {
 
     @Basic
     @Column(name = "data", nullable = false)
-    public String getData() {
+    public Date getData() {
         return data;
     }
 
-    public void setData(String data) {
+//    public void setData(String data) {
+//        this.data = data;
+//    }
+
+    public void setData(Date data) {
         this.data = data;
     }
 

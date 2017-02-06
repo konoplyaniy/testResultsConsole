@@ -5,6 +5,8 @@ import hibernate.entities.EventEntity;
 
 import javax.faces.bean.ApplicationScoped;
 import javax.faces.bean.ManagedBean;
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -29,6 +31,13 @@ public class EventService {
         eventDao.openCurrentSessionwithTransaction();
         eventDao.update(entity);
         eventDao.closeCurrentSessionwithTransaction();
+    }
+
+    public List<EventEntity> findBetweenDates(Date startDate, Date endDate){
+        eventDao.openCurrentSession();
+        List<EventEntity> events = eventDao.findByDate(startDate, endDate);
+        eventDao.closeCurrentSession();
+        return events;
     }
 
     public EventEntity findById(Integer id) {
