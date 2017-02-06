@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html" xmlns:p="http://primefaces.org/ui">
+<h:head>
+    <h:outputStylesheet library="css" name="styles.css"/>
+</h:head>
+<h:body style="background-image: url(#{resource['images:background_image.jpg']})">
+    <h:graphicImage name="images/crazy_logo_com.png"/>
+    <title>Dreamscape Networks | QA | Browser table</title>
+    <meta http-equiv="refresh" content="20" />
+    <h:form>
+        <!--Links to another tables-->
+        <p:button id="mainPageLink"
+                  value="Main table"
+                  href="/mainpage.xhtml"
+                  style="color: blue;
+                                background-color: #33FF33;
+                                border-color: #0066ff;"/>
+        <p:button id="browserLink"
+                  value="Browser table"
+                  href="/browser.xhtml"
+                  disabled="true"
+                  style="color: blue;
+                                background-color: #33FF33;
+                                border-color: #0066ff;"/>
+        <p:button id="syswebLink"
+                  value="Sysweb table"
+                  href="/sysweb.xhtml"
+                  style="color: blue;
+                                background-color: #33FF33;
+                                border-color: #0066ff;"/>
+        <p:button id="localeLink"
+                  value="Locale table"
+                  href="/locale.xhtml"
+                  style="color: blue;
+                                background-color: #33FF33;
+                                border-color: #0066ff;"/>
+        <p:button id="classLink"
+                  value="Class table"
+                  href="/class.xhtml"
+                  style="color: blue;
+                                background-color: #33FF33;
+                                border-color: #0066ff;"/>
+        <p:button id="testLink"
+                  value="Test table"
+                  href="/test.xhtml"
+                  style="color: blue;
+                                background-color: #33FF33;
+                                border-color: #0066ff;"/>
+        <p:button id="groupLink"
+                  value="Group table"
+                  href="/group.xhtml"
+                  style="color: blue;
+                                background-color: #33FF33;
+                                border-color: #0066ff;"/>
+        <p:button id="eventLink"
+                  value="Event table"
+                  href="/event.xhtml"
+                  disabled="true"
+                  style="color: blue;
+                                background-color: #33FF33;
+                                border-color: #0066ff;"/>
+
+        <!--Tool tips for buttons-->
+        <p:tooltip id="toolTipBrowser" for="browserLink" value="This table is opened for now" position="top"/>
+        <p:tooltip id="toolTipEvent" for="eventLink" value="Event table is unavailable for now" position="top"/>
+        <h:form>
+            <p:dataTable id="browser_form"
+                         var="browser"
+                         value="#{browserTableExporter.browsers}"
+                         paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} "
+                         paginator="true"
+                         rows="20"
+                         style="margin-bottom:15px">
+                <f:facet name="header">
+                    List of browsers
+                </f:facet>
+
+                <p:column sortBy="#{browser.browserId}"
+                          filterBy="#{browser.browserId}"
+                          style="width: 100px;
+                            text-align: center">
+                    <f:facet name="header">
+                        <h:outputText value="Id"/>
+                    </f:facet>
+                    <h:outputText value="#{browser.browserId}"/>
+                </p:column>
+                <p:column sortBy="#{browser.browser}"
+                          filterBy="#{browser.browser}"
+                          filterMatchMode="contains">
+                    <f:facet name="header">
+                        <h:outputText value="Browser name and version"/>
+                    </f:facet>
+                    <h:outputText value="#{browser.browser}"/>
+                </p:column>
+            </p:dataTable>
+        </h:form>
+    </h:form>
+</h:body>
+</html>
