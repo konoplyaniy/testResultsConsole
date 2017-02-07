@@ -50,6 +50,17 @@
                 </h:outputText>
             </p:panelGrid>
         </p:dialog>
+        <p:panel header="Export All Data">
+            <h:commandLink>
+                <p:graphicImage value="/resources/images/xml.png" />
+                <p:dataExporter type="xls" postProcessor="#{eventTableExporter.postProcessXLS}"
+                                target="event_form" fileName="myexcel"/>
+            </h:commandLink>
+            <h:commandLink>
+                <p:graphicImage  value="/resources/images/xml.png"/>
+                <p:dataExporter type="pdf" target="event_form" fileName="mypdf"/>
+            </h:commandLink>
+        </p:panel>
     </h:form>
 
 
