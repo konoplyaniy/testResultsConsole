@@ -13,7 +13,6 @@ import java.util.List;
  */
 @ManagedBean
 public class TestTableExporter {
-//    private ArrayList<TestData> tests;
     private List<TestEntity> tests;
 
     @ManagedProperty("#{testService}")
@@ -23,23 +22,13 @@ public class TestTableExporter {
     public void init() {
         testService = new TestService();
         tests = testService.findAll();
-
-//        List<TestEntity> testEntities = testService.findAll();
-//        tests = new ArrayList<TestData>();
-//        for (TestEntity testEntity : testEntities) {
-//            tests.add(new TestData(testEntity));
-//        }
     }
 
-    public List<TestEntity> getTests(){
+    public List<TestEntity> getTests() {
         return tests;
     }
 
-//    public ArrayList<TestData> getTests(){
-//        return tests;
-//    }
-
-    public void setTestService(TestService service){
+    public void setTestService(TestService service) {
         this.testService = service;
     }
 }

@@ -11,14 +11,6 @@ public class GroupEntity {
     private int groupId;
     private String name;
 
-    public GroupEntity() {
-
-    }
-
-    public GroupEntity(String name) {
-        this.name = name;
-    }
-
     @Id
     @Column(name = "group_id", nullable = false)
     public int getGroupId() {
@@ -46,6 +38,7 @@ public class GroupEntity {
 
         GroupEntity that = (GroupEntity) o;
 
+        if (groupId != that.groupId) return false;
         if (name != null ? !name.equals(that.name) : that.name != null) return false;
 
         return true;

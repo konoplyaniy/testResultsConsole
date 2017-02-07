@@ -52,22 +52,22 @@
                     <h:outputText value="#{test.name}"/>
                 </p:column>
 
-                <p:column sortBy="#{test.groupName}"
-                          filterBy="#{test.groupName}"
+                <p:column sortBy="#{test.groupByGroupId.name}"
+                          filterBy="#{test.groupByGroupId.name}"
                           filterMatchMode="contains">
                     <f:facet name="header">
                         <h:outputText value="Group"/>
                     </f:facet>
-                    <h:outputText value="#{test.groupName}"/>
+                    <h:outputText value="#{test.groupByGroupId.name}"/>
                 </p:column>
 
-                <p:column sortBy="#{test.className}"
-                          filterBy="#{test.className}"
+                <p:column sortBy="#{test.clazzByClassId.name}"
+                          filterBy="#{test.clazzByClassId.name}"
                           filterMatchMode="contains">
                     <f:facet name="header">
                         <h:outputText value="Class"/>
                     </f:facet>
-                    <h:outputText value="#{test.className}"/>
+                    <h:outputText value="#{test.clazzByClassId.name}"/>
                 </p:column>
             </p:dataTable>
         </h:form>

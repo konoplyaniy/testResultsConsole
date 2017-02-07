@@ -12,14 +12,6 @@ public class PcEntity {
     private String name;
     private String os;
 
-    public PcEntity() {
-    }
-
-    public PcEntity(String name, String os) {
-        this.name = name;
-        this.os = os;
-    }
-
     @Id
     @Column(name = "pc_id", nullable = false)
     public int getPcId() {
@@ -55,10 +47,11 @@ public class PcEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        PcEntity pcEntity = (PcEntity) o;
+        PcEntity pcTable = (PcEntity) o;
 
-        if (name != null ? !name.equals(pcEntity.name) : pcEntity.name != null) return false;
-        if (os != null ? !os.equals(pcEntity.os) : pcEntity.os != null) return false;
+        if (pcId != pcTable.pcId) return false;
+        if (name != null ? !name.equals(pcTable.name) : pcTable.name != null) return false;
+        if (os != null ? !os.equals(pcTable.os) : pcTable.os != null) return false;
 
         return true;
     }

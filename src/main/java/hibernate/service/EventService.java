@@ -5,7 +5,9 @@ import hibernate.entities.EventEntity;
 
 import javax.faces.bean.ApplicationScoped;
 import javax.faces.bean.ManagedBean;
-import java.time.LocalDateTime;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -17,72 +19,98 @@ import java.util.List;
 public class EventService {
     private static EventDao eventDao;
 
-    public EventService(){
+    public EventService() {
         eventDao = new EventDao();
     }
 
-    public void persist(EventEntity entity) {
-        eventDao.openCurrentSessionwithTransaction();
-        eventDao.persist(entity);
-        eventDao.closeCurrentSessionwithTransaction();
-    }
-
-    public void update(EventEntity entity) {
-        eventDao.openCurrentSessionwithTransaction();
-        eventDao.update(entity);
-        eventDao.closeCurrentSessionwithTransaction();
-    }
-
-    public List<EventEntity> findBetweenDates(Date startDate, Date endDate){
+    public List<EventEntity> findByTestName(String testName) {
         eventDao.openCurrentSession();
-        List<EventEntity> events = eventDao.findByDate(startDate, endDate);
+        List<EventEntity> result = eventDao.findByTestName(testName);
         eventDao.closeCurrentSession();
-        return events;
+        return result;
     }
 
-    public EventEntity findById(Integer id) {
+    public List<EventEntity> findByGroupName(String groupName) {
+        List<EventEntity> result;
         eventDao.openCurrentSession();
-        EventEntity event = eventDao.findById(id);
+        result = eventDao.findByGroupName(groupName);
         eventDao.closeCurrentSession();
-        return event;
+        return result;
     }
 
-    public List<EventEntity> findByTestName(String name) {
+    public List<EventEntity> findByClassName(String className) {
+        List<EventEntity> result;
         eventDao.openCurrentSession();
-        List<EventEntity> event = eventDao.findByTestName(name);
+        result = eventDao.findByClassName(className);
         eventDao.closeCurrentSession();
-        return event;
+        return result;
     }
 
-    public void delete(Integer id) {
-        eventDao.openCurrentSessionwithTransaction();
-        EventEntity event = eventDao.findById(id);
-        eventDao.delete(event);
-        eventDao.closeCurrentSessionwithTransaction();
+    public List<EventEntity> findByCurrentDate() {
+        DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Calendar calendar = Calendar.getInstance();
+        Date startDate = calendar.getTime();
+        startDate.setHours(0);
+        startDate.setMinutes(0);
+        startDate.setSeconds(0);
+        Date endDate = calendar.getTime();
+        endDate.setHours(23);
+        endDate.setMinutes(59);
+        endDate.setSeconds(59);
+        eventDao.openCurrentSession();
+        List<EventEntity> result = eventDao.findBetweenDates(startDate, endDate);
+        eventDao.closeCurrentSession();
+        return result;
     }
+
+    public List<EventEntity> findByBrowser(String browser) {
+        eventDao.openCurrentSession();
+        List<EventEntity> result = eventDao.findByBrowser(browser);
+        eventDao.closeCurrentSession();
+        return result;
+    }
+
+    public List<EventEntity> findByPcOS(String pcOs) {
+        eventDao.openCurrentSession();
+        List<EventEntity> result = eventDao.findByPcOS(pcOs);
+        eventDao.closeCurrentSession();
+        return result;
+    }
+
+    public List<EventEntity> findByPcName(String pcName) {
+        eventDao.openCurrentSession();
+        List<EventEntity> result = eventDao.findByPcName(pcName);
+        eventDao.closeCurrentSession();
+        return result;
+    }
+
+    public List<EventEntity> findBySysweb(String sysweb) {
+        eventDao.openCurrentSession();
+        List<EventEntity> result = eventDao.findBySysweb(sysweb);
+        eventDao.closeCurrentSession();
+        return result;
+    }
+
+    public List<EventEntity> findByLocale(String locale) {
+        eventDao.openCurrentSession();
+        List<EventEntity> result = eventDao.findByLocale(locale);
+        eventDao.closeCurrentSession();
+        return result;
+    }
+
+    public List<EventEntity> findBetweenDate(Date startDate, Date endDate) {
+        eventDao.openCurrentSession();
+        List<EventEntity> result = eventDao.findBetweenDates(startDate, endDate);
+        eventDao.closeCurrentSession();
+        return result;
+    }
+
 
     public List<EventEntity> findAll() {
         eventDao.openCurrentSession();
-        List<EventEntity> entities = eventDao.findAll();
+        List<EventEntity> result = eventDao.findAll();
         eventDao.closeCurrentSession();
-        return entities;
-    }
-
-    public int getRowsCount(){
-        eventDao.openCurrentSession();
-        List<EventEntity> entities = eventDao.findAll();
-        eventDao.closeCurrentSession();
-        return entities.size();
-    }
-
-    public void deleteAll() {
-        eventDao.openCurrentSessionwithTransaction();
-        eventDao.deleteAll();
-        eventDao.closeCurrentSessionwithTransaction();
-    }
-
-    public EventDao eventDao() {
-        return eventDao;
+        return result;
     }
 
 }

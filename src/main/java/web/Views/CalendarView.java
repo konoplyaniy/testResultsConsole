@@ -34,12 +34,12 @@ public class CalendarView {
                 DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                 Date startDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(formatter.format(getStartDate()));
                 Date endDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(formatter.format(getEndDate()));
-                List<EventEntity> eventeventEntities = service.findBetweenDates(startDate, endDate);
-                events = service.findBetweenDates(startDate, endDate);
+//                List<EventEntity> eventeventEntities = service.findBetweenDate(startDate, endDate);
+                events = service.findBetweenDate(startDate, endDate);
 
-                for (EventEntity eventt : eventeventEntities) {
-                    System.out.println("Date: " + eventt.getData() + " id: " + eventt.getEventId());
-                }
+//                for (EventEntity eventt : eventeventEntities) {
+//                    System.out.println("Date: " + eventt.getData() + " id: " + eventt.getEventId());
+//                }
             }
         } catch (ParseException e) {
             e.printStackTrace();

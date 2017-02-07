@@ -11,13 +11,6 @@ public class SyswebEntity {
     private int syswebId;
     private String name;
 
-    public SyswebEntity() {
-    }
-
-    public SyswebEntity(String syswebUrl) {
-        this.name = syswebUrl;
-    }
-
     @Id
     @Column(name = "sysweb_id", nullable = false)
     public int getSyswebId() {
@@ -57,7 +50,6 @@ public class SyswebEntity {
         result = 31 * result + (name != null ? name.hashCode() : 0);
         return result;
     }
-
     @Override
     public String toString() {
         return "id: " + syswebId + " name: " + name;

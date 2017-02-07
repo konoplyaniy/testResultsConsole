@@ -25,7 +25,7 @@
     <h:form>
         <p:dataTable id="main_form"
                      var="console"
-                     value="#{mainTable.reports}"
+                     value="#{mainTable.events}"
                      paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} "
                      paginator="true"
                      rows="20"
@@ -33,41 +33,42 @@
             <f:facet name="header">
                 Failed tests
             </f:facet>
-            <p:column sortBy="#{console.mainSiteUrl}"
-                      filterBy="#{console.mainSiteUrl}"
+            <p:column sortBy="#{mainTable.siteURL}"
+                      filterBy="#{mainTable.siteURL}"
                       filterMatchMode="contains"
                       style="width: 300px;">
                 <f:facet name="header">
                     <h:outputText value="Website:"/>
                 </f:facet>
-                <h:outputText value="#{console.mainSiteUrl}"/>
+                <h:outputText value="#{mainTable.siteURL}"/>
             </p:column>
-            <p:column sortBy="#{console.locale}"
-                      filterBy="#{console.locale}"
+
+            <p:column sortBy="#{console.localeByLocaleId.locale}"
+                      filterBy="#{console.localeByLocaleId.locale}"
                       filterMatchMode="contains"
                       style="width: 100px;
                             text-align: center">
                 <f:facet name="header">
                     <h:outputText value="Locale:"/>
                 </f:facet>
-                <h:outputText value="#{console.locale}"/>
+                <h:outputText value="#{console.localeByLocaleId.locale}"/>
             </p:column>
-            <p:column sortBy="#{console.count}"
-                      filterBy="#{console.count}"
+            <p:column sortBy="#{mainTable.count}"
+                      filterBy="#{mainTable.count}"
                       filterMatchMode="contains"
                       style="width: 100px">
                 <f:facet name="header">
                     <h:outputText value="Count:"/>
                 </f:facet>
                 <h:outputText id="countValue"
-                              value="#{console.count}"/>
+                              value="#{mainTable.count}"/>
                 <p:tooltip id="toolTipCount" for="countValue" value="Failed tests counter" position="top"/>
             </p:column>
             <p:column>
                 <f:facet name="header">
                     <h:outputText value="Tests:"/>
                 </f:facet>
-                <h:outputText value="#{console.testDetail}"
+                <h:outputText value="#{console.testByTestId.clazzByClassId.name} #{console.testByTestId.groupByGroupId.name} #{console.testByTestId.name}"
                               style="font-weight: bold; color: blue;"/>
             </p:column>
         </p:dataTable>
@@ -221,11 +222,5 @@
     </h:form>
     <!--End-->
 
-    <!--Links to another tables-->
-    <h:form>
-        <f:facet name="header">
-            Links
-        </f:facet>
-    </h:form>
 </h:body>
 </html>

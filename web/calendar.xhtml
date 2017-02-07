@@ -10,12 +10,14 @@
 </h:head>
 <h:body style="background-image: url(#{resource['images:background_image.jpg']})">
     <title>Dreamscape Networks | QA | Calendar testing</title>
+    <!--<meta http-equiv="refresh" content="20" />-->
+    <!-- <ui:insert name="header">
+         <ui:include src="resources/templates/headers.xhtml"/>
+     </ui:insert>-->
     <h:form id="form">
         <p:growl id="msgs" showDetail="true"/>
-        <meta http-equiv="refresh" content="20" />
-        <ui:insert name="header">
-            <ui:include src="resources/templates/headers.xhtml"/>
-        </ui:insert>
+
+
         <h:panelGrid columns="2" cellpadding="5">
 
             <p:outputLabel for="datetime" value="Start Date:"/>
@@ -74,21 +76,21 @@
                 <f:facet name="header">
                     <h:outputText value="Locale"/>
                 </f:facet>
-                <h:outputText value="#{localeService.findById(event.localeId).locale}"/>
+                <h:outputText value="#{event.localeByLocaleId.locale}"/>
             </p:column>
 
             <p:column>
                 <f:facet name="header">
                     <h:outputText value="Browser"/>
                 </f:facet>
-                <h:outputText value="#{browserService.findById(event.browserId).browser}"/>
+                <h:outputText value="#{event.browserByBrowserId.browser}"/>
             </p:column>
 
             <p:column>
                 <f:facet name="header">
                     <h:outputText value="PC"/>
                 </f:facet>
-                <h:outputText value="#{pcService.findById(event.pcId).name} #{pcService.findById(event.pcId).os}"/>
+                <h:outputText value="#{event.pcByPcId.name} #{event.pcByPcId.os}"/>
             </p:column>
 
 
@@ -96,28 +98,28 @@
                 <f:facet name="header">
                     <h:outputText value="Class name"/>
                 </f:facet>
-                <h:outputText var="id" value="#{testService.findById(event.testId).className}"/>
+                <h:outputText var="id" value="#{event.testByTestId.clazzByClassId.name}"/>
             </p:column>
 
             <p:column>
                 <f:facet name="header">
                     <h:outputText value="Group name"/>
                 </f:facet>
-                <h:outputText var="id" value="#{testService.findById(event.testId).groupName}"/>
+                <h:outputText var="id" value="#{event.testByTestId.groupByGroupId.name}"/>
             </p:column>
 
             <p:column>
                 <f:facet name="header">
                     <h:outputText value="Test name"/>
                 </f:facet>
-                <h:outputText var="id" value="#{testService.findById(event.testId).name} "/>
+                <h:outputText var="id" value="#{event.testByTestId.name} "/>
             </p:column>
 
             <p:column>
                 <f:facet name="header">
                     <h:outputText value="Sysweb"/>
                 </f:facet>
-                <h:outputText value="#{syswebService.findById(event.syswebId).name}"/>
+                <h:outputText value="#{event.syswebBySyswebId.name}"/>
             </p:column>
 
             <p:column>

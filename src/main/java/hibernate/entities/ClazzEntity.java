@@ -14,15 +14,6 @@ public class ClazzEntity {
     public ClazzEntity() {
     }
 
-    public ClazzEntity(String name) {
-        this.name = name;
-    }
-
-    public ClazzEntity(int id, String name) {
-        this.classId = id;
-        this.name = name;
-    }
-
     @Id
     @Column(name = "class_id", nullable = false)
     public int getClassId() {
@@ -50,6 +41,7 @@ public class ClazzEntity {
 
         ClazzEntity that = (ClazzEntity) o;
 
+        if (classId != that.classId) return false;
         if (name != null ? !name.equals(that.name) : that.name != null) return false;
 
         return true;
@@ -61,7 +53,6 @@ public class ClazzEntity {
         result = 31 * result + (name != null ? name.hashCode() : 0);
         return result;
     }
-
     @Override
     public String toString() {
         return "id: " + classId + " name: " + name;

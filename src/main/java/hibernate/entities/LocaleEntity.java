@@ -11,13 +11,6 @@ public class LocaleEntity {
     private int localeId;
     private String locale;
 
-    public LocaleEntity() {
-    }
-
-    public LocaleEntity(String locale) {
-        this.locale = locale;
-    }
-
     @Id
     @Column(name = "locale_id", nullable = false)
     public int getLocaleId() {
@@ -45,6 +38,7 @@ public class LocaleEntity {
 
         LocaleEntity that = (LocaleEntity) o;
 
+        if (localeId != that.localeId) return false;
         if (locale != null ? !locale.equals(that.locale) : that.locale != null) return false;
 
         return true;

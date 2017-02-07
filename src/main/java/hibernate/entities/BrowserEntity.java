@@ -11,13 +11,6 @@ public class BrowserEntity {
     private int browserId;
     private String browser;
 
-    public BrowserEntity() {
-    }
-
-    public BrowserEntity(String browser) {
-        this.browser = browser;
-    }
-
     @Id
     @Column(name = "browser_id", nullable = false)
     public int getBrowserId() {

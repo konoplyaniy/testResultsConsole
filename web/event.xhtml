@@ -23,8 +23,7 @@
                 </f:facet>
 
                 <p:column sortBy="#{event.data}"
-                filterBy="#{event.data}"
-                filterFunction="">
+                filterBy="#{event.data}">
                     <f:facet name="header">
                         <h:outputText value="Date"/>
                     </f:facet>
@@ -35,21 +34,21 @@
                     <f:facet name="header">
                         <h:outputText value="Locale"/>
                     </f:facet>
-                    <h:outputText value="#{localeService.findById(event.localeId).locale}"/>
+                    <h:outputText value="#{event.localeByLocaleId.locale}"/>
                 </p:column>
 
                 <p:column>
                     <f:facet name="header">
                         <h:outputText value="Browser"/>
                     </f:facet>
-                    <h:outputText value="#{browserService.findById(event.browserId).browser}"/>
+                    <h:outputText value="#{event.browserByBrowserId.browser}"/>
                 </p:column>
 
                 <p:column>
                     <f:facet name="header">
                         <h:outputText value="PC"/>
                     </f:facet>
-                    <h:outputText value="#{pcService.findById(event.pcId).name} #{pcService.findById(event.pcId).os}"/>
+                    <h:outputText value="#{event.pcByPcId.name} #{event.pcByPcId.os}"/>
                 </p:column>
 
 
@@ -57,21 +56,21 @@
                     <f:facet name="header">
                         <h:outputText value="Class name"/>
                     </f:facet>
-                    <h:outputText var="id" value="#{testService.findById(event.testId).className}"/>
+                    <h:outputText var="id" value="#{event.testByTestId.clazzByClassId.name}"/>
                 </p:column>
 
                 <p:column>
                     <f:facet name="header">
                         <h:outputText value="Group name"/>
                     </f:facet>
-                    <h:outputText var="id" value="#{testService.findById(event.testId).groupName}"/>
+                    <h:outputText var="id" value="#{event.testByTestId.groupByGroupId.name}"/>
                 </p:column>
 
                 <p:column>
                     <f:facet name="header">
                         <h:outputText value="Test name"/>
                     </f:facet>
-                    <h:outputText var="id" value="#{testService.findById(event.testId).name} "/>
+                    <h:outputText var="id" value="#{event.testByTestId.name} "/>
                 </p:column>
 
                 <p:column>

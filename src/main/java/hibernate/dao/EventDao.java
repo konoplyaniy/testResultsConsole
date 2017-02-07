@@ -10,32 +10,41 @@ import java.util.List;
  * Created by Sergiy.K on 26-Jan-17.
  */
 public class EventDao extends BaseDao<Integer, EventEntity> {
-    public void persist(EventEntity event) {
-        getCurrentSession().save(event);
+    @Override
+    public void persist(EventEntity entity) {
+
     }
 
+    @Override
     public void update(EventEntity entity) {
-        getCurrentSession().update(entity);
+
     }
 
-    public EventEntity findById(Integer id) {
-        EventEntity event = (EventEntity) getCurrentSession().get(EventEntity.class, id);
+    @Override
+    public EventEntity findById(Integer key) {
+        EventEntity event = (EventEntity) getCurrentSession().get(EventEntity.class, key);
         return event;
     }
 
-    // should add method for find:
-    // by test name
-    // by date
-    // by locale
-    // by sysweb
-    // by test group
+    public List<EventEntity> findByTestName(String testName) {
+        Query query = getCurrentSession().createQuery("from EventEntity where testByTestId.name =:testName ");
+        query.setParameter("testName", testName);
+        return (List<EventEntity>) query.list();
+    }
 
-//    select Date, TotalAllowance from Calculation where EmployeeId = 1
-//    and Date between '2011/02/25' and '2011/02/27'
+    public List<EventEntity> findByGroupName(String groupName) {
+        Query query = getCurrentSession().createQuery("from EventEntity where testByTestId.groupByGroupId.name =:groupName");
+        query.setParameter("groupName", groupName);
+        return (List<EventEntity>) query.list();
+    }
 
-    //
+    public List<EventEntity> findByClassName(String className) {
+        Query query = getCurrentSession().createQuery("from EventEntity where testByTestId.clazzByClassId.name =:className ");
+        query.setParameter("className", className);
+        return (List<EventEntity>) query.list();
+    }
 
-    public List<EventEntity> findByDate(Date startSate, Date endDate) {
+    public List<EventEntity> findBetweenDates(Date startSate, Date endDate) {
         Query query = getCurrentSession().createQuery("from EventEntity where data between :startDate and :endDate");
         query.setParameter("startDate", startSate);
         query.setParameter("endDate", endDate);
@@ -43,34 +52,50 @@ public class EventDao extends BaseDao<Integer, EventEntity> {
         return events;
     }
 
-
-    public List<EventEntity> findByTestName(String testName) {
-        List<EventEntity> events = getCurrentSession().createQuery("from EventEntity inner join TestEntity on EventEntity.testId = TestEntity.testId").list();
-        return events;
+    public List<EventEntity> findByLocale(String localeName) {
+        Query query = getCurrentSession().createQuery("from EventEntity where localeByLocaleId.locale =:localeName ");
+        query.setParameter("localeName", localeName);
+        return (List<EventEntity>) query.list();
     }
 
-    public List<EventEntity> findByLocale(String locale) {
-        Query query = getCurrentSession().createQuery("from EventEntity where localeId =:locale");
-        query.setParameter("locale", locale);
-        List<EventEntity> local = (List<EventEntity>) query.list();
-        return local;
+    public List<EventEntity> findBySysweb(String sysweb) {
+        Query query = getCurrentSession().createQuery("from EventEntity where syswebBySyswebId.name =:sysweb");
+        query.setParameter("sysweb", sysweb);
+        return (List<EventEntity>) query.list();
     }
 
+    public List<EventEntity> findByPcName(String pcName) {
+        Query query = getCurrentSession().createQuery("from EventEntity where pcByPcId.name =:pcName");
+        query.setParameter("pcName", pcName);
+        return (List<EventEntity>) query.list();
+    }
+
+    public List<EventEntity> findByPcOS(String pcOs) {
+        Query query = getCurrentSession().createQuery("from EventEntity where pcByPcId.os =:pcOs");
+        query.setParameter("pcOs", pcOs);
+        return (List<EventEntity>) query.list();
+    }
+
+    public List<EventEntity> findByBrowser(String browser) {
+        Query query = getCurrentSession().createQuery("from EventEntity where browserByBrowserId.browser =:browser");
+        query.setParameter("browser", browser);
+        return (List<EventEntity>) query.list();
+    }
+
+    @Override
     public void delete(EventEntity entity) {
         getCurrentSession().delete(entity);
     }
 
-    @SuppressWarnings("unchecked")
+    @Override
     public List<EventEntity> findAll() {
-        List<EventEntity> locales = (List<EventEntity>) getCurrentSession().createQuery("from EventEntity ").list();
-        return locales;
+        List<EventEntity> events = (List<EventEntity>) getCurrentSession().createQuery("from EventEntity ").list();
+        return events;
     }
 
+    @Override
     public void deleteAll() {
-        List<EventEntity> entityList = findAll();
-        for (EventEntity entity : entityList) {
-            delete(entity);
-        }
+
     }
 
 }
