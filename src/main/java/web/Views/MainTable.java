@@ -1,17 +1,11 @@
 package web.Views;
 
-import hibernate.dbTesting.TestData;
 import hibernate.entities.EventEntity;
-import hibernate.entities.TestEntity;
 import hibernate.service.EventService;
-import hibernate.service.LocaleService;
-import hibernate.service.TestService;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -62,6 +56,4 @@ public class MainTable {
     public void setEventService(EventService service) {
         this.eventService = service;
     }
-
-
 }
