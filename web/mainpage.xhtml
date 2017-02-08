@@ -26,13 +26,23 @@
         <p:dataTable id="main_form"
                      var="console"
                      value="#{mainTable.events}"
-                     paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} "
+                     paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} "
+                     currentPageReportTemplate="(Displaying {startRecord} - {endRecord} of
+                     {totalRecords}, Page: {currentPage}/{totalPages})"
+                     rowsPerPageTemplate="10,15,20"
                      paginator="true"
                      rows="20"
-                     style="margin-bottom:15px">
+                     style="margin-bottom:15px"
+                     rowIndexVar="rCount">
             <f:facet name="header">
                 Failed tests
             </f:facet>
+            <p:column style="width: 20px;">
+                <f:facet name="header">
+                    <h:outputText value="№"/>
+                </f:facet>
+                <h:outputText value="#{rCount + 1}"/>
+            </p:column>
             <p:column sortBy="#{mainTable.siteURL}"
                       filterBy="#{mainTable.siteURL}"
                       filterMatchMode="contains"
@@ -68,8 +78,9 @@
                 <f:facet name="header">
                     <h:outputText value="Tests:"/>
                 </f:facet>
-                <h:outputText value="#{console.testByTestId.clazzByClassId.name} #{console.testByTestId.groupByGroupId.name} #{console.testByTestId.name}"
-                              style="font-weight: bold; color: blue;"/>
+                <h:outputText
+                        value="#{console.testByTestId.clazzByClassId.name} #{console.testByTestId.groupByGroupId.name} #{console.testByTestId.name}"
+                        style="font-weight: bold; color: blue;"/>
             </p:column>
         </p:dataTable>
     </h:form>

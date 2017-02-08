@@ -3,12 +3,15 @@
         "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:h="http://java.sun.com/jsf/html" xmlns:p="http://primefaces.org/ui">
+      xmlns:h="http://java.sun.com/jsf/html" xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
 <h:head>
     <h:outputStylesheet library="css" name="styles.css"/>
 </h:head>
 <h:body style="background-image: url(#{resource['images:background_image.jpg']})">
-    <h:graphicImage name="images/crazy_logo_com.png"/>
+    <ui:insert name="header">
+        <ui:include src="resources/templates/headers.xhtml"/>
+    </ui:insert>
     <title>Dreamscape Networks | QA | Sysweb table</title>
     <h:form>
         <f:facet name="title">
@@ -17,70 +20,24 @@
 
         <!--Table-->
         <h:form>
-            <!--Links to another tables-->
-            <p:button id="mainPageLink"
-                      value="Main table"
-                      href="/mainpage.xhtml"
-                      style="color: blue;
-                                background-color: #33FF33;
-                                border-color: #0066ff;"/>
-            <p:button id="browserLink"
-                      value="Browser table"
-                      href="/browser.xhtml"
-                      style="color: blue;
-                                background-color: #33FF33;
-                                border-color: #0066ff;"/>
-            <p:button id="sysweb"
-                      value="Sysweb table"
-                      href="/sysweb.xhtml"
-                      disabled="true"
-                      style="color: blue;
-                                background-color: #33FF33;
-                                border-color: #0066ff;"/>
-            <p:button id="localeLink"
-                      value="Locale table"
-                      href="/locale.xhtml"
-                      style="color: blue;
-                                background-color: #33FF33;
-                                border-color: #0066ff;"/>
-            <p:button id="classlink"
-                      value="Class table"
-                      href="/class.xhtml"
-                      style="color: blue;
-                                background-color: #33FF33;
-                                border-color: #0066ff;"/>
-            <p:button id="testLink"
-                      value="Test table"
-                      href="/test.xhtml"
-                      style="color: blue;
-                                background-color: #33FF33;
-                                border-color: #0066ff;"/>
-            <p:button id="groupLink"
-                      value="Group table"
-                      href="/group.xhtml"
-                      style="color: blue;
-                                background-color: #33FF33;
-                                border-color: #0066ff;"/>
-            <p:button id="eventLink"
-                      value="Event table"
-                      href="/event.xhtml"
-                      style="color: blue;
-                                background-color: #33FF33;
-                                border-color: #0066ff;"/>
-
-            <!--Tool tips for buttons-->
-            <p:tooltip id="toolTipSysweb" for="sysweb" value="This table is opened for now" position="top"/>
-            <p:tooltip id="toolTipEvent" for="eventLink" value="Event table is unavailable for now" position="top"/>
             <p:dataTable id="sysweb_form"
                          var="sysweb"
                          value="#{syswebTableExporter.syswebs}"
                          paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} "
                          paginator="true"
+                         currentPageReportTemplate="(Displaying {startRecord} - {endRecord} of {totalRecords}, Page: {currentPage}/{totalPages})"
+                         rowIndexVar="rCount"
                          rows="20"
                          style="margin-bottom:15px">
                 <f:facet name="header">
                     List of syswebs
                 </f:facet>
+                <p:column style="width: 20px;">
+                    <f:facet name="header">
+                        <h:outputText value="№"/>
+                    </f:facet>
+                    <h:outputText value="#{rCount + 1}"/>
+                </p:column>
                 <p:column
                         sortBy="#{sysweb.syswebId}"
                         filterBy="#{sysweb.syswebId}"

@@ -22,6 +22,8 @@
                          var="clazz"
                          value="#{classTableExporter.classes}"
                          paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} "
+                         currentPageReportTemplate="(Displaying {startRecord} - {endRecord} of {totalRecords}, Page: {currentPage}/{totalPages})"
+                         rowIndexVar="rCount"
                          paginator="true"
                          rows="20"
                          style="margin-bottom:15px">
@@ -29,6 +31,12 @@
                     List of classes
                 </f:facet>
 
+                <p:column style="width: 20px;">
+                    <f:facet name="header">
+                        <h:outputText value="№"/>
+                    </f:facet>
+                    <h:outputText value="#{rCount + 1}"/>
+                </p:column>
                 <p:column sortBy="#{clazz.classId}"
                           filterBy="#{clazz.classId}"
                           style="width: 100px;

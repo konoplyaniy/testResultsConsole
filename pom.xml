@@ -118,7 +118,6 @@
 
     <build>
         <!--<finalName>artifact</finalName>-->
-
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -131,6 +130,4 @@
             </plugin>
         </plugins>
     </build>
-
-
 </project>
