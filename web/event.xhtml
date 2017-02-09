@@ -26,6 +26,7 @@
                      rows="20"
                      style="margin-bottom:15px"
                      selection="#{eventTableExporter.selectedEvents}">
+
             <f:facet name="{Exporters}">
                 <h:commandLink>
                     <p:graphicImage value="/resources/images/xls.png" width="32"/>
@@ -39,9 +40,15 @@
                 </h:commandLink>
             </f:facet>
 
-            <p:ajax event="rowSelect" listener="#{eventTableExporter.onRowSelect}" update=":event_form:event_table"/>
-            <p:ajax event="rowUnselect" listener="#{eventTableExporter.onRowUnSelect}" update=":event_form:event_table"/>
-
+            <f:facet name="header" id="columnSelector">
+                Failed tests
+                <p:commandButton id="toggler" type="button" value="Select columns"
+                                 style="float:right; height: 60px; background-color: gray;"
+                                 icon="ui-icon-calculator" />
+                <p:columnToggler id="columnTogler"
+                                 datasource="event_table"
+                                 trigger="toggler" />
+            </f:facet>
             <p:column style="width: 20px;">
                 <f:facet name="header">
                     <h:outputText value="№"/>
@@ -65,6 +72,7 @@
             </p:column>
             <p:column>
                 <f:facet name="header">
+
                     <h:outputText value="Browser"/>
                 </f:facet>
                 <h:outputText value="#{event.browserByBrowserId.browser}"/>
