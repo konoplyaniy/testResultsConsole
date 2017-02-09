@@ -17,7 +17,7 @@ public class EventDao extends BaseDao<Integer, EventEntity> {
 
     @Override
     public void update(EventEntity entity) {
-
+        getCurrentSession().update(entity);
     }
 
     @Override
@@ -79,6 +79,20 @@ public class EventDao extends BaseDao<Integer, EventEntity> {
     public List<EventEntity> findByBrowser(String browser) {
         Query query = getCurrentSession().createQuery("from EventEntity where browserByBrowserId.browser =:browser");
         query.setParameter("browser", browser);
+        return (List<EventEntity>) query.list();
+    }
+
+    public List<EventEntity> findOnlyChecked() {
+        int checkStatus = 1;
+        Query query = getCurrentSession().createQuery("from EventEntity where checked =:checkStatus");
+        query.setParameter("checkStatus", checkStatus);
+        return (List<EventEntity>) query.list();
+    }
+
+    public List<EventEntity> findOnlyUnChecked() {
+        int checkStatus = 0;
+        Query query = getCurrentSession().createQuery("from EventEntity where checked =:checkStatus");
+        query.setParameter("checkStatus", checkStatus);
         return (List<EventEntity>) query.list();
     }
 

@@ -23,6 +23,20 @@ public class EventService {
         eventDao = new EventDao();
     }
 
+
+    public void update(EventEntity eventEntity){
+        eventDao.openCurrentSessionwithTransaction();
+        eventDao.update(eventEntity);
+        eventDao.closeCurrentSessionwithTransaction();
+    }
+
+    public EventEntity findbyId(int id){
+        eventDao.openCurrentSession();
+        EventEntity result = eventDao.findById(id);
+        eventDao.closeCurrentSession();
+        return result;
+    }
+
     public List<EventEntity> findByTestName(String testName) {
         eventDao.openCurrentSession();
         List<EventEntity> result = eventDao.findByTestName(testName);
@@ -105,6 +119,19 @@ public class EventService {
         return result;
     }
 
+    public List<EventEntity> findAllChecked() {
+        eventDao.openCurrentSession();
+        List<EventEntity> result = eventDao.findOnlyChecked();
+        eventDao.closeCurrentSession();
+        return result;
+    }
+
+    public List<EventEntity> findAllUnChecked() {
+        eventDao.openCurrentSession();
+        List<EventEntity> result = eventDao.findOnlyUnChecked();
+        eventDao.closeCurrentSession();
+        return result;
+    }
 
     public List<EventEntity> findAll() {
         eventDao.openCurrentSession();

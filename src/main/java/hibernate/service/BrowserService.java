@@ -24,8 +24,8 @@ public class BrowserService {
         browserDao.openCurrentSessionwithTransaction();
         if (!browserDao.exists(entity.getBrowser())){
             browserDao.persist(entity);
-            DBLogger.info("Add new class with name [" + entity.getBrowser() + "]");
-        }
+            DBLogger.info("Add new browser with name [" + entity.getBrowser() + "]");
+        }else DBLogger.info("This browser already exist in DB [" + entity.getBrowser() + "]");
         browserDao.closeCurrentSessionwithTransaction();
     }
 

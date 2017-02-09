@@ -24,6 +24,7 @@ public class EventEntity {
     private SyswebEntity syswebBySyswebId;
     private PcEntity pcByPcId;
     private BrowserEntity browserByBrowserId;
+    private int checked;
 
     public EventEntity() {
     }
@@ -126,6 +127,16 @@ public class EventEntity {
 
     public void setBrowserId(int browserId) {
         this.browserId = browserId;
+    }
+
+    @Basic
+    @Column(name = "checked", nullable = false)
+    public int getChecked() {
+        return checked;
+    }
+
+    public void setChecked(int checked) {
+        this.checked = checked;
     }
 
     @Override
