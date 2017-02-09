@@ -14,8 +14,8 @@
     <ui:insert name="header">
         <ui:include src="resources/templates/headers.xhtml"/>
     </ui:insert>
-    <h:form>
-        <p:dataTable id="event_form" var="event"
+    <h:form id="event_form">
+        <p:dataTable id="event_table" var="event"
                      rowKey="#{event.data}"
                      value="#{eventTableExporter.events}"
                      paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {Exporters}"
@@ -38,6 +38,10 @@
                                     postProcessor="#{eventTableExporter.postProcessXLS}"/>
                 </h:commandLink>
             </f:facet>
+
+            <p:ajax event="rowSelect" listener="#{eventTableExporter.onRowSelect}" update=":event_form:event_table"/>
+            <p:ajax event="rowUnselect" listener="#{eventTableExporter.onRowUnSelect}" update=":event_form:event_table"/>
+
             <p:column style="width: 20px;">
                 <f:facet name="header">
                     <h:outputText value="№"/>
@@ -112,16 +116,20 @@
                 </f:facet>
                 <h:outputText value="#{event.url}"/>
             </p:column>
-            <p:column style="width: 80px;">
+            <p:column style="width: 80px;"
+                      sortBy="#{event.checked}">
                 <f:facet name="header">
                     <h:outputText value="Status"/>
                 </f:facet>
                 <h:outputText value="#{eventTableExporter.getCheckFlag(event)}"/>
             </p:column>
-            <p:column selectionMode="multiple" style="width:16px;text-align:center"/>
+            <p:column selectionMode="multiple" style="width:16px;text-align:center">
+            </p:column>
             <f:facet name="footer">
-                <p:commandButton icon="ui-icon-search" value="Apply"
-                                 actionListener="#{eventTableExporter.clickApplyButton()}" style="align-self: flex-end">
+                <p:commandButton icon="ui-icon-circle-check" value="Apply"
+                                 actionListener="#{eventTableExporter.clickApplyButton()}"
+                                 style="width: 400px; height: 50px"
+                                 update=":event_form:event_table">
                 </p:commandButton>
             </f:facet>
         </p:dataTable>

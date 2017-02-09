@@ -26,7 +26,7 @@ import java.util.List;
  */
 @ManagedBean
 @SessionScoped
-public class EventTableExporter implements Serializable{
+public class EventTableExporter implements Serializable {
     private List<EventEntity> events;
     private String checkFlag;
     private EventEntity selectedEvent;
@@ -56,28 +56,30 @@ public class EventTableExporter implements Serializable{
         }
     }
 
-    public void clickApplyButton(){
+    public void clickApplyButton() {
         EventEntity event = new EventEntity();
-        EventService service = new EventService();
         System.out.println("click apply");
-        if (selectedEvents != null){
+        if (selectedEvents != null) {
             System.out.println("selected events count " + selectedEvents.size());
-
             for (EventEntity eventEntity : selectedEvents) {
                 event = eventEntity;
-                event.setChecked(1);
+                if (eventEntity.getChecked() == 0) {
+                    event.setChecked(1);
+                } else {
+                    event.setChecked(0);
+                }
                 eventService.update(eventEntity);
             }
         }
     }
 
     public void onRowSelect(SelectEvent event) {
-        FacesMessage msg = new FacesMessage("Event Selected", ((EventEntity) event.getObject()).getEventId() +"");
+        FacesMessage msg = new FacesMessage("Event Selected", ((EventEntity) event.getObject()).getEventId() + "");
         FacesContext.getCurrentInstance().addMessage(null, msg);
     }
 
-    public void onRowUnselect(UnselectEvent event) {
-        FacesMessage msg = new FacesMessage("Event Unselected", ((EventEntity) event.getObject()).getEventId() +"");
+    public void onRowUnSelect(UnselectEvent event) {
+        FacesMessage msg = new FacesMessage("Event Unselected", ((EventEntity) event.getObject()).getEventId() + "");
         FacesContext.getCurrentInstance().addMessage(null, msg);
     }
 
