@@ -5,31 +5,23 @@
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:h="http://java.sun.com/jsf/html" xmlns:p="http://primefaces.org/ui"
       xmlns:ui="http://java.sun.com/jsf/facelets">
+<ui:include src="resources/templates/menu.xhtml"/>
 <h:head>
     <h:outputStylesheet library="css" name="styles.css"/>
 </h:head>
 <h:body style="background-image: url(#{resource['images:background_image.jpg']})">
     <title>Dreamscape Networks | QA | Calendar testing</title>
-    <!--<meta http-equiv="refresh" content="20" />-->
-    <!-- <ui:insert name="header">
-         <ui:include src="resources/templates/headers.xhtml"/>
-     </ui:insert>-->
+
     <h:form id="form">
         <p:growl id="msgs" showDetail="true"/>
-
-
         <h:panelGrid columns="2" cellpadding="5">
-
             <p:outputLabel for="datetime" value="Start Date:"/>
             <p:calendar id="datetime"
                         value="#{calendarView.startDate}"
                         pattern="MM-dd-yyyy HH:mm:ss"/>
-
             <p:outputLabel for="datetime" value="End Date:"/>
             <p:calendar id="datetime2" value="#{calendarView.endDate}" pattern="MM-dd-yyyy HH:mm:ss"/>
-
         </h:panelGrid>
-
         <p:commandButton value="Submit"
                          update="table-wrapper"
                          actionListener="#{calendarView.click}" icon="ui-icon-check">
@@ -38,12 +30,10 @@
         <!--Popup with calendar-->
         <p:dialog modal="true" resizable="false" header="Values" widgetVar="dlg" showEffect="fold">
             <p:panelGrid id="display" columns="2" columnClasses="label,value">
-
                 <h:outputText value="Datetime start:"/>
                 <h:outputText value="#{calendarView.startDate}">
                     <f:convertDateTime pattern="MM-dd-yyyy HH:mm:ss"/>
                 </h:outputText>
-
                 <h:outputText value="Datetime end:"/>
                 <h:outputText value="#{calendarView.endDate}">
                     <f:convertDateTime pattern="MM-dd-yyyy HH:mm:ss"/>
@@ -52,12 +42,12 @@
         </p:dialog>
         <p:panel header="Export All Data">
             <h:commandLink>
-                <p:graphicImage value="/resources/images/xls.png" />
+                <p:graphicImage value="/resources/images/xls.png"/>
                 <p:dataExporter type="xls" postProcessor="#{eventTableExporter.postProcessXLS}"
-                                target="event_form" fileName="myexcel" />
+                                target="event_form" fileName="myexcel"/>
             </h:commandLink>
             <h:commandLink>
-                <p:graphicImage  value="/resources/images/pdf.png"/>
+                <p:graphicImage value="/resources/images/pdf.png"/>
                 <p:dataExporter type="pdf" target="event_form" fileName="mypdf"/>
             </h:commandLink>
         </p:panel>

@@ -12,10 +12,10 @@
 <h:body style="background-image: url(#{resource['images:background_image.jpg']})">
     <title>Dreamscape Networks | QA | Event table</title>
     <ui:insert name="header">
-        <ui:include src="resources/templates/headers.xhtml"/>
+        <ui:include src="resources/templates/menu.xhtml"/>
     </ui:insert>
     <h:form id="event_form">
-        <p:dataTable id="event_table" var="event"
+        <p:dataTable id="event_table" var="event" tableStyleClass="papa"
                      rowKey="#{event.data}"
                      value="#{eventTableExporter.events}"
                      paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {Exporters}"
@@ -25,6 +25,7 @@
                      rowsPerPageTemplate="40,60,80"
                      rows="20"
                      style="margin-bottom:15px"
+                     widgetVar="eventTable"
                      selection="#{eventTableExporter.selectedEvents}">
 
             <f:facet name="{Exporters}">
@@ -64,10 +65,18 @@
                 <h:outputText value="#{event.data}"/>
             </p:column>
 
-            <p:column style="width: 60px;">
-                <f:facet name="header">
-                    <h:outputText value="Locale"/>
+            <p:column headerText="Locale" style="width: 120px;"
+                      sortBy="#{event.localeByLocaleId.locale}"
+                      filterBy="#{event.localeByLocaleId.locale}"
+                      filterMatchMode="exact">
+
+                <f:facet name="filter">
+                    <p:selectOneMenu onchange="PF('eventTable').filter()" style="width:90px;" >
+                        <f:selectItem itemLabel="Select" itemValue="#{null}" noSelectionOption="true" />
+                        <f:selectItems value="#{eventTableExporter.locales}" />
+                    </p:selectOneMenu>
                 </f:facet>
+
                 <h:outputText value="#{event.localeByLocaleId.locale}"/>
             </p:column>
             <p:column>

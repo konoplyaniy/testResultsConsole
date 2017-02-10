@@ -8,11 +8,10 @@
 <h:head>
     <h:outputStylesheet library="css" name="styles.css"/>
 </h:head>
-<h:body style="background-image: url(#{resource['images:background_image.jpg']})">
+<h:body>
     <title>Dreamscape Networks | QA | Browser table</title>
-    <!--<meta http-equiv="refresh" content="20"/>-->
     <ui:insert name="header">
-        <ui:include src="resources/templates/headers.xhtml"/>
+        <ui:include src="resources/templates/menu.xhtml"/>
     </ui:insert>
     <h:form id="browserForm">
         <p:dataTable id="browserTable"
