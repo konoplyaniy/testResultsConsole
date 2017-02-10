@@ -1,7 +1,9 @@
 package web.exporter;
 
 import hibernate.entities.EventEntity;
+import hibernate.entities.LocaleEntity;
 import hibernate.service.EventService;
+import hibernate.service.LocaleService;
 import oracle.jrockit.jfr.settings.EventSetting;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -19,6 +21,7 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -81,6 +84,12 @@ public class EventTableExporter implements Serializable {
     public void onRowUnSelect(UnselectEvent event) {
         FacesMessage msg = new FacesMessage("Event Unselected", ((EventEntity) event.getObject()).getEventId() + "");
         FacesContext.getCurrentInstance().addMessage(null, msg);
+    }
+
+    public ArrayList<String> getLocales(){
+        ArrayList<String> locales = new ArrayList<>();
+        new LocaleService().findAll().forEach(localeEntity -> locales.add(localeEntity.getLocale()));
+        return locales;
     }
 
     public List<EventEntity> getEvents() {
