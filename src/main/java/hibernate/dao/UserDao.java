@@ -24,6 +24,7 @@ public class UserDao extends BaseDao<Integer, UserEntity> {
     public UserEntity getUser(String userName, String password){
         System.out.println(userName);
         System.out.println(password);
+        openCurrentSession();
         try {
             Query query = getCurrentSession().createQuery("from UserEntity where username =:userName and password =:password");
             query.setString("userName", userName);
@@ -31,6 +32,9 @@ public class UserDao extends BaseDao<Integer, UserEntity> {
             return (UserEntity) query.uniqueResult();
         }catch (NoResultException e){
             return null;
+        }
+        finally {
+            closeCurrentSession();
         }
     }
 
