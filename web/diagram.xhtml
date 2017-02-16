@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html" xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+<h:head>
+    <h:outputStylesheet library="css" name="styles.css"/>
+</h:head>
+<h:body>
+    <title>Dreamscape Networks | QA | Browser table</title>
+    <ui:insert name="header">
+        <!--<ui:include src="resources/templates/menu.xhtml"/>-->
+    </ui:insert>
+    <h:form>
+        <h:form id="diagram_date">
+            <p:chart type="line" model="#{diagramView.model}" style="height:300px;" id="chart"/>
+        </h:form>
+        <h:form id="diagram_sysweb">
+            <p:chart type="bar" model="#{diagramView.modelBySysweb}" style="height:300px;" id="chart_sysweb"/>
+        </h:form>
+        <h:form id="diagram_class">
+            <p:chart type="bar" model="#{diagramView.modelByClass}" style="height:300px;" id="chart_class"/>
+        </h:form>
+
+        <p:commandButton value="Build"
+                         update="locales"
+                         actionListener="#{diagramView.clickBuild()}">
+        </p:commandButton>
+        <p:commandButton value="Hide"
+                         update="locales"
+                         actionListener="#{diagramView.clickHide()}">
+        </p:commandButton>
+        <h:panelGroup id="locales">
+            <h:form id="diagram_locales"
+                    rendered="#{diagramView.clickedBuild}" >
+                <p:chart type="bar" model="#{diagramView.modelByLocale}" style="height:300px;" id="bar_chart"/>
+            </h:form>
+        </h:panelGroup>
+    </h:form>
+</h:body>
+</html>
