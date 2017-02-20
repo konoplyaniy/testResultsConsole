@@ -9,35 +9,37 @@
     <h:outputStylesheet library="css" name="styles.css"/>
 </h:head>
 <h:body>
-    <title>Dreamscape Networks | QA | Browser table</title>
-    <ui:insert name="header">
-        <!--<ui:include src="resources/templates/menu.xhtml"/>-->
-    </ui:insert>
+    <title>Dreamscape Networks | QA | Diagrams</title>
+    <div>
+        <ui:include src="resources/templates/menu.xhtml"/>
+    </div>
     <h:form>
         <h:form id="diagram_date">
-            <p:chart type="line" model="#{diagramView.model}" style="height:300px;" id="chart"/>
+            <p:chart type="line" model="#{diagramView.model}" style="height:300px; width: 700px;" id="chart"/>
         </h:form>
-        <h:form id="diagram_sysweb">
-            <p:chart type="bar" model="#{diagramView.modelBySysweb}" style="height:300px;" id="chart_sysweb"/>
-        </h:form>
-        <h:form id="diagram_class">
-            <p:chart type="bar" model="#{diagramView.modelByClass}" style="height:300px;" id="chart_class"/>
-        </h:form>
-
-        <p:commandButton value="Build"
-                         update="locales"
-                         actionListener="#{diagramView.clickBuild()}">
-        </p:commandButton>
-        <p:commandButton value="Hide"
-                         update="locales"
-                         actionListener="#{diagramView.clickHide()}">
-        </p:commandButton>
-        <h:panelGroup id="locales">
-            <h:form id="diagram_locales"
-                    rendered="#{diagramView.clickedBuild}" >
-                <p:chart type="bar" model="#{diagramView.modelByLocale}" style="height:300px;" id="bar_chart"/>
-            </h:form>
-        </h:panelGroup>
     </h:form>
+    <div class="ui-g">
+        <div class="ui-g-12 ui-md-6 ui-lg-3">
+            <h:form id="diagram_sysweb">
+                <p:chart type="bar" model="#{diagramView.modelBySysweb}" style="height:300px;width: 500px;"
+                         id="chart_sysweb"/>
+            </h:form>
+        </div>
+        <div class="ui-g-12 ui-md-6 ui-lg-3">
+            <h:form id="diagram_locales">
+                <p:chart type="bar" model="#{diagramView.modelByLocale}" style="height:300px; width: 500px;"
+                         id="bar_chart"/>
+            </h:form>
+        </div>
+    </div>
+
+    <p:commandButton value="Build"
+
+                     actionListener="#{diagramView.clickBuild()}">
+    </p:commandButton>
+    <p:commandButton value="Hide"
+
+                     actionListener="#{diagramView.clickHide()}">
+    </p:commandButton>
 </h:body>
 </html>

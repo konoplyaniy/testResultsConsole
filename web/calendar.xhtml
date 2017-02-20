@@ -5,12 +5,14 @@
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:h="http://java.sun.com/jsf/html" xmlns:p="http://primefaces.org/ui"
       xmlns:ui="http://java.sun.com/jsf/facelets">
-<ui:include src="resources/templates/menu.xhtml"/>
 <h:head>
     <h:outputStylesheet library="css" name="styles.css"/>
 </h:head>
 <h:body style="background-image: url(#{resource['images:background_image.jpg']})">
     <title>Dreamscape Networks | QA | Calendar testing</title>
+    <div>
+        <ui:include src="resources/templates/menu.xhtml"/>
+    </div>
 
     <h:form id="form">
         <p:growl id="msgs" showDetail="true"/>

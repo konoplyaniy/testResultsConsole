@@ -159,6 +159,7 @@ public class DiagramView implements Serializable {
         modelByLocale.setLegendPosition("ne");
         modelByLocale.setTitle("Locales");
         modelByLocale.setAnimate(true);
+        System.out.println(modelByLocale);
     }
 
     public BarChartModel getModelByLocale() {
