@@ -21,6 +21,14 @@ public class LocaleService {
         localeDao = new LocaleDao();
     }
 
+    public boolean exist(LocaleEntity localeEntity){
+        boolean isExist = false;
+        localeDao.openCurrentSession();
+        isExist = localeDao.exists(localeEntity.getLocale());
+        localeDao.closeCurrentSession();
+        return isExist;
+    }
+
     public void persist(LocaleEntity entity) {
         localeDao.openCurrentSessionwithTransaction();
         if (!localeDao.exists(entity.getLocale())) {

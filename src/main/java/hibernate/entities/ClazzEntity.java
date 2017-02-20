@@ -1,13 +1,14 @@
 package hibernate.entities;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 /**
  * Created by Sergiy.K on 25-Jan-17.
  */
 @Entity
 @Table(name = "class", schema = "crazydomains")
-public class ClazzEntity {
+public class ClazzEntity implements Serializable {
     private int classId;
     private String name;
 
@@ -15,6 +16,7 @@ public class ClazzEntity {
     }
 
     @Id
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Column(name = "class_id", nullable = false)
     public int getClassId() {
         return classId;

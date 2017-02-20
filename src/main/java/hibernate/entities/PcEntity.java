@@ -13,6 +13,7 @@ public class PcEntity {
     private String os;
 
     @Id
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Column(name = "pc_id", nullable = false)
     public int getPcId() {
         return pcId;

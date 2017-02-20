@@ -1,17 +1,19 @@
 package hibernate.entities;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 /**
  * Created by Sergiy.K on 25-Jan-17.
  */
 @Entity
 @Table(name = "group", schema = "crazydomains")
-public class GroupEntity {
+public class GroupEntity implements Serializable {
     private int groupId;
     private String name;
 
     @Id
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Column(name = "group_id", nullable = false)
     public int getGroupId() {
         return groupId;

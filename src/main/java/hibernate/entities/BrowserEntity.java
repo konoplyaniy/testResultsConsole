@@ -12,6 +12,7 @@ public class BrowserEntity {
     private String browser;
 
     @Id
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Column(name = "browser_id", nullable = false)
     public int getBrowserId() {
         return browserId;

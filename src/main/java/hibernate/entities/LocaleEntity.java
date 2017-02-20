@@ -12,6 +12,7 @@ public class LocaleEntity {
     private String locale;
 
     @Id
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Column(name = "locale_id", nullable = false)
     public int getLocaleId() {
         return localeId;

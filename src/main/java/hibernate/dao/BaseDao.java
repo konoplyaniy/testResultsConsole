@@ -56,7 +56,6 @@ public abstract class BaseDao<K, T> {
     }
 
     public void closeCurrentSessionwithTransaction() {
-        DBLogger.error("close connection");
         currentTransaction.commit();
         currentSession.flush();
         currentSession.close();

@@ -1,6 +1,10 @@
 package hibernate.entities;
 
+import hibernate.service.ClazzService;
+import hibernate.service.GroupService;
+
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Collection;
 
 /**
@@ -8,14 +12,12 @@ import java.util.Collection;
  */
 @Entity
 @Table(name = "test", schema = "crazydomains")
-public class TestEntity {
+public class TestEntity implements Serializable {
     private int testId;
     private String idValue;
     private String name;
     private Integer groupId;
     private int classId;
-//    private String className;
-//    private String groupName;
     private Collection<EventEntity> eventsByTestId;
     private GroupEntity groupByGroupId;
     private ClazzEntity clazzByClassId;
@@ -24,6 +26,7 @@ public class TestEntity {
     }
 
     @Id
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Column(name = "test_id", nullable = false)
     public int getTestId() {
         return testId;
@@ -73,25 +76,6 @@ public class TestEntity {
         this.classId = classId;
     }
 
-//    @Basic
-//    @Column(name = "className", nullable = true, length = 255)
-//    public String getClassName() {
-//        return className;
-//    }
-//
-//    public void setClassName(String className) {
-//        this.className = className;
-//    }
-//
-//    @Basic
-//    @Column(name = "groupName", nullable = true, length = 255)
-//    public String getGroupName() {
-//        return groupName;
-//    }
-//
-//    public void setGroupName(String groupName) {
-//        this.groupName = groupName;
-//    }
 
     @Override
     public boolean equals(Object o) {
@@ -105,9 +89,6 @@ public class TestEntity {
         if (idValue != null ? !idValue.equals(testTable.idValue) : testTable.idValue != null) return false;
         if (name != null ? !name.equals(testTable.name) : testTable.name != null) return false;
         if (groupId != null ? !groupId.equals(testTable.groupId) : testTable.groupId != null) return false;
-//        if (className != null ? !className.equals(testTable.className) : testTable.className != null) return false;
-//        if (groupName != null ? !groupName.equals(testTable.groupName) : testTable.groupName != null) return false;
-
         return true;
     }
 
@@ -118,8 +99,6 @@ public class TestEntity {
         result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + (groupId != null ? groupId.hashCode() : 0);
         result = 31 * result + classId;
-//        result = 31 * result + (className != null ? className.hashCode() : 0);
-//        result = 31 * result + (groupName != null ? groupName.hashCode() : 0);
         return result;
     }
 
@@ -137,23 +116,31 @@ public class TestEntity {
         this.eventsByTestId = eventsByTestId;
     }
 
-    @ManyToOne
-    @JoinColumn(name = "group_id", referencedColumnName = "group_id")
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "group_id", referencedColumnName = "group_id", nullable = false)
     public GroupEntity getGroupByGroupId() {
         return groupByGroupId;
     }
 
     public void setGroupByGroupId(GroupEntity groupByGroupId) {
+        GroupService service = new GroupService();
+        if (service.exist(groupByGroupId)){
+            this.groupByGroupId = service.findByName(groupByGroupId.getName());
+        }else
         this.groupByGroupId = groupByGroupId;
     }
 
-    @ManyToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "class_id", referencedColumnName = "class_id", nullable = false)
     public ClazzEntity getClazzByClassId() {
         return clazzByClassId;
     }
 
     public void setClazzByClassId(ClazzEntity clazzByClassId) {
+        ClazzService service = new ClazzService();
+        if (service.exist(clazzByClassId)){
+            this.clazzByClassId = service.findByName(clazzByClassId.getName());
+        }else
         this.clazzByClassId = clazzByClassId;
     }
 }

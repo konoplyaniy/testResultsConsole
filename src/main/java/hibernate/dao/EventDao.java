@@ -1,6 +1,7 @@
 package hibernate.dao;
 
 import hibernate.entities.EventEntity;
+import hibernate.service.BrowserService;
 import org.hibernate.Query;
 
 import java.util.Date;
@@ -12,7 +13,7 @@ import java.util.List;
 public class EventDao extends BaseDao<Integer, EventEntity> {
     @Override
     public void persist(EventEntity entity) {
-
+        getCurrentSession().save(entity);
     }
 
     @Override

@@ -2,6 +2,7 @@ package hibernate.service;
 
 import hibernate.dao.EventDao;
 import hibernate.entities.EventEntity;
+import hibernate.utils.DBLogger;
 
 import javax.faces.bean.ApplicationScoped;
 import javax.faces.bean.ManagedBean;
@@ -23,14 +24,21 @@ public class EventService {
         eventDao = new EventDao();
     }
 
+    public void persist(EventEntity entity) {
+        System.out.println("try to add event");
+        eventDao.openCurrentSessionwithTransaction();
+        eventDao.persist(entity);
+        eventDao.closeCurrentSessionwithTransaction();
+        System.out.println("success");
+    }
 
-    public void update(EventEntity eventEntity){
+    public void update(EventEntity eventEntity) {
         eventDao.openCurrentSessionwithTransaction();
         eventDao.update(eventEntity);
         eventDao.closeCurrentSessionwithTransaction();
     }
 
-    public EventEntity findbyId(int id){
+    public EventEntity findbyId(int id) {
         eventDao.openCurrentSession();
         EventEntity result = eventDao.findById(id);
         eventDao.closeCurrentSession();

@@ -11,13 +11,20 @@ import java.util.List;
 /**
  * Created by Sergiy.K on 25-Jan-17.
  */
-@ManagedBean(name = "groupService")
 @ApplicationScoped
 public class GroupService {
     private static GroupDao groupDao;
 
     public GroupService() {
         groupDao = new GroupDao();
+    }
+
+    public boolean exist(GroupEntity groupEntity){
+        boolean isExist = false;
+        groupDao.openCurrentSession();
+        isExist = groupDao.exists(groupEntity.getName());
+        groupDao.closeCurrentSession();
+        return isExist;
     }
 
     public void persist(GroupEntity entity) {

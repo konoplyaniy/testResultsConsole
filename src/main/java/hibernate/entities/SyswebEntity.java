@@ -12,6 +12,7 @@ public class SyswebEntity {
     private String name;
 
     @Id
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Column(name = "sysweb_id", nullable = false)
     public int getSyswebId() {
         return syswebId;

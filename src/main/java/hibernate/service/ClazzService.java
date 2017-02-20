@@ -22,6 +22,14 @@ public class ClazzService {
         clazzDao = new ClazzDao();
     }
 
+    public boolean exist(ClazzEntity clazzEntity){
+        boolean isExist = false;
+        clazzDao.openCurrentSession();
+        isExist = clazzDao.exists(clazzEntity.getName());
+        clazzDao.closeCurrentSession();
+        return isExist;
+    }
+
     public void persist(ClazzEntity entity) {
         clazzDao.openCurrentSessionwithTransaction();
         if (!clazzDao.exists(entity.getName())){

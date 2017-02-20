@@ -20,9 +20,11 @@ public class TestService {
     }
 
     public void persist(TestEntity entity) {
+        System.out.println("try persist");
         testDao.openCurrentSessionwithTransaction();
         testDao.persist(entity);
         testDao.closeCurrentSessionwithTransaction();
+        System.out.println("persist success");
     }
 
     /**

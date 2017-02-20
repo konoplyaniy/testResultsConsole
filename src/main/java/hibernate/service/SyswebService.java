@@ -20,6 +20,14 @@ public class SyswebService {
         syswebDao = new SyswebDao();
     }
 
+    public boolean exist(SyswebEntity syswebEntity){
+        boolean isExist = false;
+        syswebDao.openCurrentSession();
+        isExist = syswebDao.exists(syswebEntity.getName());
+        syswebDao.closeCurrentSession();
+        return isExist;
+    }
+
     public void persist(SyswebEntity entity) {
         syswebDao.openCurrentSessionwithTransaction();
         if (!syswebDao.exists(entity.getName())) {

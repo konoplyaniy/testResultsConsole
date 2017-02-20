@@ -20,6 +20,14 @@ public class PcService {
         pcDao = new PcDao();
     }
 
+    public boolean exist(PcEntity pcEntity){
+        boolean isExist = false;
+        pcDao.openCurrentSession();
+        isExist = pcDao.exists(pcEntity.getName());
+        pcDao.closeCurrentSession();
+        return isExist;
+    }
+
     public void persist(PcEntity entity) {
         pcDao.openCurrentSessionwithTransaction();
         if (!pcDao.exists(entity.getName())) {

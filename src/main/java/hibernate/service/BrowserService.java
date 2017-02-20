@@ -20,6 +20,14 @@ public class BrowserService {
         browserDao = new BrowserDao();
     }
 
+    public boolean exist(BrowserEntity browserEntity){
+        boolean isExist = false;
+        browserDao.openCurrentSession();
+        isExist = browserDao.exists(browserEntity.getBrowser());
+        browserDao.closeCurrentSession();
+        return isExist;
+    }
+
     public void persist(BrowserEntity entity) {
         browserDao.openCurrentSessionwithTransaction();
         if (!browserDao.exists(entity.getBrowser())){

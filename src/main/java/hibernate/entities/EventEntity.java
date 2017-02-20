@@ -1,7 +1,14 @@
 package hibernate.entities;
 
+import hibernate.dao.BrowserDao;
+import hibernate.service.BrowserService;
+import hibernate.service.LocaleService;
+import hibernate.service.PcService;
+import hibernate.service.SyswebService;
+
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.Date;
 
 /**
  * Created by Sergiy.K on 31-Jan-17.
@@ -10,7 +17,7 @@ import java.sql.Timestamp;
 @Table(name = "event", schema = "crazydomains")
 public class EventEntity {
     private int eventId;
-    private Timestamp data;
+    private Date data;
     private int testId;
     private int localeId;
     private int syswebId;
@@ -41,11 +48,11 @@ public class EventEntity {
 
     @Basic
     @Column(name = "data", nullable = false)
-    public Timestamp getData() {
+    public Date getData() {
         return data;
     }
 
-    public void setData(Timestamp data) {
+    public void setData(Date data) {
         this.data = data;
     }
 
@@ -190,7 +197,7 @@ public class EventEntity {
                 browserByBrowserId.getBrowser();
     }
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "test_id", referencedColumnName = "test_id", nullable = false)
     public TestEntity getTestByTestId() {
         return testByTestId;
@@ -200,43 +207,60 @@ public class EventEntity {
         this.testByTestId = testByTestId;
     }
 
-    @ManyToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "locale_id", referencedColumnName = "locale_id", nullable = false)
     public LocaleEntity getLocaleByLocaleId() {
         return localeByLocaleId;
     }
 
     public void setLocaleByLocaleId(LocaleEntity localeByLocaleId) {
+        LocaleService service = new LocaleService();
+        if (service.exist(localeByLocaleId)) {
+            this.localeByLocaleId = service.findByName(localeByLocaleId.getLocale());
+        }else
         this.localeByLocaleId = localeByLocaleId;
     }
 
-    @ManyToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "sysweb_id", referencedColumnName = "sysweb_id", nullable = false)
     public SyswebEntity getSyswebBySyswebId() {
         return syswebBySyswebId;
     }
 
     public void setSyswebBySyswebId(SyswebEntity syswebBySyswebId) {
-        this.syswebBySyswebId = syswebBySyswebId;
+        SyswebService service = new SyswebService();
+        if (service.exist(syswebBySyswebId)) {
+            this.syswebBySyswebId = service.findByName(syswebBySyswebId.getName());
+        } else
+            this.syswebBySyswebId = syswebBySyswebId;
     }
 
-    @ManyToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "pc_id", referencedColumnName = "pc_id", nullable = false)
     public PcEntity getPcByPcId() {
         return pcByPcId;
     }
 
     public void setPcByPcId(PcEntity pcByPcId) {
-        this.pcByPcId = pcByPcId;
+        PcService service = new PcService();
+        if (service.exist(pcByPcId)) {
+            this.pcByPcId = service.findByName(pcByPcId.getName());
+        } else
+            this.pcByPcId = pcByPcId;
     }
 
-    @ManyToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "browser_id", referencedColumnName = "browser_id", nullable = false)
     public BrowserEntity getBrowserByBrowserId() {
         return browserByBrowserId;
     }
 
     public void setBrowserByBrowserId(BrowserEntity browserByBrowserId) {
-        this.browserByBrowserId = browserByBrowserId;
+        BrowserService service = new BrowserService();
+        System.out.println(browserByBrowserId.getBrowser());
+        if (service.exist(browserByBrowserId)) {
+            this.browserByBrowserId = service.findByName(browserByBrowserId.getBrowser());
+        } else
+            this.browserByBrowserId = browserByBrowserId;
     }
 }
