@@ -1,13 +1,11 @@
 package hibernate.entities;
 
-import hibernate.dao.BrowserDao;
 import hibernate.service.BrowserService;
 import hibernate.service.LocaleService;
 import hibernate.service.PcService;
 import hibernate.service.SyswebService;
 
 import javax.persistence.*;
-import java.sql.Timestamp;
 import java.util.Date;
 
 /**
@@ -214,10 +212,10 @@ public class EventEntity {
     }
 
     public void setLocaleByLocaleId(LocaleEntity localeByLocaleId) {
-        LocaleService service = new LocaleService();
-        if (service.exist(localeByLocaleId)) {
-            this.localeByLocaleId = service.findByName(localeByLocaleId.getLocale());
-        }else
+//        LocaleService service = new LocaleService();
+//        if (service.exist(localeByLocaleId)) {
+//            this.localeByLocaleId = service.findByName(localeByLocaleId.getLocale());
+//        }else
         this.localeByLocaleId = localeByLocaleId;
     }
 
@@ -228,10 +226,10 @@ public class EventEntity {
     }
 
     public void setSyswebBySyswebId(SyswebEntity syswebBySyswebId) {
-        SyswebService service = new SyswebService();
-        if (service.exist(syswebBySyswebId)) {
-            this.syswebBySyswebId = service.findByName(syswebBySyswebId.getName());
-        } else
+//        SyswebService service = new SyswebService();
+//        if (service.exist(syswebBySyswebId)) {
+//            this.syswebBySyswebId = service.findByName(syswebBySyswebId.getName());
+//        } else
             this.syswebBySyswebId = syswebBySyswebId;
     }
 
@@ -242,10 +240,6 @@ public class EventEntity {
     }
 
     public void setPcByPcId(PcEntity pcByPcId) {
-        PcService service = new PcService();
-        if (service.exist(pcByPcId)) {
-            this.pcByPcId = service.findByName(pcByPcId.getName());
-        } else
             this.pcByPcId = pcByPcId;
     }
 
@@ -256,11 +250,6 @@ public class EventEntity {
     }
 
     public void setBrowserByBrowserId(BrowserEntity browserByBrowserId) {
-        BrowserService service = new BrowserService();
-        System.out.println(browserByBrowserId.getBrowser());
-        if (service.exist(browserByBrowserId)) {
-            this.browserByBrowserId = service.findByName(browserByBrowserId.getBrowser());
-        } else
             this.browserByBrowserId = browserByBrowserId;
     }
 }

@@ -1,10 +1,8 @@
 package web.exporter;
 
 import hibernate.entities.EventEntity;
-import hibernate.entities.LocaleEntity;
 import hibernate.service.EventService;
-import hibernate.service.LocaleService;
-import oracle.jrockit.jfr.settings.EventSetting;
+
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
@@ -22,6 +20,7 @@ import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 /**
@@ -29,7 +28,7 @@ import java.util.List;
  */
 @ManagedBean
 @SessionScoped
-public class EventTableExporter implements Serializable {
+public class EventTableExporter implements Serializable{
     private List<EventEntity> events;
     private String checkFlag;
     private EventEntity selectedEvent;
@@ -63,7 +62,6 @@ public class EventTableExporter implements Serializable {
         EventEntity event = new EventEntity();
         System.out.println("click apply");
         if (selectedEvents != null) {
-            System.out.println("selected events count " + selectedEvents.size());
             for (EventEntity eventEntity : selectedEvents) {
                 event = eventEntity;
                 if (eventEntity.getChecked() == 0) {
@@ -86,10 +84,11 @@ public class EventTableExporter implements Serializable {
         FacesContext.getCurrentInstance().addMessage(null, msg);
     }
 
-    public ArrayList<String> getLocales(){
-        ArrayList<String> locales = new ArrayList<>();
-        new LocaleService().findAll().forEach(localeEntity -> locales.add(localeEntity.getLocale()));
-        return locales;
+    public HashSet<String> getLocales(){
+        HashSet<String> set = new HashSet<>();
+        ArrayList<EventEntity> events = (ArrayList<EventEntity>) getEvents();
+        events.forEach(eventEntity -> set.add(eventEntity.getLocaleByLocaleId().getLocale()));
+        return set;
     }
 
     public List<EventEntity> getEvents() {

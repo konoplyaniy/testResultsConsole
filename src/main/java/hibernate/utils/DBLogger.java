@@ -19,7 +19,8 @@ public class DBLogger {
         LOGGER.getRootLogger().setLevel(Level.OFF);
         LOGGER.setLevel(Level.INFO);
         LOGGER.info(String.format(INFO_LOG , message));
-        return String.format(INFO_LOG ,message);
+        return String.format(INFO_LOG,message);
+//        return "";
     }
 
     public static String error(String message) {

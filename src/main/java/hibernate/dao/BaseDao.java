@@ -1,6 +1,5 @@
 package hibernate.dao;
 
-import hibernate.utils.DBLogger;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -14,6 +13,25 @@ import java.util.List;
  * Created by Sergiy.K on 26-Jan-17.
  */
 public abstract class BaseDao<K, T> {
+    private SessionFactory sessionFactory = buildSessionFactory();
+
+    public static SessionFactory buildSessionFactory() {
+        try {
+            Configuration configuration = new Configuration().configure();
+            StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder()
+                    .applySettings(configuration.getProperties());
+            SessionFactory sessionFactory = configuration.buildSessionFactory(builder.build());
+            return sessionFactory;
+        } catch (Throwable ex) {
+            System.err.println("Initial SessionFactory creation failed." + ex);
+            throw new ExceptionInInitializerError(ex);
+        }
+    }
+
+    public  SessionFactory getSessionFactory() {
+        return sessionFactory;
+    }
+
     public abstract void persist(T entity);
 
     public abstract void update(T entity);
@@ -53,20 +71,14 @@ public abstract class BaseDao<K, T> {
 
     public void closeCurrentSession() {
         currentSession.close();
+        closeSession();
     }
 
     public void closeCurrentSessionwithTransaction() {
         currentTransaction.commit();
         currentSession.flush();
         currentSession.close();
-    }
-
-    private static SessionFactory getSessionFactory() {
-        Configuration configuration = new Configuration().configure();
-        StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder()
-                .applySettings(configuration.getProperties());
-        SessionFactory sessionFactory = configuration.buildSessionFactory(builder.build());
-        return sessionFactory;
+        closeSession();
     }
 
     public Session getCurrentSession() {

@@ -24,8 +24,14 @@ import org.primefaces.event.SelectEvent;
 public class CalendarView {
     private Date startDate;
     private Date endDate;
+    private String testName;
+    private String sysweb;
     private boolean visible = false;
+    private boolean visibleTestForm = false;
+    private boolean visibleSyswebForm = false;
     private List<EventEntity> events;
+    private List<EventEntity> eventsTest;
+    private List<EventEntity> eventSysweb;
 
     public List<EventEntity> getEvents() {
         try {
@@ -34,12 +40,7 @@ public class CalendarView {
                 DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                 Date startDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(formatter.format(getStartDate()));
                 Date endDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(formatter.format(getEndDate()));
-//                List<EventEntity> eventeventEntities = service.findBetweenDate(startDate, endDate);
                 events = service.findBetweenDate(startDate, endDate);
-
-//                for (EventEntity eventt : eventeventEntities) {
-//                    System.out.println("Date: " + eventt.getData() + " id: " + eventt.getEventId());
-//                }
             }
         } catch (ParseException e) {
             e.printStackTrace();
@@ -99,6 +100,87 @@ public class CalendarView {
         FacesContext facesContext = FacesContext.getCurrentInstance();
         SimpleDateFormat format = new SimpleDateFormat("MM-dd-yyyy HH:mm:ss");
         facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Date Selected", format.format(event.getObject())));
+    }
+
+    public List<EventEntity> getEventsTest() {
+        FacesMessage message = null;
+        if (getTestName() != null && !getTestName().equals("")) {
+            EventService service = new EventService();
+            events = service.findByTestName(getTestName());
+        } else {
+            message = new FacesMessage(FacesMessage.SEVERITY_WARN, "Validation error",
+                    "Please input test name");
+            FacesContext.getCurrentInstance().addMessage(null, message);
+        }
+
+        return eventsTest;
+    }
+
+    public void setEventsTest(List<EventEntity> eventsTest) {
+        this.eventsTest = eventsTest;
+    }
+
+    public List<EventEntity> getEventSysweb() {
+        FacesMessage message = null;
+        if (getSysweb() != null && !getSysweb().equals("")) {
+            EventService service = new EventService();
+            events = service.findBySysweb(getSysweb());
+        } else {
+            message = new FacesMessage(FacesMessage.SEVERITY_WARN, "Validation error",
+                    "Please input sysweb");
+            FacesContext.getCurrentInstance().addMessage(null, message);
+        }
+        return eventSysweb;
+    }
+
+    public void setEventSysweb(List<EventEntity> eventSysweb) {
+        this.eventSysweb = eventSysweb;
+    }
+
+    public String getTestName() {
+        System.out.println("getter");
+        return testName;
+    }
+
+    public void setTestName(String testName) {
+        System.out.println("setter");
+        this.testName = testName;
+    }
+
+    public String getSysweb() {
+        return sysweb;
+    }
+
+    public void setSysweb(String sysweb) {
+        this.sysweb = sysweb;
+    }
+
+    public boolean isVisibleTestForm() {
+        return visibleTestForm;
+    }
+
+    public void setVisibleTestForm(boolean visibleTestForm) {
+        this.visibleTestForm = visibleTestForm;
+    }
+
+    public boolean isVisibleSyswebForm() {
+        return visibleSyswebForm;
+    }
+
+    public void setVisibleSyswebForm(boolean visibleSyswebForm) {
+        this.visibleSyswebForm = visibleSyswebForm;
+    }
+
+    public void searchTest(){
+        System.out.println("click search test");
+     if (getTestName() != null && !getTestName().equals("")){
+         setVisibleTestForm(true);
+     }
+    }
+
+    public void searchSysweb(){
+        if (getSysweb() != null && !getSysweb().equals(""))
+            setVisibleSyswebForm(true);
     }
 
     public void click() {

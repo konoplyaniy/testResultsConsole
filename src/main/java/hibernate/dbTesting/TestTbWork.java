@@ -1,14 +1,9 @@
 package hibernate.dbTesting;
 
 
-import hibernate.dao.BrowserDao;
-import hibernate.entities.*;
-import hibernate.service.ClazzService;
-import hibernate.service.EventService;
-import hibernate.service.GroupService;
-import hibernate.service.TestService;
 
-import java.util.ArrayList;
+import hibernate.entities.*;
+import hibernate.service.EventService;
 import java.util.Date;
 
 /**
@@ -28,25 +23,24 @@ public class TestTbWork {
         startDate.setSeconds(0);
         System.out.println("start " + startDate);
         TestEntity test = new TestEntity();
-        test.setName("Test insert to DB122"); //add new test
+        test.setName("Test insert to DB1221"); //add new test
         GroupEntity group = new GroupEntity();
-        group.setName("INSERTION@d13s2"); // test add new Group
+        group.setName("INSERTION@d13s21"); // test add new Group
         ClazzEntity clazz = new ClazzEntity();
-        clazz.setName("Finish2342W3d3d2"); //test add existing class
+        clazz.setName("Finish2342W3d3d21"); //test add existing class
         test.setClazzByClassId(clazz);
         test.setGroupByGroupId(group);
 
         BrowserEntity browser = new BrowserEntity();
-        browser.setBrowser("Test browser add2");// add new browser
+        browser.setBrowser("Test browser add21");// add new browser
         LocaleEntity locale = new LocaleEntity();
-        locale.setLocale(".sg12");// test existing group
+        locale.setLocale(".sg122");// test existing group
         SyswebEntity sysweb = new SyswebEntity();
-        sysweb.setName("sysweb4.uk.syrahost12"); // test existing sysweb
+        sysweb.setName("sysweb4.uk.syrahost121"); // test existing sysweb
 
         PcEntity pc = new PcEntity();
-        pc.setName("Mobile Phone1"); //add new pc
-        pc.setOs("Android2");
-
+        pc.setName("Mobile Phone11"); //add new pc
+        pc.setOs("Android21");
 
         EventEntity event = new EventEntity();
         event.setData(startDate);
@@ -56,9 +50,9 @@ public class TestTbWork {
         event.setSyswebBySyswebId(sysweb);
         event.setLocaleByLocaleId(locale);
         event.setChecked(0);
-        event.setUrl("crazydomains.com.au");
-        event.setMessage("Success");
-        event.setParams("param 1, param 2");
+        event.setUrl("crazydomains.com.au1");
+        event.setMessage("Success1");
+        event.setParams("param 12, param 22");
 
         service.persist(event);
     }

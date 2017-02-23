@@ -12,7 +12,7 @@ import javax.persistence.PostLoad;
 public class EntityListener extends EmptyInterceptor {
     @Override
     public void afterTransactionBegin(Transaction tx) {
-        DBLogger.info("Create connection");
+        DBLogger.info("Connection created");
         super.afterTransactionBegin(tx);
     }
 

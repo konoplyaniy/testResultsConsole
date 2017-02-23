@@ -7,11 +7,19 @@
           <element id="module-output" name="testResultsConsole" />
         </element>
         <element id="directory" name="lib">
+          <element id="library" level="project" name="Maven: com.lowagie:itext:2.1.7" />
+          <element id="library" level="project" name="Maven: bouncycastle:bcmail-jdk14:138" />
+          <element id="library" level="project" name="Maven: bouncycastle:bcprov-jdk14:138" />
+          <element id="library" level="project" name="Maven: org.bouncycastle:bctsp-jdk14:1.38" />
+          <element id="library" level="project" name="Maven: org.bouncycastle:bcprov-jdk14:1.38" />
+          <element id="library" level="project" name="Maven: org.bouncycastle:bcmail-jdk14:1.38" />
+          <element id="library" level="project" name="Maven: org.apache.poi:poi:3.8" />
           <element id="library" level="project" name="Maven: com.sun.faces:jsf-api:2.1.0-b03" />
           <element id="library" level="project" name="Maven: com.sun.faces:jsf-impl:2.1.0-b03" />
           <element id="library" level="project" name="Maven: javax.servlet:jstl:1.2" />
           <element id="library" level="project" name="Maven: com.sun.el:el-ri:1.0" />
           <element id="library" level="project" name="Maven: org.primefaces:primefaces:6.0" />
+          <element id="library" level="project" name="Maven: commons-codec:commons-codec:1.5" />
           <element id="library" level="project" name="Maven: mysql:mysql-connector-java:5.1.25" />
           <element id="library" level="project" name="Maven: org.testng:testng:6.8.8" />
           <element id="library" level="project" name="Maven: org.beanshell:bsh:2.0b4" />
@@ -49,7 +57,6 @@
           <element id="library" level="project" name="Maven: org.apache.lucene:lucene-spellchecker:3.5.0" />
           <element id="library" level="project" name="Maven: org.apache.lucene:lucene-grouping:3.5.0" />
           <element id="library" level="project" name="Maven: org.apache.solr:solr-commons-csv:3.5.0" />
-          <element id="library" level="project" name="Maven: commons-codec:commons-codec:1.5" />
           <element id="library" level="project" name="Maven: commons-io:commons-io:1.4" />
           <element id="library" level="project" name="Maven: commons-lang:commons-lang:2.4" />
           <element id="library" level="project" name="Maven: com.google.guava:guava:r05" />

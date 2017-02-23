@@ -43,6 +43,7 @@ public class LocaleDao extends BaseDao<Integer, LocaleEntity> {
 
     @SuppressWarnings("unchecked")
     public List<LocaleEntity> findAll() {
+        DBLogger.info("find allllllll");
         List<LocaleEntity> locales = (List<LocaleEntity>) getCurrentSession().createQuery("from LocaleEntity ").list();
         return locales;
     }

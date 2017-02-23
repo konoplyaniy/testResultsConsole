@@ -2,46 +2,106 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
         "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:f="http://java.sun.com/jsf/core"
       xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:p="http://primefaces.org/ui"
-      xmlns:ui="http://java.sun.com/jsf/facelets">
-<h:head></h:head>
-<h:body>
-    <h:form>
-    <h:graphicImage name="images/crazy_logo_com.png"/>
-    </h:form>
-    <!--Links to another tables-->
-    <p:button id="mainPageLink"
-              value="Main table"
-              href="/mainpage.xhtml"/>
-    <p:button id="browserLink"
-              value="Browser table"
-              href="/browser.xhtml"/>
-    <p:button id="syswebLink"
-              value="Sysweb table"
-              href="/sysweb.xhtml"/>
-    <p:button id="localeLink"
-              value="Locale table"
-              href="/locale.xhtml"/>
-    <p:button id="classLink"
-              value="Class table"
-              href="/class.xhtml"/>
-    <p:button id="testLink"
-              value="Test table"
-              href="/test.xhtml"/>
-    <p:button id="groupLink"
-              value="Group table"
-              href="/group.xhtml"/>
-    <p:button id="eventLink"
-              value="Event table"
-              href="/event.xhtml"/>
-    <p:button id="eventSearchByDate"
-              value="Serch by date"
-              href="/calendar.xhtml"/>
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui" xmlns:c="http://java.sun.com/jsp/jstl/core">
+<h:body style="background-image: url(#{resource['images:background_image.jpg']})">
+    <p:megaMenu orientation="horizontal"
+                style="margin-top:0px;" id="megaMenu">
+        <p:submenu label="Results" icon="ui-icon-check" id="results_menu">
+            <p:column style="border: none">
+                <p:submenu style="border: none">
+                    <p:menuitem value="All Events" url="http://192.168.61.179:8080/event.xhtml"/>
+                    <p:menuitem value="Crazy Front" url="#" disabled="true" id="crFront"/>
+                    <p:menuitem value="Crazy Members" url="#" disabled="true" id="crMemb"/>
+                    <p:menuitem value="Aust" url="#" disabled="true" id="austFr"/>
+                    <p:menuitem value="Aust Members" url="#" disabled="true" id="austMemb"/>
+                </p:submenu>
+            </p:column>
+        </p:submenu>
+        <p:submenu label="Search" icon="ui-icon-search" id="search_menu">
+            <p:column style="border: none">
+                <p:submenu style="border: none">
+                    <p:menuitem value="Event by date" url="http://192.168.61.179:8080/calendar.xhtml" icon="ui-icon-calendar"/>
+                </p:submenu>
+            </p:column>
+        </p:submenu>
+        <p:submenu label="Diagram" icon="ui-icon-image" id="diagram_menu">
+            <p:column style="border: none">
+                <p:submenu style="border: none">
+                    <p:menuitem value="Event by date" url="http://192.168.61.179:8080/diagram.xhtml"/>
+                </p:submenu>
+            </p:column>
+        </p:submenu>
 
-    <!--Tool tips for buttons-->
-    <p:tooltip id="toolTipLocale" for="localeLink" value="This table is opened for now" position="top"/>
-    <p:tooltip id="toolTipEvent" for="eventLink" value="Event table is unavailable for now" position="top"/>
+        <p:submenu label="Tables" icon="ui-icon-calculator" id="tables_menu">
+            <p:column style="border: none">
+                <p:submenu style="border: none">
+                    <p:menuitem value="Test table" url="http://192.168.61.179:8080/test.xhtml"/>
+                    <p:menuitem value="Class table" url="http://192.168.61.179:8080/class.xhtml"/>
+                    <p:menuitem value="Browser table" url="http://192.168.61.179:8080/browser.xhtml"/>
+                    <p:menuitem value="Group table" url="http://192.168.61.179:8080/group.xhtml"/>
+                    <p:menuitem value="Locale table" url="http://192.168.61.179:8080/locale.xhtml"/>
+                    <p:menuitem value="Sysweb table" url="http://192.168.61.179:8080/sysweb.xhtml"/>
+                </p:submenu>
+            </p:column>
+        </p:submenu>
+        <p:submenu label="Test Cases" icon="ui-icon-document" id="test_cases_menu">
+            <p:column style="border: none">
+                <p:submenu style="border: none">
+                    <p:menuitem value="Test cases" url="#" disabled="true" id="testCases"/>
+                </p:submenu>
+            </p:column>
+        </p:submenu>
+
+        <f:facet name="options" id="opt">
+            <c:choose>
+                <c:when test="#{userLoginView.loggedIn}">
+                    <p:commandButton type="button" value="Logout" actionListener="#{userLoginView.logout()}"
+                                     id="logout"/>
+                </c:when>
+                <c:otherwise>
+                    <h:outputLink value="javascript:void(0)" onclick="PF('loginPopup').show();" title="login"
+                                  update="opt">
+                        <p:commandButton type="button" value="Login" id="login_button" disabled="true"/>
+                    </h:outputLink>
+                </c:otherwise>
+            </c:choose>
+        </f:facet>
+    </p:megaMenu>
+    <h:graphicImage name="images/crazy_logo_com.png"/>
+    <p:tooltip id="tipTestCases" for="testCases" value="Coming soon" position="top"/>
+    <p:tooltip id="tipCrFront" for="crFront" value="Coming soon" position="top"/>
+    <p:tooltip id="tipCrMemb" for="crMemb" value="Coming soon" position="top"/>
+    <p:tooltip id="tipAustFr" for="austFr" value="Coming soon" position="top"/>
+    <p:tooltip id="tipAustMemb" for="austMemb" value="Coming soon" position="top"/>
+    <p:tooltip id="tipLoginButton" for="login_button" value="Coming soon" position="top"/>
+
+    <h:form>
+        <p:growl id="growl" sticky="true" showDetail="true" life="3000"/>
+        <p:dialog header="Login" widgetVar="loginPopup" resizable="false">
+            <h:panelGrid columns="2" cellpadding="5">
+                <h:outputLabel for="username" value="Username:"/>
+                <p:inputText id="username" value="#{userLoginView.username}" required="true" label="username"/>
+                <h:outputLabel for="password" value="Password:"/>
+                <p:password id="password" value="#{userLoginView.password}" required="true" label="password"/>
+                <f:facet name="footer">
+                    <p:commandButton value="Login" update="growl" actionListener="#{userLoginView.login}"
+                                     oncomplete="handleLoginRequest(xhr, status, args)"/>
+                </f:facet>
+            </h:panelGrid>
+        </p:dialog>
+    </h:form>
+    <script type="text/javascript">
+        function handleLoginRequest(xhr, status, args) {
+            if (args.validationFailed || !args.loggedIn) {
+                PF('loginPopup').jq.effect("shake", {times: 5}, 100);
+            }
+            else {
+                PF('loginPopup').hide();
+                $('#loginLink').fadeOut();
+            }
+        }
+    </script>
 </h:body>
 </html>

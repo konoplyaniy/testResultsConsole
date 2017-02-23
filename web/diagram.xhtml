@@ -11,35 +11,45 @@
 <h:body>
     <title>Dreamscape Networks | QA | Diagrams</title>
     <div>
-        <ui:include src="resources/templates/menu.xhtml"/>
+        <ui:include src="resources/templates/headers.xhtml"/>
     </div>
+    <div class="ui-g">
     <h:form>
         <h:form id="diagram_date">
-            <p:chart type="line" model="#{diagramView.model}" style="height:300px; width: 700px;" id="chart"/>
+            <p:panel id="panel1" style="margin-bottom:10px;">
+                <p:chart type="line" model="#{diagramView.model}" style="height:300px; width: 700px;" id="chart"/>
+            </p:panel>
         </h:form>
     </h:form>
-    <div class="ui-g">
-        <div class="ui-g-12 ui-md-6 ui-lg-3">
+</div>
+<div class="ui-g">
+    <div class="ui-g-12 ui-md-6 ui-lg-3">
+        <p:panel id="panel2" style="margin-bottom:10px;">
             <h:form id="diagram_sysweb">
                 <p:chart type="bar" model="#{diagramView.modelBySysweb}" style="height:300px;width: 500px;"
                          id="chart_sysweb"/>
             </h:form>
-        </div>
-        <div class="ui-g-12 ui-md-6 ui-lg-3">
+        </p:panel>
+    </div>
+
+    <div class="ui-g-12 ui-md-6 ui-lg-3">
+        <p:panel id="panel3" style="margin-bottom:10px;">
             <h:form id="diagram_locales">
                 <p:chart type="bar" model="#{diagramView.modelByLocale}" style="height:300px; width: 500px;"
                          id="bar_chart"/>
             </h:form>
-        </div>
+        </p:panel>
     </div>
 
-    <p:commandButton value="Build"
+</div>
+
+<!--    <p:commandButton value="Build"
 
                      actionListener="#{diagramView.clickBuild()}">
     </p:commandButton>
     <p:commandButton value="Hide"
 
                      actionListener="#{diagramView.clickHide()}">
-    </p:commandButton>
+    </p:commandButton>-->
 </h:body>
-</html>
+        </html>

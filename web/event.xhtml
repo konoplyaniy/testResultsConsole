@@ -12,18 +12,19 @@
 <h:body style="background-image: url(#{resource['images:background_image.jpg']})">
     <title>Dreamscape Networks | QA | Event table</title>
     <ui:insert name="header">
-        <ui:include src="resources/templates/menu.xhtml"/>
+        <ui:include src="resources/templates/headers.xhtml"/>
     </ui:insert>
     <h:form id="event_form">
-        <p:dataTable id="event_table" var="event" tableStyleClass="papa"
+        <p:dataTable id="event_table" var="event"
+                     stickyHeader="true"
                      rowKey="#{event.data}"
                      value="#{eventTableExporter.events}"
-                     paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {Exporters}"
+                     paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {ColumnSelector}"
                      paginator="true"
                      currentPageReportTemplate="(Displaying {startRecord} - {endRecord} of {totalRecords}, Page: {currentPage}/{totalPages})"
                      rowIndexVar="rCount"
                      rowsPerPageTemplate="40,60,80"
-                     rows="20"
+                     rows="#{eventTableExporter.events.size()}"
                      style="margin-bottom:15px"
                      widgetVar="eventTable"
                      selection="#{eventTableExporter.selectedEvents}">
@@ -41,15 +42,21 @@
                 </h:commandLink>
             </f:facet>
 
-            <f:facet name="header" id="columnSelector">
-                Failed tests
+
+            <f:facet name="{ColumnSelector}" id="columnSelector">
                 <p:commandButton id="toggler" type="button" value="Select columns"
-                                 style="float:right; height: 60px; background-color: gray;"
+                                 style="float:right;
+                                 background-color: gray;"
                                  icon="ui-icon-calculator" />
                 <p:columnToggler id="columnTogler"
                                  datasource="event_table"
                                  trigger="toggler" />
             </f:facet>
+
+            <f:facet name="header">
+                Failed tests
+            </f:facet>
+
             <p:column style="width: 20px;">
                 <f:facet name="header">
                     <h:outputText value="№"/>
@@ -62,16 +69,20 @@
                 <f:facet name="header">
                     <h:outputText value="Date"/>
                 </f:facet>
-                <h:outputText value="#{event.data}"/>
+
+                <h:outputText value="#{event.data}">
+                    <f:convertDateTime pattern="yyyy-MM-dd HH:mm:ss" />
+                </h:outputText>
             </p:column>
 
-            <p:column headerText="Locale" style="width: 120px;"
+            <p:column headerText="Locale"
+                      style="width: 120px;"
                       sortBy="#{event.localeByLocaleId.locale}"
                       filterBy="#{event.localeByLocaleId.locale}"
                       filterMatchMode="exact">
 
                 <f:facet name="filter">
-                    <p:selectOneMenu onchange="PF('eventTable').filter()" style="width:90px;" >
+                    <p:selectOneMenu onchange="PF('eventTable').filter()"  >
                         <f:selectItem itemLabel="Select" itemValue="#{null}" noSelectionOption="true" />
                         <f:selectItems value="#{eventTableExporter.locales}" />
                     </p:selectOneMenu>
@@ -131,7 +142,8 @@
                 <f:facet name="header">
                     <h:outputText value="URL"/>
                 </f:facet>
-                <h:outputText value="#{event.url}"/>
+                <p:link value="#{event.url}" href="#{event.url}" style="color: blue"/>
+                <!--<h:outputText value="#{event.url}"/>-->
             </p:column>
             <p:column style="width: 80px;"
                       sortBy="#{event.checked}">

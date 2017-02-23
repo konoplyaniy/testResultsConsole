@@ -2,6 +2,7 @@ package hibernate.dao;
 
 import hibernate.entities.ClazzEntity;
 import hibernate.utils.DBLogger;
+import org.hibernate.CacheMode;
 import org.hibernate.Query;
 
 import java.util.List;
@@ -14,7 +15,9 @@ public class ClazzDao extends BaseDao<Integer, ClazzEntity> {
 
     public Boolean exists(String className) {
         Query query = getCurrentSession().createQuery("from ClazzEntity where name = :className");
+        query.setCacheMode(CacheMode.REFRESH);
         query.setString("className", className);
+
         return (query.uniqueResult() != null);
     }
 

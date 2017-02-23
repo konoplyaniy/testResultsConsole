@@ -2,6 +2,7 @@ package hibernate.dao;
 
 import hibernate.entities.EventEntity;
 import hibernate.service.BrowserService;
+import org.hibernate.CacheMode;
 import org.hibernate.Query;
 
 import java.util.Date;

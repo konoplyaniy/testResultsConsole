@@ -44,7 +44,6 @@ public class DiagramView implements Serializable {
     public void init() {
         createModel();
         createSyswebModel();
-        createClassModel();
         createLocaleModel();
     }
 
@@ -62,70 +61,28 @@ public class DiagramView implements Serializable {
         System.out.println(isClickedBuild);
     }
 
-    private void createClassModel() {
-        modelByClass = new BarChartModel();
-
-        EventService service = new EventService();
-
-        ArrayList<EventEntity> entities = (ArrayList<EventEntity>) service.findAll();
-        ArrayList<String> clazzes = new ArrayList<>();
-        for (EventEntity eventEntity : entities) {
-            clazzes.add(eventEntity.getTestByTestId().getClazzByClassId().getName());
-        }
-
-        System.out.println("entities " + entities.size());
-
-        HashMap<String, Integer> map = new HashMap<>();
-
-        Set<Map.Entry<String, Integer>> set = map.entrySet();
-        for (EventEntity entity : entities) {
-            System.out.println("1");
-            for (Map.Entry<String, Integer> entry : set) {
-                System.out.println("2");
-                String className = entity.getTestByTestId().getClazzByClassId().getName();
-                if (entry.getValue().equals(className)) {
-                    System.out.println("2.1");
-                    map.put(className, entry.getValue() + 1);
-                } else {
-                    System.out.println("2.2");
-                    map.put(className, 1);
-                }
-            }
-        }
-        for (Map.Entry<String, Integer> entry : map.entrySet()) {
-            ChartSeries clazzInfo = new ChartSeries();
-            clazzInfo.setLabel(entry.getKey());
-            clazzInfo.set(entry.getKey(), entry.getValue());
-            modelByClass.addSeries(clazzInfo);
-        }
-        System.out.println("map " + map.size());
-        modelByClass.setLegendPosition("ne");
-        modelByClass.setTitle("Classes");
-        modelByClass.setAnimate(true);
-    }
-
     private void createSyswebModel() {
         EventService service = new EventService();
         ArrayList<EventEntity> entities1;
         ArrayList<EventEntity> entities2;
         ArrayList<EventEntity> entities3;
 
-        entities1 = (ArrayList<EventEntity>) service.findBySysweb("sysweb7.syrahost.com.au");
-        entities2 = (ArrayList<EventEntity>) service.findBySysweb("sysweb3.syrahost.com.au");
-        entities3 = (ArrayList<EventEntity>) service.findBySysweb("sysweb4.syrahost.com.au");
+        entities1 = (ArrayList<EventEntity>) service.findBySysweb("SYSWEB4.UK.SYRAHOST.COM");
+        entities2 = (ArrayList<EventEntity>) service.findBySysweb("SYSWEB3.UK.SYRAHOST.COM");
+        entities3 = (ArrayList<EventEntity>) service.findBySysweb("SYSWEB5.UK.SYRAHOST.COM");
 
         ChartSeries sysweb7 = new ChartSeries();
         ChartSeries sysweb3 = new ChartSeries();
         ChartSeries sysweb4 = new ChartSeries();
 
-        sysweb7.setLabel("sysweb7.syrahost.com.au");
-        sysweb7.set("sysweb7.syrahost.com.au", entities1.size());
+        sysweb7.setLabel("SYSWEB4.UK.SYRAHOST.COM");
+        sysweb7.set("SYSWEB4.UK.SYRAHOST.COM", entities1.size());
 
-        sysweb3.setLabel("sysweb3.syrahost.com.au");
-        sysweb3.set("sysweb3.syrahost.com.au", entities2.size());
+        sysweb3.setLabel("SYSWEB3.UK.SYRAHOST.COM");
+        sysweb3.set("SYSWEB3.UK.SYRAHOST.COM", entities2.size());
 
-        sysweb4.setLabel("sysweb4.syrahost.com.au");
-        sysweb4.set("sysweb4.syrahost.com.au", entities3.size());
+        sysweb4.setLabel("SYSWEB5.UK.SYRAHOST.COM");
+        sysweb4.set("SYSWEB5.UK.SYRAHOST.COM", entities3.size());
 
         modelBySysweb = new BarChartModel();
         modelBySysweb.addSeries(sysweb3);
@@ -141,13 +98,13 @@ public class DiagramView implements Serializable {
         ArrayList<EventEntity> entities1;
         ArrayList<EventEntity> entities2;
 
-        entities1 = (ArrayList<EventEntity>) service.findByLocale(".ua");
-        entities2 = (ArrayList<EventEntity>) service.findByLocale(".com.au");
+        entities1 = (ArrayList<EventEntity>) service.findByLocale("CO.UK");
+        entities2 = (ArrayList<EventEntity>) service.findByLocale("COM.AU");
 
         ChartSeries uaLocale = new ChartSeries();
         ChartSeries comAuLocale = new ChartSeries();
 
-        uaLocale.setLabel(".ua locale");
+        uaLocale.setLabel("co.uk locale");
         uaLocale.set("au", entities1.size());
 
         comAuLocale.setLabel(".com.au locale");
@@ -159,7 +116,6 @@ public class DiagramView implements Serializable {
         modelByLocale.setLegendPosition("ne");
         modelByLocale.setTitle("Locales");
         modelByLocale.setAnimate(true);
-        System.out.println(modelByLocale);
     }
 
     public BarChartModel getModelByLocale() {
@@ -176,7 +132,7 @@ public class DiagramView implements Serializable {
 
         Date startDate = new Date();
         startDate.setYear(117);
-        startDate.setMonth(0);
+        startDate.setMonth(1);
         startDate.setDate(20);
         startDate.setHours(0);
         startDate.setMinutes(0);
@@ -184,33 +140,36 @@ public class DiagramView implements Serializable {
 
         Date endDate = new Date();
         endDate.setYear(117);
-        endDate.setMonth(0);
+        endDate.setMonth(1);
         endDate.setDate(20);
         endDate.setHours(23);
         endDate.setMinutes(59);
         endDate.setSeconds(59);
 
-        startDate.setDate(26);
-        endDate.setDate(26);
+        startDate.setDate(20);
+        endDate.setDate(20);
         ArrayList<EventEntity> entities3;
         entities3 = (ArrayList<EventEntity>) service.findBetweenDate(startDate, endDate);
         String startt = formatter.format(startDate);
+        System.out.println("3 " + entities3.size());
         series.set(formatter.format(startDate), entities3.size());
 
-        startDate.setDate(27);
-        endDate.setDate(27);
+        startDate.setDate(21);
+        endDate.setDate(21);
         ArrayList<EventEntity> entities4;
         entities4 = (ArrayList<EventEntity>) service.findBetweenDate(startDate, endDate);
+        System.out.println("4 " + entities4.size());
         series.set(formatter.format(startDate), entities4.size());
 
-        startDate.setDate(31);
-        endDate.setDate(31);
+        startDate.setDate(23);
+        endDate.setDate(23);
+        System.out.println();
         ArrayList<EventEntity> entities5;
         entities5 = (ArrayList<EventEntity>) service.findBetweenDate(startDate, endDate);
         String endd = formatter.format(endDate);
+        System.out.println("5 " + entities5.size());
         series.set(formatter.format(startDate), entities5.size());
 
-//        String endd = formatter.format(endDate);
         lineChartModel.addSeries(series);
 
         model = new LineChartModel();
@@ -219,7 +178,7 @@ public class DiagramView implements Serializable {
         model.getAxis(AxisType.Y).setLabel("Count");
         DateAxis axis = new DateAxis("Dates");
         axis.setTickAngle(-50);
-        axis.setMax("2017-02-01");
+//        axis.setMax("2017-28-02");
         axis.setTickFormat("%b %#d, %y");
         model.getAxes().put(AxisType.X, axis);
     }

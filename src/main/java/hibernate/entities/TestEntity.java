@@ -123,10 +123,10 @@ public class TestEntity implements Serializable {
     }
 
     public void setGroupByGroupId(GroupEntity groupByGroupId) {
-        GroupService service = new GroupService();
-        if (service.exist(groupByGroupId)){
-            this.groupByGroupId = service.findByName(groupByGroupId.getName());
-        }else
+//        GroupService service = new GroupService();
+//        if (service.exist(groupByGroupId)){
+//            this.groupByGroupId = service.findByName(groupByGroupId.getName());
+//        }else
         this.groupByGroupId = groupByGroupId;
     }
 
@@ -137,10 +137,10 @@ public class TestEntity implements Serializable {
     }
 
     public void setClazzByClassId(ClazzEntity clazzByClassId) {
-        ClazzService service = new ClazzService();
-        if (service.exist(clazzByClassId)){
-            this.clazzByClassId = service.findByName(clazzByClassId.getName());
-        }else
+//        ClazzService service = new ClazzService();
+//        if (service.exist(clazzByClassId)){
+//            this.clazzByClassId = service.findByName(clazzByClassId.getName());
+//        }else
         this.clazzByClassId = clazzByClassId;
     }
 }
