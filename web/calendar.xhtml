@@ -19,25 +19,25 @@
         <h:panelGrid columns="2" cellpadding="5">
             <p:outputLabel for="datetime" value="Start Date:"/>
             <p:calendar id="datetime"
-                        value="#{calendarView.startDate}"
+                        value="#{searchView.startDate}"
                         pattern="MM-dd-yyyy HH:mm:ss"/>
             <p:outputLabel for="datetime" value="End Date:"/>
-            <p:calendar id="datetime2" value="#{calendarView.endDate}" pattern="MM-dd-yyyy HH:mm:ss"/>
+            <p:calendar id="datetime2" value="#{searchView.endDate}" pattern="MM-dd-yyyy HH:mm:ss"/>
         </h:panelGrid>
         <p:commandButton value="Submit"
                          update="table-wrapper"
-                         actionListener="#{calendarView.click}" icon="ui-icon-check">
+                         actionListener="#{searchView.click}" icon="ui-icon-check">
         </p:commandButton>
 
         <!--Popup with calendar-->
         <p:dialog modal="true" resizable="false" header="Values" widgetVar="dlg" showEffect="fold">
             <p:panelGrid id="display" columns="2" columnClasses="label,value">
                 <h:outputText value="Datetime start:"/>
-                <h:outputText value="#{calendarView.startDate}">
+                <h:outputText value="#{searchView.startDate}">
                     <f:convertDateTime pattern="MM-dd-yyyy HH:mm:ss"/>
                 </h:outputText>
                 <h:outputText value="Datetime end:"/>
-                <h:outputText value="#{calendarView.endDate}">
+                <h:outputText value="#{searchView.endDate}">
                     <f:convertDateTime pattern="MM-dd-yyyy HH:mm:ss"/>
                 </h:outputText>
             </p:panelGrid>
@@ -58,8 +58,8 @@
     <h:panelGroup id="table-wrapper">
         <p:dataTable id="event_form"
                      var="event"
-                     value="#{calendarView.events}"
-                     rendered="#{calendarView.visible}"
+                     value="#{searchView.events}"
+                     rendered="#{searchView.visible}"
                      paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                      rowsPerPageTemplate="10,15,20"
                      paginator="true"
