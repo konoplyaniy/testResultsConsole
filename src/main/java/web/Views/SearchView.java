@@ -22,7 +22,7 @@ import org.primefaces.context.RequestContext;
 import org.primefaces.event.SelectEvent;
 
 @ManagedBean
-public class CalendarView {
+public class SearchView {
     private Date startDate;
     private Date endDate;
     private String testName;
