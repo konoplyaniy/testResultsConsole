@@ -7,6 +7,7 @@ package web.Views;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
@@ -103,16 +104,19 @@ public class CalendarView {
     }
 
     public List<EventEntity> getEventsTest() {
+        System.out.println("getTestEvents");
         FacesMessage message = null;
         if (getTestName() != null && !getTestName().equals("")) {
             EventService service = new EventService();
-            events = service.findByTestName(getTestName());
+            System.out.println("in if");
+            eventsTest = new ArrayList<>();
+            eventsTest = service.findByTestName(getTestName());
         } else {
-            message = new FacesMessage(FacesMessage.SEVERITY_WARN, "Validation error",
-                    "Please input test name");
-            FacesContext.getCurrentInstance().addMessage(null, message);
-        }
 
+        }
+        if (eventsTest!= null){
+            System.out.println(eventsTest.size());
+        }else System.out.println("events null");
         return eventsTest;
     }
 
@@ -124,11 +128,8 @@ public class CalendarView {
         FacesMessage message = null;
         if (getSysweb() != null && !getSysweb().equals("")) {
             EventService service = new EventService();
-            events = service.findBySysweb(getSysweb());
+            eventSysweb = service.findBySysweb(getSysweb());
         } else {
-            message = new FacesMessage(FacesMessage.SEVERITY_WARN, "Validation error",
-                    "Please input sysweb");
-            FacesContext.getCurrentInstance().addMessage(null, message);
         }
         return eventSysweb;
     }
@@ -138,13 +139,13 @@ public class CalendarView {
     }
 
     public String getTestName() {
-        System.out.println("getter");
         return testName;
     }
 
     public void setTestName(String testName) {
-        System.out.println("setter");
+        System.out.println("set test name");
         this.testName = testName;
+        System.out.println("test name = " + testName);
     }
 
     public String getSysweb() {
@@ -152,7 +153,9 @@ public class CalendarView {
     }
 
     public void setSysweb(String sysweb) {
+        System.out.println("set sysweb");
         this.sysweb = sysweb;
+        System.out.println("sysweb = " + sysweb);
     }
 
     public boolean isVisibleTestForm() {
@@ -171,14 +174,15 @@ public class CalendarView {
         this.visibleSyswebForm = visibleSyswebForm;
     }
 
-    public void searchTest(){
+    public void searchTest() {
         System.out.println("click search test");
-     if (getTestName() != null && !getTestName().equals("")){
-         setVisibleTestForm(true);
-     }
+        if (getTestName() != null && !getTestName().equals("")) {
+            setVisibleTestForm(true);
+        }
     }
 
-    public void searchSysweb(){
+    public void searchSysweb() {
+        System.out.println("click search sysweb");
         if (getSysweb() != null && !getSysweb().equals(""))
             setVisibleSyswebForm(true);
     }
