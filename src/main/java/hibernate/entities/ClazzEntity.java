@@ -4,7 +4,10 @@ import javax.persistence.*;
 import java.io.Serializable;
 
 /**
- * Created by Sergiy.K on 25-Jan-17.
+ * Class table
+ * Columns:
+ * class_id
+ * name
  */
 @Entity
 @Table(name = "class", schema = "crazydomains")

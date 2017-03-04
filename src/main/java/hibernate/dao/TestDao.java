@@ -11,7 +11,6 @@ import java.util.List;
 public class TestDao extends BaseDao<Integer, TestEntity> {
     @Override
     public void persist(TestEntity entity) {
-        /*getCurrentSession().save(entity);*/
         getCurrentSession().saveOrUpdate(entity);
     }
 

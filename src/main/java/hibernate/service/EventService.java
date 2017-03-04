@@ -18,7 +18,7 @@ import java.util.List;
 @ManagedBean(name = "eventService")
 @ApplicationScoped
 public class EventService {
-    private static EventDao eventDao;
+    private EventDao eventDao;
 
     public EventService() {
         eventDao = new EventDao();

@@ -14,7 +14,7 @@ import java.util.List;
 public class EventDao extends BaseDao<Integer, EventEntity> {
     @Override
     public void persist(EventEntity entity) {
-        getCurrentSession().save(entity);
+        getCurrentSession().saveOrUpdate(entity);
     }
 
     @Override
@@ -103,7 +103,7 @@ public class EventDao extends BaseDao<Integer, EventEntity> {
         getCurrentSession().delete(entity);
     }
 
-    @Override
+    @SuppressWarnings("unchecked")
     public List<EventEntity> findAll() {
         List<EventEntity> events = (List<EventEntity>) getCurrentSession().createQuery("from EventEntity ").list();
         return events;

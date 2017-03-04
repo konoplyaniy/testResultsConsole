@@ -3,7 +3,10 @@ package hibernate.entities;
 import javax.persistence.*;
 
 /**
- * Created by Sergiy.K on 31-Jan-17.
+ * Browser table
+ * Columns:
+ * browser_id
+ * browser
  */
 @Entity
 @Table(name = "browser", schema = "crazydomains")
