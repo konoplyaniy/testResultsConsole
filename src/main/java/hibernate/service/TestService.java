@@ -10,7 +10,6 @@ import java.util.List;
 /**
  * Created by Sergiy.K on 26-Jan-17.
  */
-@ManagedBean(name = "testService")
 @ApplicationScoped
 public class TestService {
     private static TestDao testDao;

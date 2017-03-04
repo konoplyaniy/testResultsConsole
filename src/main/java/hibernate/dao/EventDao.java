@@ -105,6 +105,7 @@ public class EventDao extends BaseDao<Integer, EventEntity> {
 
     @SuppressWarnings("unchecked")
     public List<EventEntity> findAll() {
+        getCurrentSession().setCacheMode(CacheMode.IGNORE);
         List<EventEntity> events = (List<EventEntity>) getCurrentSession().createQuery("from EventEntity ").list();
         return events;
     }

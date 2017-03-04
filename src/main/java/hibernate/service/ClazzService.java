@@ -12,8 +12,6 @@ import java.util.List;
 /**
  * Created by Sergiy.K on 25-Jan-17.
  */
-
-@ManagedBean(name = "clazzService")
 @ApplicationScoped
 public class ClazzService {
     private static ClazzDao clazzDao;

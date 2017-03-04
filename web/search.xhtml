@@ -187,7 +187,7 @@
 
                     <!--SEARCH RESULTS HEADER-->
                     <f:facet name="header">
-                        <h:outputText value="Search results sysweb: " style="font-size: large"/>
+                        <h:outputText value="Search results test name: " style="font-size: large"/>
                         <h:outputText value="#{searchView.testName}" style="font-size: large">
                         </h:outputText>
                     </f:facet>
@@ -271,7 +271,8 @@
                 <h:form id="search_sysweb_form">
                     <h:panelGrid columns="2" cellpadding="5">
                         <p:outputLabel for="syswebSearchField" value="Input Sysweb:"/>
-                        <p:inputText id="syswebSearchField" required="true" value="#{searchView.sysweb}" style="width: 300px">
+                        <p:inputText id="syswebSearchField" required="true" value="#{searchView.sysweb}"
+                                     style="width: 300px">
                             <f:validateLength minimum="5"/>
                         </p:inputText>
                     </h:panelGrid>

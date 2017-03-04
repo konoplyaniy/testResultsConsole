@@ -15,7 +15,6 @@ import java.util.List;
 /**
  * Created by Sergiy.K on 26-Jan-17.
  */
-@ManagedBean(name = "eventService")
 @ApplicationScoped
 public class EventService {
     private EventDao eventDao;
@@ -148,4 +147,5 @@ public class EventService {
         return result;
     }
 
+    public EventDao eventDao(){ return eventDao;}
 }

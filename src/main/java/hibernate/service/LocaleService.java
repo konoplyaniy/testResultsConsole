@@ -12,7 +12,6 @@ import java.util.List;
 /**
  * Created by Sergiy.K on 25-Jan-17.
  */
-@ManagedBean(name = "localeService")
 @ApplicationScoped
 public class LocaleService {
     private static LocaleDao localeDao;

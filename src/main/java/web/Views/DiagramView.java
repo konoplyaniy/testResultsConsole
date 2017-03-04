@@ -20,22 +20,6 @@ public class DiagramView implements Serializable {
     private BarChartModel modelByLocale;
     private BarChartModel modelBySysweb;
 
-    public BarChartModel getModelByClass() {
-        return modelByClass;
-    }
-
-    private BarChartModel modelByClass;
-
-    private boolean isClickedBuild = false;
-
-    public boolean isClickedBuild() {
-        return isClickedBuild;
-    }
-
-    public void setClickedBuild(boolean clickedBuild) {
-        isClickedBuild = clickedBuild;
-    }
-
     public BarChartModel getModelBySysweb() {
         return modelBySysweb;
     }
@@ -45,20 +29,6 @@ public class DiagramView implements Serializable {
         createModel();
         createSyswebModel();
         createLocaleModel();
-    }
-
-    public void clickBuild() {
-        System.out.println(isClickedBuild);
-        setClickedBuild(true);
-        System.out.println("after click build");
-        System.out.println(isClickedBuild);
-    }
-
-    public void clickHide() {
-        System.out.println(isClickedBuild);
-        setClickedBuild(false);
-        System.out.println("after click hide");
-        System.out.println(isClickedBuild);
     }
 
     private void createSyswebModel() {
@@ -151,14 +121,12 @@ public class DiagramView implements Serializable {
         ArrayList<EventEntity> entities3;
         entities3 = (ArrayList<EventEntity>) service.findBetweenDate(startDate, endDate);
         String startt = formatter.format(startDate);
-        System.out.println("3 " + entities3.size());
         series.set(formatter.format(startDate), entities3.size());
 
         startDate.setDate(21);
         endDate.setDate(21);
         ArrayList<EventEntity> entities4;
         entities4 = (ArrayList<EventEntity>) service.findBetweenDate(startDate, endDate);
-        System.out.println("4 " + entities4.size());
         series.set(formatter.format(startDate), entities4.size());
 
         startDate.setDate(23);
@@ -167,7 +135,6 @@ public class DiagramView implements Serializable {
         ArrayList<EventEntity> entities5;
         entities5 = (ArrayList<EventEntity>) service.findBetweenDate(startDate, endDate);
         String endd = formatter.format(endDate);
-        System.out.println("5 " + entities5.size());
         series.set(formatter.format(startDate), entities5.size());
 
         lineChartModel.addSeries(series);

@@ -11,7 +11,6 @@ import java.util.List;
 /**
  * Created by Sergiy.K on 26-Jan-17.
  */
-@ManagedBean(name = "pcService")
 @ApplicationScoped
 public class PcService {
     private static PcDao pcDao;

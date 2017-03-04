@@ -11,7 +11,6 @@ import java.util.List;
 /**
  * Created by Sergiy.K on 31-Jan-17.
  */
-@ManagedBean(name = "browserService")
 @ApplicationScoped
 public class BrowserService {
     private static BrowserDao browserDao;

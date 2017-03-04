@@ -13,7 +13,7 @@ import java.util.List;
  * Created by Sergiy.K on 26-Jan-17.
  */
 public abstract class BaseDao<K, T> {
-    private SessionFactory sessionFactory = buildSessionFactory();
+    private static final SessionFactory sessionFactory = buildSessionFactory();
 
     public static SessionFactory buildSessionFactory() {
         try {

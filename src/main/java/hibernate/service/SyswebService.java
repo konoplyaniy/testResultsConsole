@@ -11,7 +11,6 @@ import java.util.List;
 /**
  * Created by Sergiy.K on 26-Jan-17.
  */
-@ManagedBean(name = "syswebService")
 @ApplicationScoped
 public class SyswebService {
     private static SyswebDao syswebDao;
