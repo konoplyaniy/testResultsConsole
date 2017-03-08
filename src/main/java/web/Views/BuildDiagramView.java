@@ -5,7 +5,9 @@ import hibernate.service.EventService;
 import org.primefaces.model.chart.*;
 
 import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
+import javax.faces.context.FacesContext;
 import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -28,7 +30,7 @@ public class BuildDiagramView implements Serializable {
     private Date startDate;
     private Date endDate;
 
-    private boolean testNameChecked;
+    private boolean advancedBuildChecked;
     private boolean syswebChecked;
     private boolean localeChecked;
     private boolean clickedBuild = false;
@@ -148,10 +150,7 @@ public class BuildDiagramView implements Serializable {
 ////        axis.setMax("2017-28-02");
 //            axis.setTickFormat("%b %#d, %y");
 //            model.getAxes().put(AxisType.X, axis);
-
-
         }
-
     }
 
     private Date addNewDay(Date date) throws ParseException {
@@ -230,44 +229,35 @@ public class BuildDiagramView implements Serializable {
     }
 
     public String getSysweb() {
-        System.out.println("get sysweb" + sysweb);
         return sysweb;
     }
 
     public void setSysweb(String sysweb) {
-        System.out.println("set sysweb" + sysweb);
         this.sysweb = sysweb;
     }
 
     public String getTestName() {
-        System.out.println("get test name " + testName);
         return testName;
     }
 
     public void setTestName(String testName) {
-        System.out.println("set test name");
         this.testName = testName;
-        System.out.println("test name = " + testName);
     }
 
     public String getLocale() {
-        System.out.println("get locale " + locale);
         return locale;
     }
 
     public void setLocale(String locale) {
-        System.out.println("set locale " + locale);
         this.locale = locale;
     }
 
     public boolean isClickedBuild() {
-        System.out.println("get isClicked build " + clickedBuild);
         return clickedBuild;
     }
 
     public void setClickedBuild(boolean clickedBuild) {
         this.clickedBuild = clickedBuild;
-        System.out.println("now clicked build " + this.clickedBuild);
     }
 
     public ArrayList<String> getLocales() {
@@ -278,14 +268,12 @@ public class BuildDiagramView implements Serializable {
         this.locales = locales;
     }
 
-    public boolean isTestNameChecked() {
-        System.out.println("get checkbox status" + testNameChecked);
-        return testNameChecked;
+    public boolean isAdvancedBuildChecked() {
+        return advancedBuildChecked;
     }
 
-    public void setTestNameChecked(boolean testNameChecked) {
-        System.out.println("set " + testNameChecked);
-        this.testNameChecked = testNameChecked;
+    public void setAdvancedBuildChecked(boolean advancedBuildChecked) {
+        this.advancedBuildChecked = advancedBuildChecked;
     }
 
     public boolean isSyswebChecked() {
@@ -305,14 +293,27 @@ public class BuildDiagramView implements Serializable {
     }
 
     public void clickBuildButton() {
-        System.out.println("click build bitton");
-        createModel();
-        clickedBuild = true;
+        System.out.println("click build button");
+        if (getStartDate() != null && getEndDate() != null &&
+                getTestName() != null && getSysweb() != null
+                 && getLocale() != null){
+            createModel();
+            clickedBuild = true;
+        }else {
+            System.out.println("should appear message with error");
+
+            FacesContext context = FacesContext.getCurrentInstance();
+            context.addMessage(null, new FacesMessage("Input data for build diagram"));
+        }
         System.out.println("inputted test name: " + getTestName());
         System.out.println("inputted sysweb: " + getSysweb());
         System.out.println("inputted locale: " + getLocale());
         getStartDate();
         getEndDate();
+    }
+
+    public void clickHideBtton(){
+            clickedBuild = false;
     }
 
     public Date getStartDate() {

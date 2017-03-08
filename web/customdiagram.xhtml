@@ -11,58 +11,69 @@
 <h:body>
     <title>Dreamscape Networks | QA | Diagrams</title>
     <div>
-        <!--<ui:include src="resources/templates/headers.xhtml"/>-->
+        <ui:include src="resources/templates/headers.xhtml"/>
     </div>
     <h:form>
-        <p:selectBooleanCheckbox value="#{buildDiagramView.testNameChecked}" itemLabel="Advanced build"
+        <p:selectBooleanCheckbox value="#{buildDiagramView.advancedBuildChecked}" itemLabel="Advanced build"
+                                 style="color: #ffffff; font-weight: bold; font-size: 14px"
                                  onchange="submit()">
             <p:ajax event="change" update="searchFields"/>
-            <!--<p:ajax event="change" update=":buildDiagramForm:submitButton"/>-->
         </p:selectBooleanCheckbox>
     </h:form>
-    <h:form rendered="#{buildDiagramView.testNameChecked}" id="searchFields">
-        <!--<h:form id="searchFields">-->
+    <h:form rendered="#{buildDiagramView.advancedBuildChecked}" id="searchFields">
+<!--        <h:form id="searchFields">-->
 
-        <h:panelGrid>
+        <h:form>
             <div class="ui-g">
-                <div class="ui-g-12 ui-md-6 ui-lg-3">
+                <div class="ui-g-2">
                     <p:inputText id="testNameSearchField" value="#{buildDiagramView.testName}"
                                  placeholder="Input test name"
-                                 style="width: 300px">
+                                 style="width: 200px; border: none; height: 30px;"
+                                 required="true">
                         <f:validateLength minimum="5"/>
                     </p:inputText>
                 </div>
-                <div class="ui-g-12 ui-md-6 ui-lg-3">
+                <div class="ui-g-2">
                     <p:inputText id="syswebSearchField" value="#{buildDiagramView.sysweb}"
                                  placeholder="Input sysweb"
-                                 style="width: 300px">
+                                 style="width: 200px; border: none; height: 30px;"
+                                 required="true">
                         <f:validateLength minimum="5"/>
                     </p:inputText>
                 </div>
-                <div class="ui-g-12 ui-md-6 ui-lg-3">
+                <div class="ui-g-2">
                     <p:inputText id="localeSearchField" value="#{buildDiagramView.locale}"
                                  placeholder="Input locale"
-                                 style="width: 300px">
+                                 style="width: 200px; border: none; height: 30px;"
+                                 required="true">
                         <f:validateLength minimum="5"/>
                     </p:inputText>
                 </div>
-                <div class="ui-g-12 ui-md-6 ui-lg-3">
+                <div class="ui-g-2">
                     <p:calendar id="datetime"
                                 value="#{buildDiagramView.startDate}"
                                 pattern="MM-dd-yyyy HH:mm:ss"
                                 placeholder="Start Date"/>
-                </div>
-                <div class="ui-g-12 ui-md-4 ui-lg-5">
+                    </div>
+                <div class="ui-g-2">
                     <p:calendar id="datetime2"
                                 value="#{buildDiagramView.endDate}"
                                 pattern="MM-dd-yyyy HH:mm:ss"
                                 placeholder="End Date"/>
                 </div>
+                <div class="ui-g-2">
+                <p:commandButton value="Build" id="submitButton" update="diagramForm"
+                                 style="border: none"
+                                 validateClient="true"
+                                 action="#{buildDiagramView.clickBuildButton()}">
+                </p:commandButton>
+                <p:commandButton value="Hide" id="HideButton" update="diagramForm"
+                                 style="border: none"
+                                 action="#{buildDiagramView.clickHideBtton()}">
+                </p:commandButton>
+                </div>
             </div>
-        </h:panelGrid>
-        <p:commandButton value="Submit" id="submitButton" update="diagramForm"
-                         action="#{buildDiagramView.clickBuildButton()}">
-        </p:commandButton>
+        </h:form>
 
         <!--Popup with calendar-->
 
