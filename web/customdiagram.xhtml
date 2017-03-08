@@ -69,7 +69,7 @@
                 </p:commandButton>
                 <p:commandButton value="Hide" id="HideButton" update="diagramForm"
                                  style="border: none"
-                                 action="#{buildDiagramView.clickHideBtton()}">
+                                 action="#{buildDiagramView.clickHideButton()}">
                 </p:commandButton>
                 </div>
             </div>
@@ -98,14 +98,32 @@
     <h:panelGroup id="diagramForm">
         <h:form rendered="#{buildDiagramView.clickedBuild}">
             <div class="ui-g">
-                <h:form>
-                    <h:form id="diagram_date">
-                        <p:panel id="panel1" style="margin-bottom:10px;">
-                            <p:chart type="line" model="#{buildDiagramView.model}" style="height:300px; width: 700px;"
-                                     id="chart"/>
-                        </p:panel>
+            <!--<div class="ui-g-12 ui-md-4 ui-lg-4">-->
+                  <p:panel id="date_panel" style="margin-bottom:10px;">
+                        <h:form id="diagram_date">
+                           <p:chart type="line" model="#{buildDiagramView.lineChartModel}" style="height:300px; width: 700px;"
+                                     id="date_line_chart"/>
+                        </h:form>
+                  </p:panel>
+                <!--</div>-->
+
+            <div class="ui-g-12 ui-md-4 ui-lg-4"  style="height:320px; min-width: 550px; width: 550px;">
+                <p:panel id="locale_panel" style="margin-bottom:10px;">
+                    <h:form id="locales_diagram_form">
+                        <p:chart type="bar" model="#{buildDiagramView.modelByLocale}" style="height:300px; width: 500px;"
+                                 id="locale_bar_chart"/>
                     </h:form>
-                </h:form>
+                </p:panel>
+            </div>
+
+            <div class="ui-g-12 ui-md-4 ui-lg-4" style="height:320px; min-width: 550px; width: 550px;">
+                <p:panel id="sysweb_panel" style="margin-bottom:10px;">
+                    <h:form id="syswebs_diagram_form">
+                        <p:chart type="bar" model="#{buildDiagramView.modelBySysweb}" style="height:300px; width: 500px;"
+                                 id="sysweb_bar_chart"/>
+                    </h:form>
+                </p:panel>
+            </div>
             </div>
         </h:form>
     </h:panelGroup>

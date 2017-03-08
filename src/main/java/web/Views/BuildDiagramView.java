@@ -5,9 +5,7 @@ import hibernate.service.EventService;
 import org.primefaces.model.chart.*;
 
 import javax.annotation.PostConstruct;
-import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
-import javax.faces.context.FacesContext;
 import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -20,7 +18,7 @@ import java.util.*;
  */
 @ManagedBean
 public class BuildDiagramView implements Serializable {
-    private LineChartModel model;
+    private LineChartModel lineChartModel;
     private BarChartModel modelByLocale;
     private BarChartModel modelBySysweb;
     private String sysweb;
@@ -30,202 +28,131 @@ public class BuildDiagramView implements Serializable {
     private Date startDate;
     private Date endDate;
 
-    private boolean advancedBuildChecked;
+    private boolean advancedBuildChecked = false;
     private boolean syswebChecked;
     private boolean localeChecked;
     private boolean clickedBuild = false;
-
 
     public BarChartModel getModelBySysweb() {
         return modelBySysweb;
     }
 
-    @PostConstruct
-    public void init() {
-//        createModel();
-//        createSyswebModel();
-//        createLocaleModel();
-    }
+    private void createBarChartByLocale(){
+        EventService service = new EventService();
+        ArrayList<EventEntity> eventList;
+        eventList = (ArrayList<EventEntity>) service.findByTestNameBetweenDates(getTestName(), getStartDate(), getEndDate());
+//      here key is locale, value is count of failed test in this locale
+        HashMap<String, Integer> map = new HashMap<>();
+        eventList.forEach(event->{
+            String locale = event.getLocaleByLocaleId().getLocale();
+            if (!map.containsKey(locale)){
+                map.put(locale, 1);
+            }else {
+                int count = map.get(locale) + 1;
+                map.put(locale, count);
+            }
+        });
 
-//    private void createSyswebModel() {
-//        EventService service = new EventService();
-//        ArrayList<EventEntity> entities1;
-//        ArrayList<EventEntity> entities2;
-//        ArrayList<EventEntity> entities3;
-//
-//        entities1 = (ArrayList<EventEntity>) service.findBySysweb("SYSWEB4.UK.SYRAHOST.COM");
-//        entities2 = (ArrayList<EventEntity>) service.findBySysweb("SYSWEB3.UK.SYRAHOST.COM");
-//        entities3 = (ArrayList<EventEntity>) service.findBySysweb("SYSWEB5.UK.SYRAHOST.COM");
-//
-//        ChartSeries sysweb7 = new ChartSeries();
-//        ChartSeries sysweb3 = new ChartSeries();
-//        ChartSeries sysweb4 = new ChartSeries();
-//
-//        sysweb7.setLabel("SYSWEB4.UK.SYRAHOST.COM");
-//        sysweb7.set("SYSWEB4.UK.SYRAHOST.COM", entities1.size());
-//
-//        sysweb3.setLabel("SYSWEB3.UK.SYRAHOST.COM");
-//        sysweb3.set("SYSWEB3.UK.SYRAHOST.COM", entities2.size());
-//
-//        sysweb4.setLabel("SYSWEB5.UK.SYRAHOST.COM");
-//        sysweb4.set("SYSWEB5.UK.SYRAHOST.COM", entities3.size());
-//
-//        modelBySysweb = new BarChartModel();
-//        modelBySysweb.addSeries(sysweb3);
-//        modelBySysweb.addSeries(sysweb4);
-//        modelBySysweb.addSeries(sysweb7);
-//        modelBySysweb.setLegendPosition("ne");
-//        modelBySysweb.setTitle("Syswebs");
-//        modelBySysweb.setAnimate(true);
-//    }
+        modelByLocale = new BarChartModel();
+        ChartSeries chartSeries;
+        /*System.out.println("map size =" + map.size());*/
 
-    public static void main(String[] args) {
-        BuildDiagramView b = new BuildDiagramView();
-        b.setLocale("CO.UK");
-        b.createSyswebModel();
-    }
-
-    private void createSyswebModel() {
-        // tests by locale
-        DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-        try {
-            Date ss = formatter.parse("2017-03-04");
-        } catch (ParseException e) {
-            e.printStackTrace();
+        for (Map.Entry<String, Integer> entry : map.entrySet()) {
+            chartSeries  = new ChartSeries();
+            chartSeries.setLabel(entry.getKey() + " locale");
+            chartSeries.set(entry.getKey(), entry.getValue());
+            modelByLocale.addSeries(chartSeries);
         }
-        if (getLocale() != null) {
-            EventService service = new EventService();
-            ArrayList<EventEntity> entities1;
-            Date startDate = new Date();
+        Axis xAxis = modelByLocale.getAxis(AxisType.X);
+        xAxis.setLabel("Locales");
+        Axis yAxis = modelByLocale.getAxis(AxisType.Y);
+        yAxis.setLabel("Count");
+        modelByLocale.setLegendPosition("ne");
+        modelByLocale.setTitle("Test: " + getTestName() + " failed by locales");
+        modelByLocale.setAnimate(true);
+    }
 
-            try {
-                startDate = formatter.parse("2017-02-04");
-            } catch (ParseException e) {
-                e.printStackTrace();
+    private void createBarChartBySysweb(){
+        EventService service = new EventService();
+        ArrayList<EventEntity> eventList;
+        eventList = (ArrayList<EventEntity>) service.findByTestNameBetweenDates(getTestName(), getStartDate(), getEndDate());
+//      here key is locale, value is count of failed test in this locale
+        HashMap<String, Integer> map = new HashMap<>();
+        eventList.forEach(event->{
+            String sysweb = event.getSyswebBySyswebId().getName();
+            if (!map.containsKey(sysweb)){
+                map.put(sysweb, 1);
+            }else {
+                int count = map.get(sysweb) + 1;
+                map.put(sysweb, count);
             }
-            Date endDate = new Date();
-            try {
-                endDate = formatter.parse("2017-03-07");
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
+        });
 
+        modelBySysweb = new BarChartModel();
+        ChartSeries chartSeries;
+        /*System.out.println("map size =" + map.size());*/
+
+        for (Map.Entry<String, Integer> entry : map.entrySet()) {
+            chartSeries  = new ChartSeries();
+            chartSeries.setLabel(entry.getKey());
+            chartSeries.set(entry.getKey(), entry.getValue());
+            modelBySysweb.addSeries(chartSeries);
+        }
+        Axis xAxis = modelBySysweb.getAxis(AxisType.X);
+        xAxis.setLabel("Syswebs");
+        Axis yAxis = modelBySysweb.getAxis(AxisType.Y);
+        yAxis.setLabel("Count");
+        modelBySysweb.setLegendPosition("ne");
+        modelBySysweb.setTitle("Syswebs");
+        modelBySysweb.setAnimate(true);
+    }
+
+    private void createLineChartByTestName() {
+        // tests per Day
+        DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        EventService service = new EventService();
+//        initialize start end date for building line diagram
+        Date startDate = getStartDate();
+        Date endDate = getEndDate();
+
+//        Object where will be saved all data needed to build diagram (in this case date and count of failed tests)
+            LineChartSeries series = new LineChartSeries();
             Calendar start = Calendar.getInstance();
             start.setTime(startDate);
             Calendar end = Calendar.getInstance();
             end.setTime(endDate);
 
+//        per day add to series date and count of failed tests
             for (Date date = start.getTime(); start.before(end); start.add(Calendar.DATE, 1), date = start.getTime()) {
-                // Do your job here with `date`.
-
                 Date startt = (Date) date.clone();
                 Date endd = (Date) date.clone();
                 endd.setHours(23);
                 endd.setMinutes(59);
                 endd.setSeconds(59);
-                System.out.println("CURRENT ITERATION START DATE: " + startt);
-                System.out.println("CURRENT ITERATION END DATE: " + endd);
-                entities1 = (ArrayList<EventEntity>) service.findBySyswebBetweenDates("ANSWER GET FROM : SYSWEB5.AU.SYRAHOST.COM", startt, endd);
-                LineChartSeries series = new LineChartSeries();
-                series.set(date, entities1.size());
-                System.out.println(date + ": " + entities1.size());
+                /*System.out.println("CURRENT ITERATION START DATE: " + startt);
+                System.out.println("CURRENT ITERATION END DATE: " + endd);*/
+                ArrayList<EventEntity> eventList;
+                eventList = (ArrayList<EventEntity>) service.findByTestNameBetweenDates(getTestName(), startt, endd);
+                series.set(formatter.format(startt), eventList.size());
+                /*System.out.println(startt + ": " + eventList.size());*/
             }
 
-//            entities1 = (ArrayList<EventEntity>) service.findBySyswebBetweenDates(getSysweb(), startDate, endDate);
-//            LineChartModel lineChartModel = new LineChartModel();
-//            LineChartSeries series = new LineChartSeries();
-//            series.setLabel("Checked tests");
-//            series.set(startDate, entities1.size());
-//
-//
-//            String endd = formatter.format(endDate);
-//            String startt = formatter.format(startDate);
-//            lineChartModel.addSeries(series);
-//            model = new LineChartModel();
-//            model.addSeries(series);
-//            model.setTitle("Failed tests " + startt + " - " + endd);
-//            model.getAxis(AxisType.Y).setLabel("Count");
-//            DateAxis axis = new DateAxis("Dates");
-//            axis.setTickAngle(-50);
-////        axis.setMax("2017-28-02");
-//            axis.setTickFormat("%b %#d, %y");
-//            model.getAxes().put(AxisType.X, axis);
-        }
-    }
-
-    private Date addNewDay(Date date) throws ParseException {
-        DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        String dateParse = date.toString();
-        Date result = new Date();
-        result = formatter.parse(LocalDate.parse(dateParse).plusDays(1).toString());
-        return result;
+        lineChartModel = new LineChartModel();
+        lineChartModel.addSeries(series);
+        lineChartModel.setTitle("Failed tests " + formatter.format(getStartDate()) + " - " + formatter.format(getEndDate()));
+        lineChartModel.getAxis(AxisType.Y).setLabel("Count");
+        DateAxis axis = new DateAxis("Dates");
+        axis.setTickAngle(-50);
+        axis.setTickFormat("%b %#d, %y");
+        lineChartModel.getAxes().put(AxisType.X, axis);
     }
 
     public BarChartModel getModelByLocale() {
         return modelByLocale;
     }
 
-    private void createModel() {
-        DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        LineChartModel lineChartModel = new LineChartModel();
-        LineChartSeries series = new LineChartSeries();
-        series.setLabel("Checked tests");
-
-        EventService service = new EventService();
-
-        Date startDate = new Date();
-        startDate.getMonth();
-        startDate.setYear(117);
-        startDate.setMonth(1);
-        startDate.setDate(20);
-        startDate.setHours(0);
-        startDate.setMinutes(0);
-        startDate.setSeconds(0);
-
-        Date endDate = new Date();
-        endDate.setYear(117);
-        endDate.setMonth(1);
-        endDate.setDate(20);
-        endDate.setHours(23);
-        endDate.setMinutes(59);
-        endDate.setSeconds(59);
-
-        startDate.setDate(20);
-        endDate.setDate(20);
-        ArrayList<EventEntity> entities3;
-        entities3 = (ArrayList<EventEntity>) service.findBetweenDate(startDate, endDate);
-        String startt = formatter.format(startDate);
-        series.set(formatter.format(startDate), entities3.size());
-
-        startDate.setDate(21);
-        endDate.setDate(21);
-        ArrayList<EventEntity> entities4;
-        entities4 = (ArrayList<EventEntity>) service.findBetweenDate(startDate, endDate);
-        series.set(formatter.format(startDate), entities4.size());
-
-        startDate.setDate(23);
-        endDate.setDate(23);
-        System.out.println();
-        ArrayList<EventEntity> entities5;
-        entities5 = (ArrayList<EventEntity>) service.findBetweenDate(startDate, endDate);
-        String endd = formatter.format(endDate);
-        series.set(formatter.format(startDate), entities5.size());
-
-        lineChartModel.addSeries(series);
-
-        model = new LineChartModel();
-        model.addSeries(series);
-        model.setTitle("Failed tests " + startt + " - " + endd);
-        model.getAxis(AxisType.Y).setLabel("Count");
-        DateAxis axis = new DateAxis("Dates");
-        axis.setTickAngle(-50);
-//        axis.setMax("2017-28-02");
-        axis.setTickFormat("%b %#d, %y");
-        model.getAxes().put(AxisType.X, axis);
-    }
-
-    public LineChartModel getModel() {
-        return model;
+    public LineChartModel getLineChartModel() {
+        return lineChartModel;
     }
 
     public String getSysweb() {
@@ -260,14 +187,6 @@ public class BuildDiagramView implements Serializable {
         this.clickedBuild = clickedBuild;
     }
 
-    public ArrayList<String> getLocales() {
-        return locales;
-    }
-
-    public void setLocales(ArrayList<String> locales) {
-        this.locales = locales;
-    }
-
     public boolean isAdvancedBuildChecked() {
         return advancedBuildChecked;
     }
@@ -293,26 +212,24 @@ public class BuildDiagramView implements Serializable {
     }
 
     public void clickBuildButton() {
-        System.out.println("click build button");
+        /*System.out.println("click build button");*/
         if (getStartDate() != null && getEndDate() != null &&
                 getTestName() != null && getSysweb() != null
                  && getLocale() != null){
-            createModel();
+            createLineChartByTestName();
+            createBarChartBySysweb();
+            createBarChartByLocale();
             clickedBuild = true;
-        }else {
-            System.out.println("should appear message with error");
-
-            FacesContext context = FacesContext.getCurrentInstance();
-            context.addMessage(null, new FacesMessage("Input data for build diagram"));
         }
         System.out.println("inputted test name: " + getTestName());
         System.out.println("inputted sysweb: " + getSysweb());
         System.out.println("inputted locale: " + getLocale());
         getStartDate();
         getEndDate();
+        /*   Eshop buying     2017-01-26 17:58:32 start   2017-01-31 17:36:02 end */
     }
 
-    public void clickHideBtton(){
+    public void clickHideButton(){
             clickedBuild = false;
     }
 
@@ -321,7 +238,7 @@ public class BuildDiagramView implements Serializable {
             DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             formatter.setTimeZone(TimeZone.getDefault());
             formatter.format(startDate);
-            System.out.println("Get start date " + formatter.format(startDate));
+            /*System.out.println("Get start date " + formatter.format(startDate));*/
         }
         return startDate;
     }
@@ -335,7 +252,7 @@ public class BuildDiagramView implements Serializable {
             DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             formatter.setTimeZone(TimeZone.getDefault());
             formatter.format(endDate);
-            System.out.println("Get end date " + formatter.format(endDate));
+            /*System.out.println("Get end date " + formatter.format(endDate));*/
         }
         return endDate;
     }
