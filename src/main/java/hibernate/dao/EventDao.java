@@ -55,6 +55,17 @@ public class EventDao extends BaseDao<Integer, EventEntity> {
         return events;
     }
 
+
+    public List<EventEntity> findByTestNameBetweenDates(String testName, Date startDate, Date endDate) {
+        Query query = getCurrentSession().createQuery("from EventEntity " +
+                "where testByTestId.name =:testName and data between :startDate and :endDate");
+        query.setCacheMode(CacheMode.IGNORE);
+        query.setParameter("testName", testName);
+        query.setParameter("startDate", startDate);
+        query.setParameter("endDate", endDate);
+        return (List<EventEntity>) query.list();
+    }
+
     public List<EventEntity> findBySyswebBetweenDates(String sysweb, Date startDate, Date endDate) {
         Query query = getCurrentSession().createQuery("from EventEntity " +
                 "where syswebBySyswebId.name =:sysweb and data between :startDate and :endDate");

@@ -126,6 +126,13 @@ public class EventService {
         return result;
     }
 
+    public List<EventEntity> findByTestNameBetweenDates(String testName, Date startDate, Date endDate) {
+        eventDao.openCurrentSession();
+        List<EventEntity> result = eventDao.findByTestNameBetweenDates(testName, startDate, endDate);
+        eventDao.closeCurrentSession();
+        return result;
+    }
+
     public List<EventEntity> findBySyswebBetweenDates(String sysweb, Date startDate, Date endDate) {
         eventDao.openCurrentSession();
         List<EventEntity> result = eventDao.findBySyswebBetweenDates(sysweb, startDate, endDate);
