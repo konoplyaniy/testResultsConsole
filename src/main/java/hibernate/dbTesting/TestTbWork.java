@@ -1,13 +1,18 @@
 package hibernate.dbTesting;
 
 
-
 import hibernate.entities.*;
 import hibernate.service.EventService;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.TimeZone;
 
 /**
  * Created by Sergiy.K on 25-Jan-17.
@@ -21,20 +26,78 @@ public class TestTbWork {
         }
     }
 
+    private static String addNewDay(Date date) throws ParseException {
+        DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String dateParse = date.toString();
+        Date result = new Date();
+        String d23 = (LocalDate.parse(dateParse).plusDays(1).toString());
+        return d23;
+    }
+
 
     public static void main(String[] args) {
-        System.out.println(getPcName());
-        try {
-            System.out.println(InetAddress.getLocalHost().getCanonicalHostName());
-        } catch (UnknownHostException e) {
-            e.printStackTrace();
-        }
-//        EventService service = new EventService();
-
-
-
-
+//        DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+//        Date startDate = new Date();
+//        try {
+//            startDate = formatter.parse("2017-01-04");
+//        } catch (ParseException e) {
+//            e.printStackTrace();
+//        }
+//        Date endDate = new Date();
+//        try {
+//            endDate = formatter.parse("2017-03-06");
+//        } catch (ParseException e) {
+//            e.printStackTrace();
+//        }
+//        Calendar start = Calendar.getInstance();
+//        start.setTime(startDate);
+//        Calendar end = Calendar.getInstance();
+//        end.setTime(endDate);
 //
+//        for (Date date = start.getTime(); start.before(end); start.add(Calendar.DATE, 1), date = start.getTime()) {
+//            // Do your job here with `date`.
+//            System.out.println("date " + date);
+//            System.out.println("start: " + start.getTime());
+//        }
+
+//        System.out.println(getPcName());
+//        try {
+//            System.out.println(InetAddress.getLocalHost().getCanonicalHostName());
+//        } catch (UnknownHostException e) {
+//            e.printStackTrace();
+//        }
+
+//        DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+//        formatter.setTimeZone(TimeZone.getDefault());
+//
+//
+//        EventService service = new EventService();
+//        Date startDate = new Date();
+//        startDate.setDate(1);
+//        Date endDate = new Date();
+//        endDate.setDate(6);
+//        System.out.println(startDate);
+//        System.out.println(endDate);
+//
+//        try {
+//            Date ss = formatter.parse("2017-02-22");
+//            System.out.println(service.findByDate(ss));
+//        } catch (ParseException e) {
+//            e.printStackTrace();
+//        }
+//        System.out.println(service.findBySyswebBetweenDates("ANSWER GET FROM : SYSWEB3.UK.SYRAHOST.COM", startDate, endDate));
+
+
+
+//        System.out.println(service.findBySyswebBetweenDates("ANSWER GET FROM : SYSWEB3.UK.SYRAHOST.COM", startDate, endDate).size());
+//        System.out.println("*********************************************************************************************************************");
+//        System.out.println("findBySyswebTestNameBetweenDates test");
+//        System.out.println(service.findBySyswebTestNameBetweenDates("ANSWER GET FROM : SYSWEB3.UK.SYRAHOST.COM","REGISTER NEW COSTUMER IN HEADER TEST", startDate, endDate));
+//        System.out.println("*********************************************************************************************************************");
+//        System.out.println("findBySyswebTestNameLocaleBetweenDates test");
+//        System.out.println(service.findBySyswebTestNameLocaleBetweenDates("ANSWER GET FROM : SYSWEB3.UK.SYRAHOST.COM","REGISTER NEW COSTUMER IN HEADER TEST","CO.UK", startDate, endDate));
+//
+
 //        Date startDate = new Date();
 //        startDate.setYear(117);
 //        startDate.setMonth(1);

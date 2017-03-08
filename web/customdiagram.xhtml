@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html" xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+<h:head>
+    <h:outputStylesheet library="css" name="styles.css"/>
+</h:head>
+<h:body>
+    <title>Dreamscape Networks | QA | Diagrams</title>
+    <div>
+        <!--<ui:include src="resources/templates/headers.xhtml"/>-->
+    </div>
+    <h:form>
+        <p:selectBooleanCheckbox value="#{buildDiagramView.testNameChecked}" itemLabel="Advanced build"
+                                 onchange="submit()">
+            <p:ajax event="change" update="searchFields"/>
+            <!--<p:ajax event="change" update=":buildDiagramForm:submitButton"/>-->
+        </p:selectBooleanCheckbox>
+    </h:form>
+    <h:form rendered="#{buildDiagramView.testNameChecked}" id="searchFields">
+        <!--<h:form id="searchFields">-->
+
+        <h:panelGrid>
+            <div class="ui-g">
+                <div class="ui-g-12 ui-md-6 ui-lg-3">
+                    <p:inputText id="testNameSearchField" value="#{buildDiagramView.testName}"
+                                 placeholder="Input test name"
+                                 style="width: 300px">
+                        <f:validateLength minimum="5"/>
+                    </p:inputText>
+                </div>
+                <div class="ui-g-12 ui-md-6 ui-lg-3">
+                    <p:inputText id="syswebSearchField" value="#{buildDiagramView.sysweb}"
+                                 placeholder="Input sysweb"
+                                 style="width: 300px">
+                        <f:validateLength minimum="5"/>
+                    </p:inputText>
+                </div>
+                <div class="ui-g-12 ui-md-6 ui-lg-3">
+                    <p:inputText id="localeSearchField" value="#{buildDiagramView.locale}"
+                                 placeholder="Input locale"
+                                 style="width: 300px">
+                        <f:validateLength minimum="5"/>
+                    </p:inputText>
+                </div>
+                <div class="ui-g-12 ui-md-6 ui-lg-3">
+                    <p:calendar id="datetime"
+                                value="#{buildDiagramView.startDate}"
+                                pattern="MM-dd-yyyy HH:mm:ss"
+                                placeholder="Start Date"/>
+                </div>
+                <div class="ui-g-12 ui-md-4 ui-lg-5">
+                    <p:calendar id="datetime2"
+                                value="#{buildDiagramView.endDate}"
+                                pattern="MM-dd-yyyy HH:mm:ss"
+                                placeholder="End Date"/>
+                </div>
+            </div>
+        </h:panelGrid>
+        <p:commandButton value="Submit" id="submitButton" update="diagramForm"
+                         action="#{buildDiagramView.clickBuildButton()}">
+        </p:commandButton>
+
+        <!--Popup with calendar-->
+
+        <p:dialog modal="true" resizable="false" header="Values" widgetVar="dlg" showEffect="fold"
+                  rendered="">
+
+            <p:panelGrid id="display" columns="2" columnClasses="label,value">
+                <h:outputText value="Datetime start:"/>
+                <h:outputText value="#{buildDiagramView.startDate}">
+                    <f:convertDateTime pattern="MM-dd-yyyy HH:mm:ss"/>
+                </h:outputText>
+                <h:outputText value="Datetime end:"/>
+                <h:outputText value="#{buildDiagramView.endDate}">
+                    <f:convertDateTime pattern="MM-dd-yyyy HH:mm:ss"/>
+                </h:outputText>
+            </p:panelGrid>
+        </p:dialog>
+    </h:form>
+
+    <!--DIAGRAMS-->
+
+    <h:panelGroup id="diagramForm">
+        <h:form rendered="#{buildDiagramView.clickedBuild}">
+            <div class="ui-g">
+                <h:form>
+                    <h:form id="diagram_date">
+                        <p:panel id="panel1" style="margin-bottom:10px;">
+                            <p:chart type="line" model="#{buildDiagramView.model}" style="height:300px; width: 700px;"
+                                     id="chart"/>
+                        </p:panel>
+                    </h:form>
+                </h:form>
+            </div>
+        </h:form>
+    </h:panelGroup>
+</h:body>
+</html>

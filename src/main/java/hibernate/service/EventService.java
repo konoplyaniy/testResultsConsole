@@ -126,6 +126,27 @@ public class EventService {
         return result;
     }
 
+    public List<EventEntity> findBySyswebBetweenDates(String sysweb, Date startDate, Date endDate) {
+        eventDao.openCurrentSession();
+        List<EventEntity> result = eventDao.findBySyswebBetweenDates(sysweb, startDate, endDate);
+        eventDao.closeCurrentSession();
+        return result;
+    }
+
+    public List<EventEntity> findBySyswebTestNameBetweenDates(String sysweb, String testName, Date startDate, Date endDate) {
+        eventDao.openCurrentSession();
+        List<EventEntity> result = eventDao.findBySyswebTestNameBetweenDates(sysweb, testName, startDate, endDate);
+        eventDao.closeCurrentSession();
+        return result;
+    }
+
+    public List<EventEntity> findBySyswebTestNameLocaleBetweenDates(String sysweb, String testName, String locale, Date startDate, Date endDate) {
+        eventDao.openCurrentSession();
+        List<EventEntity> result = eventDao.findBySyswebTestNameLocaleBetweenDates(sysweb, testName, locale, startDate, endDate);
+        eventDao.closeCurrentSession();
+        return result;
+    }
+
     public List<EventEntity> findAllChecked() {
         eventDao.openCurrentSession();
         List<EventEntity> result = eventDao.findOnlyChecked();
@@ -147,5 +168,7 @@ public class EventService {
         return result;
     }
 
-    public EventDao eventDao(){ return eventDao;}
+    public EventDao eventDao() {
+        return eventDao;
+    }
 }

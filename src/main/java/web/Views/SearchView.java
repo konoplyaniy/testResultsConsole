@@ -78,7 +78,6 @@ public class SearchView {
     }
 
     public void setStartDate(Date startDate) {
-
         this.startDate = startDate;
     }
 

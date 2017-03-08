@@ -4,6 +4,7 @@ import hibernate.entities.EventEntity;
 import hibernate.service.BrowserService;
 import org.hibernate.CacheMode;
 import org.hibernate.Query;
+import org.primefaces.model.chart.LineChartSeries;
 
 import java.util.Date;
 import java.util.List;
@@ -52,6 +53,44 @@ public class EventDao extends BaseDao<Integer, EventEntity> {
         query.setParameter("endDate", endDate);
         List<EventEntity> events = (List<EventEntity>) query.list();
         return events;
+    }
+
+    public List<EventEntity> findBySyswebBetweenDates(String sysweb, Date startDate, Date endDate) {
+        Query query = getCurrentSession().createQuery("from EventEntity " +
+                "where syswebBySyswebId.name =:sysweb and data between :startDate and :endDate");
+        query.setCacheMode(CacheMode.IGNORE);
+        query.setParameter("sysweb", sysweb);
+        query.setParameter("startDate", startDate);
+        query.setParameter("endDate", endDate);
+        return (List<EventEntity>) query.list();
+    }
+
+    public List<EventEntity> findBySyswebTestNameBetweenDates(String sysweb, String testName, Date startDate, Date endDate) {
+        Query query = getCurrentSession().createQuery("from EventEntity " +
+                "where syswebBySyswebId.name =:sysweb " +
+                "and testByTestId.name =:testName " +
+                "and data between :startDate and :endDate");
+        query.setCacheMode(CacheMode.IGNORE);
+        query.setParameter("sysweb", sysweb);
+        query.setParameter("testName", testName);
+        query.setParameter("startDate", startDate);
+        query.setParameter("endDate", endDate);
+        return (List<EventEntity>) query.list();
+    }
+
+    public List<EventEntity> findBySyswebTestNameLocaleBetweenDates(String sysweb, String testName, String locale, Date startDate, Date endDate) {
+        Query query = getCurrentSession().createQuery("from EventEntity" +
+                " where syswebBySyswebId.name =:sysweb " +
+                "and testByTestId.name =:testName  " +
+                "and localeByLocaleId.locale =:locale " +
+                "and data between :startDate and :endDate");
+        query.setCacheMode(CacheMode.IGNORE);
+        query.setParameter("testName", testName);
+        query.setParameter("locale", locale);
+        query.setParameter("sysweb", sysweb);
+        query.setParameter("startDate", startDate);
+        query.setParameter("endDate", endDate);
+        return (List<EventEntity>) query.list();
     }
 
     public List<EventEntity> findByLocale(String localeName) {

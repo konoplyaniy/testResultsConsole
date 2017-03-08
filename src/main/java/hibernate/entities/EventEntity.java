@@ -182,17 +182,17 @@ public class EventEntity {
 
     @Override
     public String toString() {
-        return eventId + " " +
-                data + " GROUP: " +
-                testByTestId.getGroupByGroupId().getName() + " GROUP ID: " +
-                testByTestId.getGroupByGroupId().getGroupId() + " CLASS: " +
-                testByTestId.getClazzByClassId().getName() + " TEST NAME: " +
-                testByTestId.getName() + " LOCALE: " +
-                localeByLocaleId.getLocale() + " SYSWEB: " +
-                syswebBySyswebId.getName() + " PC NAME: " +
-                pcByPcId.getName() + " PC OS: " +
-                pcByPcId.getOs() + " BROWSER: " +
-                browserByBrowserId.getBrowser();
+        return eventId + "\n" +
+                data + "\n"
+                + " GROUP: " + testByTestId.getGroupByGroupId().getName() + "\n"
+                + " GROUP ID: " + testByTestId.getGroupByGroupId().getGroupId() + "\n"
+                + " CLASS: " + testByTestId.getClazzByClassId().getName() + "\n" +
+                " TEST NAME: " + testByTestId.getName() + "\n"
+                + " LOCALE: " + localeByLocaleId.getLocale() + "\n"
+                + " SYSWEB: " + syswebBySyswebId.getName() + "\n"
+                + " PC NAME: " + pcByPcId.getName() + "\n"
+                + " PC OS: " + pcByPcId.getOs() + "\n"
+                + " BROWSER: " + browserByBrowserId.getBrowser();
     }
 
     @ManyToOne(cascade = CascadeType.ALL)
@@ -230,7 +230,7 @@ public class EventEntity {
 //        if (service.exist(syswebBySyswebId)) {
 //            this.syswebBySyswebId = service.findByName(syswebBySyswebId.getName());
 //        } else
-            this.syswebBySyswebId = syswebBySyswebId;
+        this.syswebBySyswebId = syswebBySyswebId;
     }
 
     @OneToOne(cascade = CascadeType.ALL)
@@ -240,7 +240,7 @@ public class EventEntity {
     }
 
     public void setPcByPcId(PcEntity pcByPcId) {
-            this.pcByPcId = pcByPcId;
+        this.pcByPcId = pcByPcId;
     }
 
     @OneToOne(cascade = CascadeType.ALL)
@@ -250,6 +250,6 @@ public class EventEntity {
     }
 
     public void setBrowserByBrowserId(BrowserEntity browserByBrowserId) {
-            this.browserByBrowserId = browserByBrowserId;
+        this.browserByBrowserId = browserByBrowserId;
     }
 }
