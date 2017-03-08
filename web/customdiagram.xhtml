@@ -21,7 +21,7 @@
         </p:selectBooleanCheckbox>
     </h:form>
     <h:form rendered="#{buildDiagramView.advancedBuildChecked}" id="searchFields">
-<!--        <h:form id="searchFields">-->
+        <!--<h:form id="searchFields">-->
 
         <h:form>
             <div class="ui-g">
@@ -51,26 +51,30 @@
                 </div>
                 <div class="ui-g-2">
                     <p:calendar id="datetime"
+                                styleClass="MyCalendarClass"
                                 value="#{buildDiagramView.startDate}"
                                 pattern="MM-dd-yyyy HH:mm:ss"
                                 placeholder="Start Date"/>
                     </div>
                 <div class="ui-g-2">
                     <p:calendar id="datetime2"
+                                styleClass="MyCalendarClass"
                                 value="#{buildDiagramView.endDate}"
                                 pattern="MM-dd-yyyy HH:mm:ss"
                                 placeholder="End Date"/>
                 </div>
-                <div class="ui-g-2">
-                <p:commandButton value="Build" id="submitButton" update="diagramForm"
-                                 style="border: none"
-                                 validateClient="true"
-                                 action="#{buildDiagramView.clickBuildButton()}">
-                </p:commandButton>
-                <p:commandButton value="Hide" id="HideButton" update="diagramForm"
-                                 style="border: none"
-                                 action="#{buildDiagramView.clickHideButton()}">
-                </p:commandButton>
+                <div class="ui-g-1">
+                    <p:commandButton value="Build" id="submitButton" icon="ui-icon-circle-triangle-e" style="height: 40px; border: none" update="diagramForm"
+                                     type="button"
+                                     validateClient="true"
+                                     action="#{buildDiagramView.clickBuildButton()}">
+                    </p:commandButton>
+                </div>
+                <div class="ui-g-1">
+                    <p:commandButton value="Hide" id="HideButton" icon="ui-icon-circle-triangle-n" style="height: 40px; border: none" update="diagramForm"
+                                     type="button"
+                                     action="#{buildDiagramView.clickHideButton()}">
+                    </p:commandButton>
                 </div>
             </div>
         </h:form>
