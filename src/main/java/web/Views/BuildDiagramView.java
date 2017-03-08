@@ -29,6 +29,7 @@ public class BuildDiagramView implements Serializable {
     private Date endDate;
 
     private boolean advancedBuildChecked = false;
+    private boolean testNameChecked;
     private boolean syswebChecked;
     private boolean localeChecked;
     private boolean clickedBuild = false;
@@ -195,6 +196,14 @@ public class BuildDiagramView implements Serializable {
         this.advancedBuildChecked = advancedBuildChecked;
     }
 
+    public boolean isTestNameChecked() {
+        return testNameChecked;
+    }
+
+    public void setTestNameChecked(boolean testNameChecked) {
+        this.testNameChecked = testNameChecked;
+    }
+
     public boolean isSyswebChecked() {
         return syswebChecked;
     }
@@ -221,11 +230,11 @@ public class BuildDiagramView implements Serializable {
             createBarChartByLocale();
             clickedBuild = true;
         }
-        System.out.println("inputted test name: " + getTestName());
+        /*System.out.println("inputted test name: " + getTestName());
         System.out.println("inputted sysweb: " + getSysweb());
-        System.out.println("inputted locale: " + getLocale());
-        getStartDate();
-        getEndDate();
+        System.out.println("inputted locale: " + getLocale());*/
+        /*getStartDate();
+        getEndDate();*/
         /*   Eshop buying     2017-01-26 17:58:32 start   2017-01-31 17:36:02 end */
     }
 
