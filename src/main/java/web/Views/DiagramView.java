@@ -58,7 +58,8 @@ public class DiagramView implements Serializable {
         modelBySysweb.addSeries(sysweb3);
         modelBySysweb.addSeries(sysweb4);
         modelBySysweb.addSeries(sysweb7);
-        modelBySysweb.setLegendPosition("ne");
+        modelByLocale.setLegendPosition("e");
+        modelByLocale.setLegendPlacement(LegendPlacement.OUTSIDEGRID);
         modelBySysweb.setTitle("Syswebs");
         modelBySysweb.setAnimate(true);
     }
@@ -83,7 +84,8 @@ public class DiagramView implements Serializable {
         modelByLocale = new BarChartModel();
         modelByLocale.addSeries(comAuLocale);
         modelByLocale.addSeries(uaLocale);
-        modelByLocale.setLegendPosition("ne");
+        modelByLocale.setLegendPosition("e");
+        modelByLocale.setLegendPlacement(LegendPlacement.OUTSIDEGRID);
         modelByLocale.setTitle("Locales");
         modelByLocale.setAnimate(true);
     }
