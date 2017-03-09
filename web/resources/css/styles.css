@@ -1,10 +1,66 @@
 .MyCalendarClass input {
-    width: 200px !important;
+    width: 100% !important;
+    position: relative !important;;
     height: 30px !important;
-    border: none !important;
+    /*border: none !important;*/
+    padding: 5px !important;
 }
 
 .MySubmitButton input {
     height: 30px !important;
     border: none !important;
 }
+
+#searchFields {
+    font-size: 14px !important;
+    width: 100% !important;
+    position: relative !important;
+}
+
+.MyDropDown.ui-widget{
+    min-width:calc(100% - 23px) !important;
+    position: relative !important;;
+    /*border: none !important;*/
+}
+
+/*#testNameDropDown_items{
+    font-size: 10px !important;
+    line-height: 0 !important;
+    padding: 1px !important;
+}*/
+
+.ui-widget .ui-widget {
+    font-size: 12px !important;
+}
+
+.ui-inputfield {
+    width: 100% !important;
+    position: relative !important;;
+    height: 30px !important;
+    /*border: none !important;*/
+    padding: 5px !important
+}
+
+.ui-selectonemenu .ui-selectonemenu-trigger .ui-icon{
+    margin-top: 70% !important;
+}
+
+
+/*
+#testNameDropDown_editableInput, #testNameSearchPanelGroup, #testNameDropDown span {
+    font-size: 14px !important;
+    width: 100% !important;
+    max-width: 130px !important;
+    position: relative !important;
+}
+*/
+
+/*.ui-selectonemenu .ui-selectonemenu-label {*/
+    /*border: 0 none !important;*/
+    /*display: block !important;*/
+    /*font-weight: normal !important;*/
+    /*overflow: hidden !important;*/
+    /*text-align: left !important;*/
+    /*white-space: nowrap !important;*/
+    /*width: 100px !important;*/
+/*}*/

@@ -4,13 +4,12 @@ import hibernate.entities.EventEntity;
 import hibernate.service.EventService;
 import org.primefaces.model.chart.*;
 
+
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import java.io.Serializable;
 import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.util.*;
 
 /**
@@ -22,11 +21,16 @@ public class BuildDiagramView implements Serializable {
     private BarChartModel modelByLocale;
     private BarChartModel modelBySysweb;
     private String sysweb;
+    private HashSet<String> syswebs;
     private String testName;
+    private String clazzName = "";
+    private HashSet<String> clazzNames;
+    private HashSet<String> testNames;
     private String locale;
-    private ArrayList<String> locales;
+    private HashSet<String> locales;
     private Date startDate;
     private Date endDate;
+    private ArrayList<EventEntity> events;
 
     private boolean advancedBuildChecked = false;
     private boolean testNameChecked;
@@ -34,21 +38,78 @@ public class BuildDiagramView implements Serializable {
     private boolean localeChecked;
     private boolean clickedBuild = false;
 
+
     public BarChartModel getModelBySysweb() {
         return modelBySysweb;
     }
 
-    private void createBarChartByLocale(){
+    @PostConstruct
+    public void initDropDowns() {
+        initDropdownsData();
+    }
+
+
+    private void initDropdownsData(){
         EventService service = new EventService();
-        ArrayList<EventEntity> eventList;
-        eventList = (ArrayList<EventEntity>) service.findByTestNameBetweenDates(getTestName(), getStartDate(), getEndDate());
+        ArrayList<EventEntity> eventList = new ArrayList<>();
+        eventList = (ArrayList<EventEntity>) service.findAll();
+        HashSet<String> testNames = new HashSet<>();
+        HashSet<String> syswebs = new HashSet<>();
+        HashSet<String> locales = new HashSet<>();
+        HashSet<String> clazzes = new HashSet<>();
+
+        eventList.forEach(eventEntity -> {
+            testNames.add(eventEntity.getTestByTestId().getName());
+            syswebs.add(eventEntity.getSyswebBySyswebId().getName());
+            locales.add(eventEntity.getLocaleByLocaleId().getLocale());
+            clazzes.add(eventEntity.getTestByTestId().getClazzByClassId().getName());
+        });
+
+        setTestNames(testNames);
+        setLocales(locales);
+        setSyswebs(syswebs);
+        setClazzNames(clazzes);
+    }
+
+    /*   MEGA IFING... will be edited.. possibly*/
+    private ArrayList<EventEntity> getEvents() {
+        EventService service = new EventService();
+        ArrayList<EventEntity> eventList = new ArrayList<>();
+        if (getClazzName() != null && getTestName() != null && getSysweb() != null && getLocale() != null) {
+            System.out.println("1 if");
+            eventList = (ArrayList<EventEntity>) service.findByClassNameTestNameSyswebLocaleBetweenDates(getClazzName(), getTestName(), getSysweb(), getLocale(), getStartDate(), getEndDate());
+            return eventList;
+        } else if (getClazzName() != null && getTestName() != null && getSysweb() != null) {
+            System.out.println("2 if");
+            eventList = (ArrayList<EventEntity>) service.findByClassNameTestNameSyswebBetweenDates(getClazzName(), getTestName(), getSysweb(), getStartDate(), getEndDate());
+            return eventList;
+        } else if (getClazzName() != null && getTestName() != null) {
+            System.out.println("3 if");
+            eventList = (ArrayList<EventEntity>) service.findByClassNameTestNameBetweenDates(getClazzName(), getTestName(), getStartDate(), getEndDate());
+            return eventList;
+        } else if (getClazzName() != null) {
+            System.out.println("4 if");
+            eventList = (ArrayList<EventEntity>) service.findByClassNameBetweenDates(getClazzName(), getStartDate(), getEndDate());
+        }else if (getClazzName() == null && getTestName() == null && getSysweb() == null && getLocale() == null){
+            System.out.println("5 if");
+            eventList = (ArrayList<EventEntity>) service.findAll();
+        }
+        return eventList;
+    }
+
+    private void createBarChartByLocale() {
+        DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        /*EventService service = new EventService();    old variant*/
+        ArrayList<EventEntity> eventList = events;
+        /*eventList = (ArrayList<EventEntity>) service.findByTestNameBetweenDates(getTestName(), getStartDate(), getEndDate());     old variant*/
+
 //      here key is locale, value is count of failed test in this locale
         HashMap<String, Integer> map = new HashMap<>();
-        eventList.forEach(event->{
+        eventList.forEach(event -> {
             String locale = event.getLocaleByLocaleId().getLocale();
-            if (!map.containsKey(locale)){
+            if (!map.containsKey(locale)) {
                 map.put(locale, 1);
-            }else {
+            } else {
                 int count = map.get(locale) + 1;
                 map.put(locale, count);
             }
@@ -59,7 +120,7 @@ public class BuildDiagramView implements Serializable {
         /*System.out.println("map size =" + map.size());*/
 
         for (Map.Entry<String, Integer> entry : map.entrySet()) {
-            chartSeries  = new ChartSeries();
+            chartSeries = new ChartSeries();
             chartSeries.setLabel(entry.getKey() + " locale");
             chartSeries.set(entry.getKey(), entry.getValue());
             modelByLocale.addSeries(chartSeries);
@@ -68,22 +129,24 @@ public class BuildDiagramView implements Serializable {
         xAxis.setLabel("Locales");
         Axis yAxis = modelByLocale.getAxis(AxisType.Y);
         yAxis.setLabel("Count");
-        modelByLocale.setLegendPosition("ne");
-        modelByLocale.setTitle("Test: " + getTestName() + " failed by locales");
+        modelByLocale.setLegendPosition("e");
+        modelByLocale.setLegendPlacement(LegendPlacement.OUTSIDEGRID);
+        modelByLocale.setTitle("Failed tests for period: " + formatter.format(getStartDate()) + " - " + formatter.format(getEndDate()));
         modelByLocale.setAnimate(true);
     }
 
-    private void createBarChartBySysweb(){
-        EventService service = new EventService();
-        ArrayList<EventEntity> eventList;
-        eventList = (ArrayList<EventEntity>) service.findByTestNameBetweenDates(getTestName(), getStartDate(), getEndDate());
+    private void createBarChartBySysweb() {
+        DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        /*EventService service = new EventService();        old variant*/
+        ArrayList<EventEntity> eventList = getEvents();
+        /*ArrayList<EventEntity> eventList = (ArrayList<EventEntity>) service.findByTestNameBetweenDates(getTestName(), getStartDate(), getEndDate());  old variant */
 //      here key is locale, value is count of failed test in this locale
         HashMap<String, Integer> map = new HashMap<>();
-        eventList.forEach(event->{
+        eventList.forEach(event -> {
             String sysweb = event.getSyswebBySyswebId().getName();
-            if (!map.containsKey(sysweb)){
+            if (!map.containsKey(sysweb)) {
                 map.put(sysweb, 1);
-            }else {
+            } else {
                 int count = map.get(sysweb) + 1;
                 map.put(sysweb, count);
             }
@@ -94,7 +157,7 @@ public class BuildDiagramView implements Serializable {
         /*System.out.println("map size =" + map.size());*/
 
         for (Map.Entry<String, Integer> entry : map.entrySet()) {
-            chartSeries  = new ChartSeries();
+            chartSeries = new ChartSeries();
             chartSeries.setLabel(entry.getKey());
             chartSeries.set(entry.getKey(), entry.getValue());
             modelBySysweb.addSeries(chartSeries);
@@ -103,8 +166,9 @@ public class BuildDiagramView implements Serializable {
         xAxis.setLabel("Syswebs");
         Axis yAxis = modelBySysweb.getAxis(AxisType.Y);
         yAxis.setLabel("Count");
-        modelBySysweb.setLegendPosition("ne");
-        modelBySysweb.setTitle("Syswebs");
+        modelBySysweb.setLegendPosition("e");
+        modelBySysweb.setLegendPlacement(LegendPlacement.OUTSIDEGRID);
+        modelBySysweb.setTitle("Failed tests for period: " + formatter.format(getStartDate()) + " - " + formatter.format(getEndDate()));
         modelBySysweb.setAnimate(true);
     }
 
@@ -117,30 +181,30 @@ public class BuildDiagramView implements Serializable {
         Date endDate = getEndDate();
 
 //        Object where will be saved all data needed to build diagram (in this case date and count of failed tests)
-            LineChartSeries series = new LineChartSeries();
-            Calendar start = Calendar.getInstance();
-            start.setTime(startDate);
-            Calendar end = Calendar.getInstance();
-            end.setTime(endDate);
+        LineChartSeries series = new LineChartSeries();
+        Calendar start = Calendar.getInstance();
+        start.setTime(startDate);
+        Calendar end = Calendar.getInstance();
+        end.setTime(endDate);
 
 //        per day add to series date and count of failed tests
-            for (Date date = start.getTime(); start.before(end); start.add(Calendar.DATE, 1), date = start.getTime()) {
-                Date startt = (Date) date.clone();
-                Date endd = (Date) date.clone();
-                endd.setHours(23);
-                endd.setMinutes(59);
-                endd.setSeconds(59);
+        for (Date date = start.getTime(); start.before(end); start.add(Calendar.DATE, 1), date = start.getTime()) {
+            Date startt = (Date) date.clone();
+            Date endd = (Date) date.clone();
+            endd.setHours(23);
+            endd.setMinutes(59);
+            endd.setSeconds(59);
                 /*System.out.println("CURRENT ITERATION START DATE: " + startt);
                 System.out.println("CURRENT ITERATION END DATE: " + endd);*/
-                ArrayList<EventEntity> eventList;
-                eventList = (ArrayList<EventEntity>) service.findByTestNameBetweenDates(getTestName(), startt, endd);
-                series.set(formatter.format(startt), eventList.size());
+            ArrayList<EventEntity> eventList;
+            eventList = (ArrayList<EventEntity>) service.findByTestNameBetweenDates(getTestName(), startt, endd);
+            series.set(formatter.format(startt), eventList.size());
                 /*System.out.println(startt + ": " + eventList.size());*/
-            }
+        }
 
         lineChartModel = new LineChartModel();
         lineChartModel.addSeries(series);
-        lineChartModel.setTitle("Failed tests " + formatter.format(getStartDate()) + " - " + formatter.format(getEndDate()));
+        lineChartModel.setTitle("Failed tests for period: " + formatter.format(getStartDate()) + " - " + formatter.format(getEndDate()));
         lineChartModel.getAxis(AxisType.Y).setLabel("Count");
         DateAxis axis = new DateAxis("Dates");
         axis.setTickAngle(-50);
@@ -197,49 +261,56 @@ public class BuildDiagramView implements Serializable {
     }
 
     public boolean isTestNameChecked() {
+        System.out.println("get test name " + syswebChecked);
         return testNameChecked;
     }
 
     public void setTestNameChecked(boolean testNameChecked) {
+        System.out.println("set test name " + syswebChecked);
         this.testNameChecked = testNameChecked;
     }
 
     public boolean isSyswebChecked() {
+        System.out.println("get sysweb " + syswebChecked);
         return syswebChecked;
     }
 
     public void setSyswebChecked(boolean syswebChecked) {
+        System.out.println("set sysweb " + syswebChecked);
         this.syswebChecked = syswebChecked;
     }
 
     public boolean isLocaleChecked() {
+        System.out.println("get locale " + localeChecked);
         return localeChecked;
     }
 
     public void setLocaleChecked(boolean localeChecked) {
+        System.out.println("set locaele " + localeChecked);
         this.localeChecked = localeChecked;
     }
 
     public void clickBuildButton() {
-        /*System.out.println("click build button");*/
+        System.out.println("click build button");
         if (getStartDate() != null && getEndDate() != null &&
                 getTestName() != null && getSysweb() != null
-                 && getLocale() != null){
+                && getLocale() != null) {
+            events = getEvents();
             createLineChartByTestName();
             createBarChartBySysweb();
             createBarChartByLocale();
             clickedBuild = true;
         }
-        /*System.out.println("inputted test name: " + getTestName());
+        System.out.println("inputted test name: " + getTestName());
         System.out.println("inputted sysweb: " + getSysweb());
-        System.out.println("inputted locale: " + getLocale());*/
-        /*getStartDate();
-        getEndDate();*/
-        /*   Eshop buying     2017-01-26 17:58:32 start   2017-01-31 17:36:02 end */
+        System.out.println("inputted locale: " + getLocale());
+        System.out.println("inputted class name: " + getClazzName());
+        System.out.println("start date: " + getStartDate());
+        System.out.println("end date: " + getEndDate());
     }
 
-    public void clickHideButton(){
-            clickedBuild = false;
+    public void clickHideButton() {
+        clickedBuild = false;
     }
 
     public Date getStartDate() {
@@ -266,7 +337,47 @@ public class BuildDiagramView implements Serializable {
         return endDate;
     }
 
+    public HashSet<String> getSyswebs() {
+        return syswebs;
+    }
+
+    public void setSyswebs(HashSet<String> syswebs) {
+        this.syswebs = syswebs;
+    }
+
+    public HashSet<String> getTestNames() {
+        return testNames;
+    }
+
+    public void setTestNames(HashSet<String> testNames) {
+        this.testNames = testNames;
+    }
+
+    public HashSet<String> getLocales() {
+        return locales;
+    }
+
+    public void setLocales(HashSet<String> locales) {
+        this.locales = locales;
+    }
+
     public void setEndDate(Date endDate) {
         this.endDate = endDate;
+    }
+
+    public String getClazzName() {
+        return clazzName;
+    }
+
+    public void setClazzName(String clazzName) {
+        this.clazzName = clazzName;
+    }
+
+    public HashSet<String> getClazzNames() {
+        return clazzNames;
+    }
+
+    public void setClazzNames(HashSet<String> clazzNames) {
+        this.clazzNames = clazzNames;
     }
 }
