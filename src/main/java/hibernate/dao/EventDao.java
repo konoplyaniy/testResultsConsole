@@ -76,6 +76,63 @@ public class EventDao extends BaseDao<Integer, EventEntity> {
         return (List<EventEntity>) query.list();
     }
 
+    public List<EventEntity> findByClassNameBetweenDates(String clazzName, Date startDate, Date endDate) {
+        Query query = getCurrentSession().createQuery("from EventEntity " +
+                "where testByTestId.clazzByClassId.name =:clazzName and data between :startDate and :endDate");
+        query.setCacheMode(CacheMode.IGNORE);
+        query.setParameter("clazzName", clazzName);
+        query.setParameter("startDate", startDate);
+        query.setParameter("endDate", endDate);
+        return (List<EventEntity>) query.list();
+    }
+
+    public List<EventEntity> findByClassNameTestNameBetweenDates(String clazzName, String testName, Date startDate, Date endDate) {
+        Query query = getCurrentSession().createQuery("from EventEntity " +
+                "where testByTestId.clazzByClassId.name =:clazzName " +
+                "and testByTestId.name =:testName " +
+                "and data between :startDate and :endDate");
+        query.setCacheMode(CacheMode.IGNORE);
+        query.setParameter("clazzName", clazzName);
+        query.setParameter("testName", testName);
+        query.setParameter("startDate", startDate);
+        query.setParameter("endDate", endDate);
+        return (List<EventEntity>) query.list();
+    }
+
+    public List<EventEntity> findByClassNameTestNameSyswebBetweenDates(String clazzName, String testName, String sysweb, Date startDate, Date endDate) {
+        Query query = getCurrentSession().createQuery("from EventEntity " +
+                "where testByTestId.clazzByClassId.name =:clazzName " +
+                "and testByTestId.name =:testName " +
+                "and syswebBySyswebId.name =:sysweb " +
+                "and data between :startDate and :endDate");
+        query.setCacheMode(CacheMode.IGNORE);
+        query.setParameter("clazzName", clazzName);
+        query.setParameter("testName", testName);
+        query.setParameter("sysweb", sysweb);
+        query.setParameter("startDate", startDate);
+        query.setParameter("endDate", endDate);
+        return (List<EventEntity>) query.list();
+    }
+
+    public List<EventEntity> findByClassNameTestNameSyswebLocaleBetweenDates(String clazzName, String testName, String sysweb,
+                                                                             String locale, Date startDate, Date endDate) {
+        Query query = getCurrentSession().createQuery("from EventEntity " +
+                "where testByTestId.clazzByClassId.name =:clazzName " +
+                "and testByTestId.name =:testName " +
+                "and syswebBySyswebId.name =:sysweb " +
+                "and localeByLocaleId.locale =:locale " +
+                "and data between :startDate and :endDate");
+        query.setCacheMode(CacheMode.IGNORE);
+        query.setParameter("clazzName", clazzName);
+        query.setParameter("testName", testName);
+        query.setParameter("sysweb", sysweb);
+        query.setParameter("locale", locale);
+        query.setParameter("startDate", startDate);
+        query.setParameter("endDate", endDate);
+        return (List<EventEntity>) query.list();
+    }
+
+
     public List<EventEntity> findBySyswebTestNameBetweenDates(String sysweb, String testName, Date startDate, Date endDate) {
         Query query = getCurrentSession().createQuery("from EventEntity " +
                 "where syswebBySyswebId.name =:sysweb " +

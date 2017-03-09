@@ -154,6 +154,42 @@ public class EventService {
         return result;
     }
 
+    public List<EventEntity> findByClassNameBetweenDates(String clazzName, Date startDate, Date endDate) {
+        eventDao.openCurrentSession();
+        List<EventEntity> result = eventDao
+                .findByClassNameBetweenDates(clazzName, startDate, endDate);
+        eventDao.closeCurrentSession();
+        return result;
+    }
+
+    public List<EventEntity> findByClassNameTestNameBetweenDates(String clazzName, String testName,
+                                                                 Date startDate, Date endDate) {
+        eventDao.openCurrentSession();
+        List<EventEntity> result = eventDao
+                .findByClassNameTestNameBetweenDates(clazzName, testName, startDate, endDate);
+        eventDao.closeCurrentSession();
+        return result;
+    }
+
+    public List<EventEntity> findByClassNameTestNameSyswebBetweenDates(String clazzName, String testName, String sysweb,
+                                                                       Date startDate, Date endDate) {
+        eventDao.openCurrentSession();
+        List<EventEntity> result = eventDao
+                .findByClassNameTestNameSyswebBetweenDates(clazzName, testName, sysweb, startDate, endDate);
+        eventDao.closeCurrentSession();
+        return result;
+    }
+
+
+    public List<EventEntity> findByClassNameTestNameSyswebLocaleBetweenDates(String clazzName, String testName, String sysweb,
+                                                                             String locale, Date startDate, Date endDate) {
+        eventDao.openCurrentSession();
+        List<EventEntity> result = eventDao
+                .findByClassNameTestNameSyswebLocaleBetweenDates(clazzName, testName, sysweb, locale, startDate, endDate);
+        eventDao.closeCurrentSession();
+        return result;
+    }
+
     public List<EventEntity> findAllChecked() {
         eventDao.openCurrentSession();
         List<EventEntity> result = eventDao.findOnlyChecked();
