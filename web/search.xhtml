@@ -14,410 +14,165 @@
         <ui:include src="resources/templates/headers.xhtml"/>
     </ui:insert>
 
-    <p:accordionPanel id="accordion_panel">
-
-        <!--SEARCH BY DATE -->
-
-        <p:tab title="Search by date" id="search_tab">
-            <h:form id="form">
-                <p:panel id="panel4" style="margin-bottom:10px;">
-                    <h:panelGrid columns="2" cellpadding="5">
-                        <p:outputLabel for="datetime" value="Start Date:"/>
-                        <p:calendar id="datetime"
-                                    value="#{searchView.startDate}"
-                                    pattern="MM-dd-yyyy HH:mm:ss"/>
-                        <p:outputLabel for="datetime" value="End Date:"/>
-                        <p:calendar id="datetime2" value="#{searchView.endDate}" pattern="MM-dd-yyyy HH:mm:ss"/>
-                    </h:panelGrid>
-                    <p:commandButton value="Submit"
-                                     update=":accordion_panel:search_result"
-                                     actionListener="#{searchView.click}" icon="ui-icon-check"
-                                     id="submit_button">
+    <p:panel header="Select options for search">
+        <h:form id="options_form">
+            <div class="ui-g">
+                <div class="ui-g-2">
+                    <p:outputLabel for="startDate" value="Start Date"/><br></br>
+                    <p:calendar id="startDate"
+                                styleClass="MyCalendarClass"
+                                required="true"
+                                value="#{searchView.startDate}"
+                                pattern="MM-dd-yyyy HH:mm:ss"
+                                placeholder="Start Date"/>
+                </div>
+                <div class="ui-g-2">
+                    <p:outputLabel for="endDate" value="End Date"/><br></br>
+                    <p:calendar id="endDate"
+                                required="true"
+                                styleClass="MyCalendarClass"
+                                value="#{searchView.endDate}"
+                                pattern="MM-dd-yyyy HH:mm:ss"
+                                placeholder="End Date"/>
+                </div>
+                <div class="ui-g-2">
+                    <p:outputLabel for="classNameDropDown" value="Class name"/><br></br>
+                    <p:selectOneMenu id="classNameDropDown" value="#{searchView.clazzName}" effect="fold"
+                                     editable="true" styleClass="MyDropDown">
+                        <f:selectItem itemLabel="" itemValue="" noSelectionOption="true"/>
+                        <f:selectItems value="#{searchView.clazzNames}"/>
+                    </p:selectOneMenu>
+                </div>
+                <div class="ui-g-2">
+                    <p:outputLabel for="testNameDropDown" value="Test name"/><br></br>
+                    <p:selectOneMenu id="testNameDropDown" value="#{searchView.testName}" effect="fold"
+                                     editable="true" styleClass="MyDropDown">
+                        <f:selectItem itemLabel="" itemValue="All"/>
+                        <f:selectItems value="#{searchView.testNames}"/>
+                    </p:selectOneMenu>
+                </div>
+                <div class="ui-g-2">
+                    <p:outputLabel for="syswebDropDown" value="Sysweb"/><br></br>
+                    <p:selectOneMenu id="syswebDropDown" value="#{searchView.sysweb}" effect="fold"
+                                     editable="true" styleClass="MyDropDown">
+                        <f:selectItem itemLabel="" itemValue="All"/>
+                        <f:selectItems value="#{searchView.syswebs}"/>
+                    </p:selectOneMenu>
+                </div>
+                <div class="ui-g-2">
+                    <p:outputLabel for="localeDropDown" value="Locale"/><br></br>
+                    <p:selectOneMenu id="localeDropDown" value="#{searchView.locale}" effect="fold"
+                                     editable="true" styleClass="MyDropDown">
+                        <f:selectItem itemLabel="" itemValue="All"/>
+                        <f:selectItems value="#{searchView.locales}"/>
+                    </p:selectOneMenu>
+                </div>
+                <div>
+                    <p:commandButton value="Build" id="submitButton" icon="ui-icon-circle-triangle-e"
+                                     style="height: 40px; padding: 5px !important; border: none"
+                                     update="search_result"
+                                     action="#{searchView.clickSearchButton()}">
                     </p:commandButton>
+                </div>
+            </div>
+        </h:form>
+        <!--POPUP WITH CALENDAR-->
+        <p:dialog modal="true" resizable="false" header="Values" widgetVar="dlg" showEffect="fold"
+                  rendered="">
 
-                    <h:form>
-                        <h:commandLink>
-                            <p:graphicImage value="/resources/images/xls.png"/>
-                            <p:dataExporter type="xls" postProcessor="#{eventTableExporter.postProcessXLS}"
-                                            target=":accordion_panel:event_form" fileName="myexcel"/>
-                        </h:commandLink>
-                        <h:commandLink>
-                            <p:graphicImage value="/resources/images/pdf.png"/>
-                            <p:dataExporter type="pdf" target=":accordion_panel:event_form" fileName="mypdf"/>
-                        </h:commandLink>
-                    </h:form>
-                </p:panel>
+            <p:panelGrid id="display" columns="2" columnClasses="label,value">
+                <h:outputText value="Datetime start:"/>
+                <h:outputText value="#{buildDiagramView.startDate}">
+                    <f:convertDateTime pattern="MM-dd-yyyy HH:mm:ss"/>
+                </h:outputText>
+                <h:outputText value="Datetime end:"/>
+                <h:outputText value="#{buildDiagramView.endDate}">
+                    <f:convertDateTime pattern="MM-dd-yyyy HH:mm:ss"/>
+                </h:outputText>
+            </p:panelGrid>
+        </p:dialog>
+        <!--SEARH RESULTS-->
+        <h:panelGroup id="search_result">
+            <p:dataTable id="event_form"
+                         scrollable="true" scrollHeight="300"
+                         var="event"
+                         value="#{searchView.resultEventsList}"
+                         rendered="#{searchView.visibleResultsForm}"
+                         rowIndexVar="rCount"
+                         style="margin-bottom:15px">
 
-                <!--Popup with calendar-->
+                <!--SEARCH RESULTS HEADER-->
+                <f:facet name="header">
+                    <h:outputText value="Search results for period: " style="font-size: large"/>
+                    <h:outputText value="#{searchView.startDate}" style="font-size: large">
+                        <f:convertDateTime pattern="yyyy-MM-dd HH:mm:ss"/>
+                    </h:outputText>
+                    <h:outputText value=" - "/>
+                    <h:outputText value="#{searchView.endDate}" style="font-size: large">
+                        <f:convertDateTime pattern="yyyy-MM-dd HH:mm:ss"/>
+                    </h:outputText>
+                </f:facet>
+                <!--END-->
 
-                <p:dialog modal="true" resizable="false" header="Values" widgetVar="dlg" showEffect="fold"
-                          rendered="">
-
-                    <p:panelGrid id="display" columns="2" columnClasses="label,value">
-                        <h:outputText value="Datetime start:"/>
-                        <h:outputText value="#{searchView.startDate}">
-                            <f:convertDateTime pattern="MM-dd-yyyy HH:mm:ss"/>
-                        </h:outputText>
-                        <h:outputText value="Datetime end:"/>
-                        <h:outputText value="#{searchView.endDate}">
-                            <f:convertDateTime pattern="MM-dd-yyyy HH:mm:ss"/>
-                        </h:outputText>
-                    </p:panelGrid>
-                </p:dialog>
-            </h:form>
-
-            <!--FORM FOR SERARCH BEETWEN DATES-->
-
-            <h:panelGroup id="search_result">
-                <p:dataTable id="event_form"
-                             scrollable="true" scrollHeight="300"
-                             var="event"
-                             value="#{searchView.eventsByDate}"
-                             rendered="#{searchView.visibleBetweenDates}"
-                             rowIndexVar="rCount"
-                             style="margin-bottom:15px">
-
-                    <!--SEARCH RESULTS HEADER-->
+                <p:column style="width: 20px;">
                     <f:facet name="header">
-                        <h:outputText value="Search results for period: " style="font-size: large"/>
-                        <h:outputText value="#{searchView.startDate}" style="font-size: large">
-                            <f:convertDateTime pattern="yyyy-MM-dd HH:mm:ss"/>
-                        </h:outputText>
-                        <h:outputText value=" - "/>
-                        <h:outputText value="#{searchView.endDate}" style="font-size: large">
-                            <f:convertDateTime pattern="yyyy-MM-dd HH:mm:ss"/>
-                        </h:outputText>
+                        <h:outputText value="№"/>
                     </f:facet>
-                    <!--END-->
-
-                    <p:column style="width: 20px;">
-                        <f:facet name="header">
-                            <h:outputText value="№"/>
-                        </f:facet>
-                        <h:outputText value="#{rCount + 1}"/>
-                    </p:column>
-                    <p:column sortBy="#{event.data}">
-                        <f:facet name="header">
-                            <h:outputText value="Date"/>
-                        </f:facet>
-                        <h:outputText value="#{event.data}"/>
-                    </p:column>
-                    <p:column>
-                        <f:facet name="header">
-                            <h:outputText value="Locale"/>
-                        </f:facet>
-                        <h:outputText value="#{event.localeByLocaleId.locale}"/>
-                    </p:column>
-
-                    <p:column>
-                        <f:facet name="header">
-                            <h:outputText value="Class name"/>
-                        </f:facet>
-                        <h:outputText var="id" value="#{event.testByTestId.clazzByClassId.name}"/>
-                    </p:column>
-                    <p:column>
-                        <f:facet name="header">
-                            <h:outputText value="Group name"/>
-                        </f:facet>
-                        <h:outputText var="id" value="#{event.testByTestId.groupByGroupId.name}"/>
-                    </p:column>
-                    <p:column>
-                        <f:facet name="header">
-                            <h:outputText value="Sysweb"/>
-                        </f:facet>
-                        <h:outputText value="#{event.syswebBySyswebId.name}"/>
-                    </p:column>
-                    <p:column>
-                        <f:facet name="header">
-                            <h:outputText value="Params"/>
-                        </f:facet>
-                        <h:outputText value="#{event.params}"/>
-                    </p:column>
-                    <p:column>
-                        <f:facet name="header">
-                            <h:outputText value="URL"/>
-                        </f:facet>
-                        <h:outputText value="#{event.url}"/>
-                    </p:column>
-                </p:dataTable>
-            </h:panelGroup>
-        </p:tab>
-        <p:tab title="Search by Test name" id="search_testName">
-
-            <!--FORM FOR SEARCH BY TEST NAME-->
-
-            <p:panel id="panel" style="margin-bottom:10px;">
-                <h:form id="search_testName_form">
-                    <h:panelGrid columns="2" cellpadding="5">
-                        <p:outputLabel for="testNameSearchField" value="Input test name:"/>
-                        <p:inputText id="testNameSearchField" required="true" value="#{searchView.testName}"
-                                     style="width: 300px">
-                            <f:validateLength minimum="5"/>
-                        </p:inputText>
-                    </h:panelGrid>
-                    <p:commandButton value="Submit"
-                                     action="#{searchView.searchTest()}"
-                                     update=":accordion_panel:search_result_testName">
-                        <f:ajax render="testNameSearchField" execute="@form"/>
-                    </p:commandButton>
-                </h:form>
-            </p:panel>
-
-            <!--RESULTS TABLE FOR SEARCH BY TEST NAME-->
-
-            <h:panelGroup id="search_result_testName">
-                <p:dataTable
-                        scrollable="true" scrollHeight="300"
-                        var="event"
-                        value="#{searchView.eventsTest}"
-                        rendered="#{searchView.visibleTestForm}"
-                        rowIndexVar="rCount"
-                        style="margin-bottom:15px">
-
-                    <!--SEARCH RESULTS HEADER-->
+                    <h:outputText value="#{rCount + 1}"/>
+                </p:column>
+                <p:column sortBy="#{event.data}">
                     <f:facet name="header">
-                        <h:outputText value="Search results test name: " style="font-size: large"/>
-                        <h:outputText value="#{searchView.testName}" style="font-size: large">
-                        </h:outputText>
+                        <h:outputText value="Date"/>
                     </f:facet>
-                    <!--END-->
-
-                    <p:column style="width: 20px;">
-                        <f:facet name="header">
-                            <h:outputText value="№"/>
-                        </f:facet>
-                        <h:outputText value="#{rCount + 1}"/>
-                    </p:column>
-                    <p:column sortBy="#{event.data}">
-                        <f:facet name="header">
-                            <h:outputText value="Date"/>
-                        </f:facet>
-                        <h:outputText value="#{event.data}"/>
-                    </p:column>
-                    <p:column>
-                        <f:facet name="header">
-                            <h:outputText value="Locale"/>
-                        </f:facet>
-                        <h:outputText value="#{event.localeByLocaleId.locale}"/>
-                    </p:column>
-                    <p:column>
-                        <f:facet name="header">
-                            <h:outputText value="Class name"/>
-                        </f:facet>
-                        <h:outputText var="id" value="#{event.testByTestId.clazzByClassId.name}"/>
-                    </p:column>
-                    <p:column>
-                        <f:facet name="header">
-                            <h:outputText value="Test name"/>
-                        </f:facet>
-                        <h:outputText var="id" value="#{event.testByTestId.name} "/>
-                    </p:column>
-                    <p:column>
-                        <f:facet name="header">
-                            <h:outputText value="Sysweb"/>
-                        </f:facet>
-                        <h:outputText value="#{event.syswebBySyswebId.name}"/>
-                    </p:column>
-                    <p:column>
-                        <f:facet name="header">
-                            <h:outputText value="Params"/>
-                        </f:facet>
-                        <h:outputText value="#{event.params}"/>
-                    </p:column>
-                    <p:column>
-                        <f:facet name="header">
-                            <h:outputText value="URL"/>
-                        </f:facet>
-                        <h:outputText value="#{event.url}"/>
-                    </p:column>
-                </p:dataTable>
-            </h:panelGroup>
-        </p:tab>
-        <p:tab title="Search by Locale" id="search_locale">
-
-            <!--FORM FOR SEARCH BY LOCALE-->
-
-            <p:panel id="pane4" style="margin-bottom:10px;">
-                <h:form id="search_locale_form">
-                    <h:panelGrid columns="2" cellpadding="5">
-                        <p:outputLabel for="localeSearchField" value="Input locale:"/>
-                        <p:inputText id="localeSearchField" required="true" value="#{searchView.locale}"
-                                     style="width: 300px">
-                            <f:validateLength minimum="5"/>
-                        </p:inputText>
-                    </h:panelGrid>
-                    <p:commandButton value="Submit"
-                                     action="#{searchView.searchLocale()}"
-                                     update=":accordion_panel:search_result_locale">
-                        <f:ajax render="localeSearchField" execute="@form"/>
-                    </p:commandButton>
-                </h:form>
-            </p:panel>
-
-            <!--RESULTS TABLE FOR SEARCH BY LOCALE-->
-
-            <h:panelGroup id="search_result_locale">
-                <p:dataTable
-                        scrollable="true" scrollHeight="300"
-                        var="event"
-                        value="#{searchView.eventsLocale}"
-                        rendered="#{searchView.visibleLocaleForm}"
-                        rowIndexVar="rCount"
-                        style="margin-bottom:15px">
-
-                    <!--SEARCH RESULTS HEADER-->
+                    <h:outputText value="#{event.data}">
+                        <f:convertDateTime pattern="MM-dd-yyyy HH:mm:ss"/>
+                    </h:outputText>
+                </p:column>
+                <p:column sortBy="#{event.localeByLocaleId.locale}">
                     <f:facet name="header">
-                        <h:outputText value="Search results for locale: " style="font-size: large"/>
-                        <h:outputText value="#{searchView.locale}" style="font-size: large">
-                        </h:outputText>
+                        <h:outputText value="Locale"/>
                     </f:facet>
-                    <!--END-->
-
-                    <p:column style="width: 20px;">
-                        <f:facet name="header">
-                            <h:outputText value="№"/>
-                        </f:facet>
-                        <h:outputText value="#{rCount + 1}"/>
-                    </p:column>
-                    <p:column sortBy="#{event.data}">
-                        <f:facet name="header">
-                            <h:outputText value="Date"/>
-                        </f:facet>
-                        <h:outputText value="#{event.data}"/>
-                    </p:column>
-                    <p:column>
-                        <f:facet name="header">
-                            <h:outputText value="Locale"/>
-                        </f:facet>
-                        <h:outputText value="#{event.localeByLocaleId.locale}"/>
-                    </p:column>
-                    <p:column>
-                        <f:facet name="header">
-                            <h:outputText value="PC"/>
-                        </f:facet>
-                        <h:outputText value="#{event.pcByPcId.name} #{event.pcByPcId.os}"/>
-                    </p:column>
-                    <p:column>
-                        <f:facet name="header">
-                            <h:outputText value="Class name"/>
-                        </f:facet>
-                        <h:outputText var="id" value="#{event.testByTestId.clazzByClassId.name}"/>
-                    </p:column>
-                    <p:column>
-                        <f:facet name="header">
-                            <h:outputText value="Test name"/>
-                        </f:facet>
-                        <h:outputText var="id" value="#{event.testByTestId.name} "/>
-                    </p:column>
-                    <p:column>
-                        <f:facet name="header">
-                            <h:outputText value="Sysweb"/>
-                        </f:facet>
-                        <h:outputText value="#{event.syswebBySyswebId.name}"/>
-                    </p:column>
-                    <p:column>
-                        <f:facet name="header">
-                            <h:outputText value="Params"/>
-                        </f:facet>
-                        <h:outputText value="#{event.params}"/>
-                    </p:column>
-                    <p:column>
-                        <f:facet name="header">
-                            <h:outputText value="URL"/>
-                        </f:facet>
-                        <h:outputText value="#{event.url}"/>
-                    </p:column>
-                </p:dataTable>
-            </h:panelGroup>
-        </p:tab>
-
-        <p:tab title="Search by Sysweb" id="search_sysweb">
-
-            <!--FORM FOR SEARCH BY SYSWEB-->
-
-            <p:panel id="panel2" style="margin-bottom:10px;">
-                <h:form id="search_sysweb_form">
-                    <h:panelGrid columns="2" cellpadding="5">
-                        <p:outputLabel for="syswebSearchField" value="Input Sysweb:"/>
-                        <p:inputText id="syswebSearchField" required="true" value="#{searchView.sysweb}"
-                                     style="width: 300px">
-                            <f:validateLength minimum="5"/>
-                        </p:inputText>
-                    </h:panelGrid>
-                    <p:commandButton value="Submit"
-                                     action="#{searchView.searchSysweb()}"
-                                     update=":accordion_panel:search_result_sysweb">
-                        <f:ajax render="syswebSearchField" execute="@form"/>
-                    </p:commandButton>
-                </h:form>
-            </p:panel>
-
-            <!--RESULTS TABLE FOR SEARCH BY SYSWEB-->
-
-            <h:panelGroup id="search_result_sysweb">
-                <p:dataTable
-                        var="event"
-                        scrollable="true" scrollHeight="300"
-                        value="#{searchView.eventSysweb}"
-                        rendered="#{searchView.visibleSyswebForm}"
-                        rowIndexVar="rCount"
-                        style="margin-bottom:15px">
-
-                    <!--SEARCH RESULTS HEADER-->
+                    <h:outputText value="#{event.localeByLocaleId.locale}"/>
+                </p:column>
+                <p:column sortBy="#{event.testByTestId.clazzByClassId.name}">
                     <f:facet name="header">
-                        <h:outputText value="Search results sysweb: " style="font-size: large"/>
-                        <h:outputText value="#{searchView.sysweb}" style="font-size: large">
-                        </h:outputText>
+                        <h:outputText value="Class name"/>
                     </f:facet>
-                    <!--END-->
+                    <h:outputText var="id" value="#{event.testByTestId.clazzByClassId.name}"/>
+                </p:column>
+                <p:column sortBy="#{event.testByTestId.name}">
+                    <f:facet name="header">
+                        <h:outputText value="Test name"/>
+                    </f:facet>
+                    <h:outputText var="id" value="#{event.testByTestId.name}"/>
+                </p:column>
+                <p:column>
+                    <f:facet name="header">
+                        <h:outputText value="Group name"/>
+                    </f:facet>
+                    <h:outputText var="id" value="#{event.testByTestId.groupByGroupId.name}"/>
+                </p:column>
+                <p:column sortBy="#{event.syswebBySyswebId.name}">
+                    <f:facet name="header">
+                        <h:outputText value="Sysweb"/>
+                    </f:facet>
+                    <h:outputText value="#{event.syswebBySyswebId.name}"/>
+                </p:column>
+                <p:column>
+                    <f:facet name="header">
+                        <h:outputText value="Params"/>
+                    </f:facet>
+                    <h:outputText value="#{event.params}"/>
+                </p:column>
+                <p:column>
+                    <f:facet name="header">
+                        <h:outputText value="URL"/>
+                    </f:facet>
+                    <h:outputText value="#{event.url}"/>
+                </p:column>
+            </p:dataTable>
+        </h:panelGroup>
+    </p:panel>
 
-
-                    <p:column style="width: 20px;">
-                        <f:facet name="header">
-                            <h:outputText value="№"/>
-                        </f:facet>
-                        <h:outputText value="#{rCount + 1}"/>
-                    </p:column>
-                    <p:column sortBy="#{event.data}">
-                        <f:facet name="header">
-                            <h:outputText value="Date"/>
-                        </f:facet>
-                        <h:outputText value="#{event.data}"/>
-                    </p:column>
-                    <p:column>
-                        <f:facet name="header">
-                            <h:outputText value="Locale"/>
-                        </f:facet>
-                        <h:outputText value="#{event.localeByLocaleId.locale}"/>
-                    </p:column>
-                    <p:column>
-                        <f:facet name="header">
-                            <h:outputText value="Class name"/>
-                        </f:facet>
-                        <h:outputText var="id" value="#{event.testByTestId.clazzByClassId.name}"/>
-                    </p:column>
-                    <p:column>
-                        <f:facet name="header">
-                            <h:outputText value="Test name"/>
-                        </f:facet>
-                        <h:outputText var="id" value="#{event.testByTestId.name} "/>
-                    </p:column>
-                    <p:column>
-                        <f:facet name="header">
-                            <h:outputText value="Params"/>
-                        </f:facet>
-                        <h:outputText value="#{event.params}"/>
-                    </p:column>
-                    <p:column>
-                        <f:facet name="header">
-                            <h:outputText value="URL"/>
-                        </f:facet>
-                        <h:outputText value="#{event.url}"/>
-                    </p:column>
-                </p:dataTable>
-            </h:panelGroup>
-        </p:tab>
-
-    </p:accordionPanel>
 </h:body>
 </html>
