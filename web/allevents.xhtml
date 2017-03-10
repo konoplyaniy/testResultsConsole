@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
+      xmlns:pe="http://primefaces.org/ui/extensions"
+>
+<h:head>
+    <h:outputStylesheet library="css" name="styles.css"/>
+</h:head>
+<h:body>
+    <title>Dreamscape Networks | QA | Event table</title>
+    <ui:insert name="header">
+        <ui:include src="resources/templates/headers.xhtml"/>
+    </ui:insert>
+
+    <h:form id="event_form">
+        <p:dataTable id="event_table" var="event"
+                     stickyHeader="true"
+                     rowKey="#{event.data}"
+                     value="#{eventTableExporter.eventByLocale}">
+
+            <!--EXPORTERS NOT WORKING FOR SUBTABLES-->
+            <f:facet name="{Exporters}">
+                <h:commandLink>
+                    <p:graphicImage value="/resources/images/xls.png" width="32"/>
+                    <p:dataExporter type="xls" target=":event_form:event_table" fileName="eventsXls"
+                                    postProcessor="#{eventTableExporter.postProcessXLS}"/>
+                </h:commandLink>
+                <h:commandLink>
+                    <p:graphicImage value="/resources/images/pdf.png" width="32"/>
+                    <p:dataExporter type="pdf" target=":event_form:event_table" fileName="eventsPdf"
+                                    postProcessor="#{eventTableExporter.postProcessXLS}" subTable="true"/>
+                </h:commandLink>
+            </f:facet>
+            <!--EXPORTERS END-->
+
+            <f:facet name="header">
+                Failed tests for crazydomain.com.au
+            </f:facet>
+
+            <p:columnGroup type="header">
+                <p:row>
+                    <p:column headerText="Date" style="width: 120px"/>
+                    <p:column headerText="Class name"/>
+                    <p:column headerText="Group name"/>
+                    <p:column headerText="Test name"/>
+                    <p:column headerText="Sysweb" style="width: 175px"/>
+                    <p:column headerText="Params"/>
+                    <p:column headerText="URL"/>
+                    <p:column style="width: 80px;" headerText="Status"/>
+                </p:row>
+            </p:columnGroup>
+
+            <p:subTable var="eventComAuLocale" value="#{event.events}" id="subTable">
+                <f:facet name="header">
+                    <h:outputText value="#{event.locale}"/>
+                </f:facet>
+                <p:column sortBy="#{eventComAuLocale.data}"
+                          style="width: 120px">
+                    <h:outputText value="#{eventComAuLocale.data}">
+                        <f:convertDateTime pattern="yyyy-MM-dd HH:mm:ss"/>
+                    </h:outputText>
+                </p:column>
+
+                <p:column>
+                    <h:outputText var="id" value="#{eventComAuLocale.testByTestId.clazzByClassId.name}"/>
+                </p:column>
+
+                <p:column>
+                    <h:outputText var="id" value="#{eventComAuLocale.testByTestId.groupByGroupId.name}"/>
+                </p:column>
+
+                <p:column>
+                    <h:outputText var="id" value="#{eventComAuLocale.testByTestId.name} "/>
+                </p:column>
+
+                <p:column>
+                    <h:outputText value="#{eventComAuLocale.syswebBySyswebId.name}"/>
+                </p:column>
+
+                <p:column>
+                    <h:outputText value="#{eventComAuLocale.params}"/>
+                </p:column>
+
+                <p:column>
+                    <p:link value="#{eventComAuLocale.url}" href="#{eventComAuLocale.url}" style="color: blue"/>
+                </p:column>
+
+                <p:column style="width: 80px;"
+                          sortBy="#{eventComAuLocale.checked}">
+                    <h:outputText value="#{eventTableExporter.getCheckFlag(eventComAuLocale)}"/>
+                </p:column>
+
+
+                <p:columnGroup type="footer">
+                    <p:row>
+                        <p:column footerText="" style="text-align:right"/>
+                        <p:column footerText="" style="text-align:right"/>
+                        <p:column footerText="" style="text-align:right"/>
+                        <p:column footerText="" style="text-align:right"/>
+                        <p:column footerText="" style="text-align:right"/>
+                        <p:column footerText="" style="text-align:right"/>
+                        <p:column footerText="Total failed: " style="text-align:left; font-size: 16px"/>
+                        <p:column footerText="#{event.failedTestsCount}" style="text-align:left; font-size: 16px"/>
+                    </p:row>
+                </p:columnGroup>
+            </p:subTable>
+        </p:dataTable>
+    </h:form>
+</h:body>
+</html>
