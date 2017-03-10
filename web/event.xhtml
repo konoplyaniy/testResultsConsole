@@ -3,9 +3,11 @@
         "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:h="http://java.sun.com/jsf/html" xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
       xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:c="http://java.sun.com/jsp/jstl/core">
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
+>
 <h:head>
     <h:outputStylesheet library="css" name="styles.css"/>
 </h:head>
@@ -14,12 +16,13 @@
     <ui:insert name="header">
         <ui:include src="resources/templates/headers.xhtml"/>
     </ui:insert>
+
     <h:form id="event_form">
         <p:dataTable id="event_table" var="event"
                      stickyHeader="true"
                      rowKey="#{event.data}"
                      value="#{eventTableExporter.events}"
-                     paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {ColumnSelector}"
+                     paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {ColumnSelector} {Exporters}"
                      paginator="true"
                      currentPageReportTemplate="(Displaying {startRecord} - {endRecord} of {totalRecords}, Page: {currentPage}/{totalPages})"
                      rowIndexVar="rCount"
@@ -28,29 +31,27 @@
                      style="margin-bottom:15px"
                      widgetVar="eventTable"
                      selection="#{eventTableExporter.selectedEvents}">
-
             <f:facet name="{Exporters}">
                 <h:commandLink>
                     <p:graphicImage value="/resources/images/xls.png" width="32"/>
-                    <p:dataExporter type="xls" target="event_form" fileName="eventsXls"
+                    <p:dataExporter type="xls" target="event_table" fileName="eventsXls"
                                     postProcessor="#{eventTableExporter.postProcessXLS}"/>
                 </h:commandLink>
                 <h:commandLink>
                     <p:graphicImage value="/resources/images/pdf.png" width="32"/>
-                    <p:dataExporter type="pdf" target="event_form" fileName="eventsPdf"
+                    <p:dataExporter type="pdf" target="event_table" fileName="eventsPdf"
                                     postProcessor="#{eventTableExporter.postProcessXLS}"/>
                 </h:commandLink>
             </f:facet>
-
 
             <f:facet name="{ColumnSelector}" id="columnSelector">
                 <p:commandButton id="toggler" type="button" value="Select columns"
                                  style="float:right;
                                  background-color: gray;"
-                                 icon="ui-icon-calculator" />
+                                 icon="ui-icon-calculator"/>
                 <p:columnToggler id="columnTogler"
                                  datasource="event_table"
-                                 trigger="toggler" />
+                                 trigger="toggler"/>
             </f:facet>
 
             <f:facet name="header">
@@ -64,43 +65,19 @@
                 <h:outputText value="#{rCount + 1}"/>
             </p:column>
             <p:column sortBy="#{event.data}"
-                      style="width: auto">
+                      style="width: 120px">
                 <f:facet name="header">
                     <h:outputText value="Date"/>
                 </f:facet>
 
                 <h:outputText value="#{event.data}">
-                    <f:convertDateTime pattern="yyyy-MM-dd HH:mm:ss" />
+                    <f:convertDateTime pattern="yyyy-MM-dd HH:mm:ss"/>
                 </h:outputText>
             </p:column>
-
             <p:column headerText="Locale"
-                      style="width: 120px;"
-                      sortBy="#{event.localeByLocaleId.locale}"
-                      filterBy="#{event.localeByLocaleId.locale}"
-                      filterMatchMode="exact">
-
-                <f:facet name="filter">
-                    <p:selectOneMenu onchange="PF('eventTable').filter()"  >
-                        <f:selectItem itemLabel="Select" itemValue="#{null}" noSelectionOption="true" />
-                        <f:selectItems value="#{eventTableExporter.locales}" />
-                    </p:selectOneMenu>
-                </f:facet>
-
+                      style="width: 120px; height: 20px;"
+                      sortBy="#{event.localeByLocaleId.locale}">
                 <h:outputText value="#{event.localeByLocaleId.locale}"/>
-            </p:column>
-            <p:column>
-                <f:facet name="header">
-
-                    <h:outputText value="Browser"/>
-                </f:facet>
-                <h:outputText value="#{event.browserByBrowserId.browser}"/>
-            </p:column>
-            <p:column>
-                <f:facet name="header">
-                    <h:outputText value="PC"/>
-                </f:facet>
-                <h:outputText value="#{event.pcByPcId.name} #{event.pcByPcId.os}"/>
             </p:column>
             <p:column>
                 <f:facet name="header">
@@ -108,35 +85,30 @@
                 </f:facet>
                 <h:outputText var="id" value="#{event.testByTestId.clazzByClassId.name}"/>
             </p:column>
-
             <p:column>
                 <f:facet name="header">
                     <h:outputText value="Group name"/>
                 </f:facet>
                 <h:outputText var="id" value="#{event.testByTestId.groupByGroupId.name}"/>
             </p:column>
-
             <p:column>
                 <f:facet name="header">
                     <h:outputText value="Test name"/>
                 </f:facet>
                 <h:outputText var="id" value="#{event.testByTestId.name} "/>
             </p:column>
-
             <p:column>
                 <f:facet name="header">
                     <h:outputText value="Sysweb"/>
                 </f:facet>
                 <h:outputText value="#{event.syswebBySyswebId.name}"/>
             </p:column>
-
             <p:column>
                 <f:facet name="header">
                     <h:outputText value="Params"/>
                 </f:facet>
                 <h:outputText value="#{event.params}"/>
             </p:column>
-
             <p:column>
                 <f:facet name="header">
                     <h:outputText value="URL"/>
