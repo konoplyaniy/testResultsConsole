@@ -14,7 +14,7 @@
         <ui:include src="resources/templates/headers.xhtml"/>
     </ui:insert>
 
-    <p:panel header="Select options for search">
+    <p:panel header="Select options for search" styleClass="MyPanelStyleClass">
         <h:form id="options_form">
             <div class="ui-g">
                 <div class="ui-g-2">
@@ -68,7 +68,7 @@
                     </p:selectOneMenu>
                 </div>
                 <div>
-                    <p:commandButton value="Build" id="submitButton" icon="ui-icon-circle-triangle-e"
+                    <p:commandButton value="Search" id="submitButton" icon="ui-icon-circle-triangle-e"
                                      style="height: 40px; padding: 5px !important; border: none"
                                      update="search_result"
                                      action="#{searchView.clickSearchButton()}">
