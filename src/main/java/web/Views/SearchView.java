@@ -1,17 +1,11 @@
 package web.Views;
 
-/**
- * Created by Sergiy.K on 06-Feb-17.
- */
 
 import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import javax.annotation.PostConstruct;
-import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
-import javax.faces.event.ActionEvent;
 
 import hibernate.entities.EventEntity;
 import hibernate.service.EventService;
@@ -38,8 +32,7 @@ public class SearchView {
 
     private void initDropdownsData() {
         EventService service = new EventService();
-        ArrayList<EventEntity> eventList = new ArrayList<>();
-        eventList = (ArrayList<EventEntity>) service.findAll();
+        ArrayList<EventEntity> eventList = (ArrayList<EventEntity>) service.findAll();
         HashSet<String> testNames = new HashSet<>();
         HashSet<String> syswebs = new HashSet<>();
         HashSet<String> locales = new HashSet<>();
