@@ -48,7 +48,7 @@
                         <p:outputLabel for="classNameDropDown" value="Class name"/><br></br>
                         <p:selectOneMenu id="classNameDropDown" value="#{buildDiagramView.clazzName}" effect="fold"
                                          editable="true" styleClass="MyDropDown">
-                            <f:selectItem itemLabel="Select One" itemValue="" noSelectionOption="true"/>
+                            <f:selectItem itemValue="" noSelectionOption="true"/>
                             <f:selectItems value="#{buildDiagramView.clazzNames}"/>
                         </p:selectOneMenu>
                     </div>
@@ -56,7 +56,7 @@
                         <p:outputLabel for="testNameDropDown" value="Test name"/><br></br>
                         <p:selectOneMenu id="testNameDropDown" value="#{buildDiagramView.testName}" effect="fold"
                                          editable="true" styleClass="MyDropDown">
-                            <f:selectItem itemLabel="Select One" itemValue="All"/>
+                            <f:selectItem itemValue="All"/>
                             <f:selectItems value="#{buildDiagramView.testNames}"/>
                         </p:selectOneMenu>
                     </div>
@@ -64,7 +64,7 @@
                         <p:outputLabel for="syswebDropDown" value="Sysweb"/><br></br>
                         <p:selectOneMenu id="syswebDropDown" value="#{buildDiagramView.sysweb}" effect="fold"
                                          editable="true" styleClass="MyDropDown">
-                            <f:selectItem itemLabel="Select One" itemValue="All"/>
+                            <f:selectItem itemValue="All"/>
                             <f:selectItems value="#{buildDiagramView.syswebs}"/>
                         </p:selectOneMenu>
                     </div>
@@ -72,7 +72,7 @@
                         <p:outputLabel for="localeDropDown" value="Locale"/><br></br>
                         <p:selectOneMenu id="localeDropDown" value="#{buildDiagramView.locale}" effect="fold"
                                          editable="true" styleClass="MyDropDown">
-                            <f:selectItem itemLabel="Select One" itemValue="All"/>
+                            <f:selectItem itemValue="All"/>
                             <f:selectItems value="#{buildDiagramView.locales}"/>
                         </p:selectOneMenu>
                     </div>
@@ -118,36 +118,37 @@
     <h:panelGroup id="diagramForm">
         <h:form rendered="#{buildDiagramView.clickedBuild}">
             <div class="ui-g">
-                <!--<div class="ui-g-12 ui-md-4 ui-lg-4">-->
+                <!--line chart model events per day-->
                 <p:panel id="date_panel" style="margin-bottom:10px;">
                     <h:form id="diagram_date">
                         <p:panel header="Failed tests by dates">
                             <p:chart type="line" model="#{buildDiagramView.lineChartModel}"
-                                     style="height:300px; width: 700px;"
+                                     style="height:300px; width: 800px;"
                                      id="date_line_chart"/>
                         </p:panel>
                     </h:form>
                 </p:panel>
-                <!--</div>-->
 
-                <div class="ui-g-12 ui-md-4 ui-lg-4" style="height:320px; min-width: 550px; width: 550px;">
+                <!--BarChart model failed by locales-->
+                <div class="ui-g-12 ui-md-4 ui-lg-4" style="height:320px; min-width: 1050px; width: 750px;">
                     <p:panel id="locale_panel" style="margin-bottom:10px;">
                         <h:form id="locales_diagram_form">
                             <p:panel header="Failed tests by locales">
                                 <p:chart type="bar" model="#{buildDiagramView.modelByLocale}"
-                                         style="height:300px; width: 500px;"
+                                         style="height:300px; width: 700px;"
                                          id="locale_bar_chart"/>
                             </p:panel>
                         </h:form>
                     </p:panel>
                 </div>
 
-                <div class="ui-g-12 ui-md-4 ui-lg-4" style="height:320px; min-width: 550px; width: 550px;">
+                <!--BarChart model failed by syswebs-->
+                <div class="ui-g-12 ui-md-4 ui-lg-4" style="height:320px; min-width: 1900px; width: 750px;">
                     <p:panel id="sysweb_panel" style="margin-bottom:10px;">
                         <h:form id="syswebs_diagram_form">
                             <p:panel header="Failed tests by syswebs">
                                 <p:chart type="bar" model="#{buildDiagramView.modelBySysweb}"
-                                         style="height:300px; width: 500px;"
+                                         style="height:300px; width: 1700px;"
                                          id="sysweb_bar_chart"/>
                             </p:panel>
                         </h:form>

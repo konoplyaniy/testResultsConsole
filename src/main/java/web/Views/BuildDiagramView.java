@@ -4,7 +4,6 @@ import hibernate.entities.EventEntity;
 import hibernate.service.EventService;
 import org.primefaces.model.chart.*;
 
-
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import java.io.Serializable;
@@ -12,30 +11,24 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-/**
- * Created by Sergiy.K on 06-Mar-17.
- */
 @ManagedBean
 public class BuildDiagramView implements Serializable {
     private LineChartModel lineChartModel;
     private BarChartModel modelByLocale;
     private BarChartModel modelBySysweb;
-    private String sysweb;
+    private String sysweb = "";
     private HashSet<String> syswebs;
-    private String testName;
+    private String testName = "";
     private String clazzName = "";
     private HashSet<String> clazzNames;
     private HashSet<String> testNames;
-    private String locale;
+    private String locale = "";
     private HashSet<String> locales;
     private Date startDate;
     private Date endDate;
     private ArrayList<EventEntity> events;
 
     private boolean advancedBuildChecked = false;
-    private boolean testNameChecked;
-    private boolean syswebChecked;
-    private boolean localeChecked;
     private boolean clickedBuild = false;
 
 
@@ -48,11 +41,10 @@ public class BuildDiagramView implements Serializable {
         initDropdownsData();
     }
 
-
-    private void initDropdownsData(){
+    //  INIT DROPDOWNS LIST
+    private void initDropdownsData() {
         EventService service = new EventService();
-        ArrayList<EventEntity> eventList = new ArrayList<>();
-        eventList = (ArrayList<EventEntity>) service.findAll();
+        ArrayList<EventEntity> eventList = (ArrayList<EventEntity>) service.findAll();
         HashSet<String> testNames = new HashSet<>();
         HashSet<String> syswebs = new HashSet<>();
         HashSet<String> locales = new HashSet<>();
@@ -71,38 +63,14 @@ public class BuildDiagramView implements Serializable {
         setClazzNames(clazzes);
     }
 
-    /*   MEGA IFING... will be edited.. possibly*/
     private ArrayList<EventEntity> getEvents() {
         EventService service = new EventService();
-        ArrayList<EventEntity> eventList = new ArrayList<>();
-        if (getClazzName() != null && getTestName() != null && getSysweb() != null && getLocale() != null) {
-            System.out.println("1 if");
-            eventList = (ArrayList<EventEntity>) service.findByClassNameTestNameSyswebLocaleBetweenDates(getClazzName(), getTestName(), getSysweb(), getLocale(), getStartDate(), getEndDate());
-            return eventList;
-        } else if (getClazzName() != null && getTestName() != null && getSysweb() != null) {
-            System.out.println("2 if");
-            eventList = (ArrayList<EventEntity>) service.findByClassNameTestNameSyswebBetweenDates(getClazzName(), getTestName(), getSysweb(), getStartDate(), getEndDate());
-            return eventList;
-        } else if (getClazzName() != null && getTestName() != null) {
-            System.out.println("3 if");
-            eventList = (ArrayList<EventEntity>) service.findByClassNameTestNameBetweenDates(getClazzName(), getTestName(), getStartDate(), getEndDate());
-            return eventList;
-        } else if (getClazzName() != null) {
-            System.out.println("4 if");
-            eventList = (ArrayList<EventEntity>) service.findByClassNameBetweenDates(getClazzName(), getStartDate(), getEndDate());
-        }else if (getClazzName() == null && getTestName() == null && getSysweb() == null && getLocale() == null){
-            System.out.println("5 if");
-            eventList = (ArrayList<EventEntity>) service.findAll();
-        }
-        return eventList;
+        return service.findBySelected(getClazzName(), getTestName(), getSysweb(), getLocale(), getStartDate(), getEndDate());
     }
 
     private void createBarChartByLocale() {
         DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-        /*EventService service = new EventService();    old variant*/
         ArrayList<EventEntity> eventList = events;
-        /*eventList = (ArrayList<EventEntity>) service.findByTestNameBetweenDates(getTestName(), getStartDate(), getEndDate());     old variant*/
-
 //      here key is locale, value is count of failed test in this locale
         HashMap<String, Integer> map = new HashMap<>();
         eventList.forEach(event -> {
@@ -114,11 +82,9 @@ public class BuildDiagramView implements Serializable {
                 map.put(locale, count);
             }
         });
-
         modelByLocale = new BarChartModel();
         ChartSeries chartSeries;
         /*System.out.println("map size =" + map.size());*/
-
         for (Map.Entry<String, Integer> entry : map.entrySet()) {
             chartSeries = new ChartSeries();
             chartSeries.setLabel(entry.getKey() + " locale");
@@ -135,11 +101,10 @@ public class BuildDiagramView implements Serializable {
         modelByLocale.setAnimate(true);
     }
 
+    // bad working if Chart series is added 8-9 times
     private void createBarChartBySysweb() {
         DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-        /*EventService service = new EventService();        old variant*/
-        ArrayList<EventEntity> eventList = getEvents();
-        /*ArrayList<EventEntity> eventList = (ArrayList<EventEntity>) service.findByTestNameBetweenDates(getTestName(), getStartDate(), getEndDate());  old variant */
+        ArrayList<EventEntity> eventList = events;
 //      here key is locale, value is count of failed test in this locale
         HashMap<String, Integer> map = new HashMap<>();
         eventList.forEach(event -> {
@@ -154,8 +119,7 @@ public class BuildDiagramView implements Serializable {
 
         modelBySysweb = new BarChartModel();
         ChartSeries chartSeries;
-        /*System.out.println("map size =" + map.size());*/
-
+        /*System.out.println("sys web map size =" + map.size());*/
         for (Map.Entry<String, Integer> entry : map.entrySet()) {
             chartSeries = new ChartSeries();
             chartSeries.setLabel(entry.getKey());
@@ -166,14 +130,14 @@ public class BuildDiagramView implements Serializable {
         xAxis.setLabel("Syswebs");
         Axis yAxis = modelBySysweb.getAxis(AxisType.Y);
         yAxis.setLabel("Count");
-        modelBySysweb.setLegendPosition("e");
+        modelBySysweb.setLegendPosition("ne");
         modelBySysweb.setLegendPlacement(LegendPlacement.OUTSIDEGRID);
         modelBySysweb.setTitle("Failed tests for period: " + formatter.format(getStartDate()) + " - " + formatter.format(getEndDate()));
         modelBySysweb.setAnimate(true);
     }
 
-    private void createLineChartByTestName() {
-        // tests per Day
+    private void createLineChartByDates() {
+        // events per Day
         DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         EventService service = new EventService();
 //        initialize start end date for building line diagram
@@ -189,17 +153,8 @@ public class BuildDiagramView implements Serializable {
 
 //        per day add to series date and count of failed tests
         for (Date date = start.getTime(); start.before(end); start.add(Calendar.DATE, 1), date = start.getTime()) {
-            Date startt = (Date) date.clone();
-            Date endd = (Date) date.clone();
-            endd.setHours(23);
-            endd.setMinutes(59);
-            endd.setSeconds(59);
-                /*System.out.println("CURRENT ITERATION START DATE: " + startt);
-                System.out.println("CURRENT ITERATION END DATE: " + endd);*/
-            ArrayList<EventEntity> eventList;
-            eventList = (ArrayList<EventEntity>) service.findByTestNameBetweenDates(getTestName(), startt, endd);
-            series.set(formatter.format(startt), eventList.size());
-                /*System.out.println(startt + ": " + eventList.size());*/
+            ArrayList<EventEntity> eventList = service.findBySelectedDay(getClazzName(), getTestName(), getSysweb(), getLocale(), date);
+            series.set(formatter.format(date), eventList.size());
         }
 
         lineChartModel = new LineChartModel();
@@ -260,43 +215,13 @@ public class BuildDiagramView implements Serializable {
         this.advancedBuildChecked = advancedBuildChecked;
     }
 
-    public boolean isTestNameChecked() {
-        System.out.println("get test name " + syswebChecked);
-        return testNameChecked;
-    }
-
-    public void setTestNameChecked(boolean testNameChecked) {
-        System.out.println("set test name " + syswebChecked);
-        this.testNameChecked = testNameChecked;
-    }
-
-    public boolean isSyswebChecked() {
-        System.out.println("get sysweb " + syswebChecked);
-        return syswebChecked;
-    }
-
-    public void setSyswebChecked(boolean syswebChecked) {
-        System.out.println("set sysweb " + syswebChecked);
-        this.syswebChecked = syswebChecked;
-    }
-
-    public boolean isLocaleChecked() {
-        System.out.println("get locale " + localeChecked);
-        return localeChecked;
-    }
-
-    public void setLocaleChecked(boolean localeChecked) {
-        System.out.println("set locaele " + localeChecked);
-        this.localeChecked = localeChecked;
-    }
-
     public void clickBuildButton() {
         System.out.println("click build button");
         if (getStartDate() != null && getEndDate() != null &&
                 getTestName() != null && getSysweb() != null
                 && getLocale() != null) {
             events = getEvents();
-            createLineChartByTestName();
+            createLineChartByDates();
             createBarChartBySysweb();
             createBarChartByLocale();
             clickedBuild = true;
@@ -318,7 +243,6 @@ public class BuildDiagramView implements Serializable {
             DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             formatter.setTimeZone(TimeZone.getDefault());
             formatter.format(startDate);
-            /*System.out.println("Get start date " + formatter.format(startDate));*/
         }
         return startDate;
     }
@@ -332,7 +256,6 @@ public class BuildDiagramView implements Serializable {
             DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             formatter.setTimeZone(TimeZone.getDefault());
             formatter.format(endDate);
-            /*System.out.println("Get end date " + formatter.format(endDate));*/
         }
         return endDate;
     }
