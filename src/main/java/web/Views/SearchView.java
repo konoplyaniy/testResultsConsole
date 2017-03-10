@@ -18,7 +18,6 @@ import javax.faces.event.ActionEvent;
 
 import hibernate.entities.EventEntity;
 import hibernate.service.EventService;
-import org.primefaces.context.RequestContext;
 import org.primefaces.event.SelectEvent;
 
 @ManagedBean
@@ -27,43 +26,46 @@ public class SearchView {
     private Date endDate;
     private String testName;
     private String sysweb;
-    private boolean visible = false;
+    private String locale;
+    private boolean visibleBetweenDates = false;
     private boolean visibleTestForm = false;
     private boolean visibleSyswebForm = false;
-    private List<EventEntity> events;
+    private boolean visibleLocaleForm = false;
+    private List<EventEntity> eventsByDate;
     private List<EventEntity> eventsTest;
     private List<EventEntity> eventSysweb;
+    private List<EventEntity> eventsLocale;
 
-    public List<EventEntity> getEvents() {
+    public List<EventEntity> getEventsByDate() {
         try {
             if (getStartDate() != null && getEndDate() != null) {
                 EventService service = new EventService();
                 DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                 Date startDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(formatter.format(getStartDate()));
                 Date endDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(formatter.format(getEndDate()));
-                events = service.findBetweenDate(startDate, endDate);
+                eventsByDate = service.findBetweenDate(startDate, endDate);
             }
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        return events;
+        return eventsByDate;
     }
 
-    public void setEvents(List<EventEntity> events) {
-        this.events = events;
+    public void setEventsByDate(List<EventEntity> eventsByDate) {
+        this.eventsByDate = eventsByDate;
     }
 
-    public boolean isVisible() {
-        return visible;
+    public boolean isVisibleBetweenDates() {
+        return visibleBetweenDates;
     }
 
-    public void setVisible(boolean visible) {
-        this.visible = visible;
+    public void setVisibleBetweenDates(boolean visibleBetweenDates) {
+        this.visibleBetweenDates = visibleBetweenDates;
     }
 
     public void getEventlist(ActionEvent event) {
-        if (getEvents().size() > 0) {
-            setVisible(true);
+        if (getEventsByDate().size() > 0) {
+            setVisibleBetweenDates(true);
         }
     }
 
@@ -95,13 +97,6 @@ public class SearchView {
         this.endDate = endDate;
     }
 
-    public void onDateSelect(SelectEvent event) {
-
-        FacesContext facesContext = FacesContext.getCurrentInstance();
-        SimpleDateFormat format = new SimpleDateFormat("MM-dd-yyyy HH:mm:ss");
-        facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Date Selected", format.format(event.getObject())));
-    }
-
     public List<EventEntity> getEventsTest() {
         System.out.println("getTestEvents");
         FacesMessage message = null;
@@ -115,7 +110,7 @@ public class SearchView {
         }
         if (eventsTest!= null){
             System.out.println(eventsTest.size());
-        }else System.out.println("events null");
+        }else System.out.println("eventsByDate null");
         return eventsTest;
     }
 
@@ -124,13 +119,23 @@ public class SearchView {
     }
 
     public List<EventEntity> getEventSysweb() {
-        FacesMessage message = null;
         if (getSysweb() != null && !getSysweb().equals("")) {
             EventService service = new EventService();
             eventSysweb = service.findBySysweb(getSysweb());
-        } else {
         }
         return eventSysweb;
+    }
+
+    public List<EventEntity> getEventsLocale() {
+        if (getLocale() != null && !getLocale().equals("")) {
+            EventService service = new EventService();
+            eventsLocale = service.findByLocale(getLocale());
+        }
+        return eventsLocale;
+    }
+
+    public void setEventsLocale(List<EventEntity> eventsLocale) {
+        this.eventsLocale = eventsLocale;
     }
 
     public void setEventSysweb(List<EventEntity> eventSysweb) {
@@ -157,6 +162,14 @@ public class SearchView {
         System.out.println("sysweb = " + sysweb);
     }
 
+    public String getLocale() {
+        return locale;
+    }
+
+    public void setLocale(String locale) {
+        this.locale = locale;
+    }
+
     public boolean isVisibleTestForm() {
         return visibleTestForm;
     }
@@ -173,10 +186,25 @@ public class SearchView {
         this.visibleSyswebForm = visibleSyswebForm;
     }
 
+    public boolean isVisibleLocaleForm() {
+        return visibleLocaleForm;
+    }
+
+    public void setVisibleLocaleForm(boolean visibleLocaleForm) {
+        this.visibleLocaleForm = visibleLocaleForm;
+    }
+
     public void searchTest() {
         System.out.println("click search test");
         if (getTestName() != null && !getTestName().equals("")) {
             setVisibleTestForm(true);
+        }
+    }
+
+    public void searchLocale() {
+        System.out.println("click search test");
+        if (getLocale() != null && !getLocale().equals("")) {
+            setVisibleLocaleForm(true);
         }
     }
 
@@ -188,7 +216,7 @@ public class SearchView {
 
     public void click() {
         if (getStartDate() != null && getEndDate() != null) {
-            setVisible(true);
+            setVisibleBetweenDates(true);
         }
     }
 }
