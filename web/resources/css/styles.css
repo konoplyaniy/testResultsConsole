@@ -17,17 +17,33 @@
     position: relative !important;
 }
 
+.MyPanelStyleClass{
+    border: 1px solid gray;
+    background: none;
+    color: black !important;
+}
+
 .MyDropDown.ui-widget{
     min-width:calc(100% - 23px) !important;
     position: relative !important;;
     /*border: none !important;*/
 }
+.ui-g{
+    color: black;
+}
 
-/*#testNameDropDown_items{
-    font-size: 10px !important;
-    line-height: 0 !important;
-    padding: 1px !important;
-}*/
+.MyToolTip{
+    font-size: 12px;
+}
+
+/* for now it's use for set popup calendar font-size */
+.ui-datepicker{
+    font-size: 12px;
+}
+
+.ui-megamenu-vertical {
+    width: 110px !important;
+}
 
 .ui-widget .ui-widget {
     font-size: 12px !important;
@@ -39,6 +55,16 @@
     height: 30px !important;
     /*border: none !important;*/
     padding: 5px !important
+}
+
+.ui-menu .ui-menuitem-link {
+    cursor: pointer;
+    font-weight: bold !important;
+    line-height: 16px;
+}
+
+.ui-menu, .ui-menu .ui-menu-child {
+    background: #85b2cb;
 }
 
 .ui-selectonemenu .ui-selectonemenu-trigger .ui-icon{
