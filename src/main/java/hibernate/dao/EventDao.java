@@ -2,10 +2,14 @@ package hibernate.dao;
 
 import hibernate.entities.EventEntity;
 import hibernate.service.BrowserService;
+import org.apache.poi.ss.formula.functions.Even;
 import org.hibernate.CacheMode;
+import org.hibernate.Criteria;
 import org.hibernate.Query;
+import org.hibernate.SQLQuery;
 import org.primefaces.model.chart.LineChartSeries;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -66,6 +70,22 @@ public class EventDao extends BaseDao<Integer, EventEntity> {
         return (List<EventEntity>) query.list();
     }
 
+    public List<EventEntity> findByMonthEvents(Date date) {
+        Query query = getCurrentSession().createQuery("from EventEntity " +
+                "where MONTH(data) = MONTH(:date) ");
+        query.setParameter("date", date);
+        query.setCacheMode(CacheMode.IGNORE);
+        return (List<EventEntity>) query.list();
+    }
+
+    public List<EventEntity> findByDayEvents(Date date) {
+        Query query = getCurrentSession().createQuery("from EventEntity " +
+                "where DAY(data) = DAY(:date) ");
+        query.setParameter("date", date);
+        query.setCacheMode(CacheMode.IGNORE);
+        return (List<EventEntity>) query.list();
+    }
+
     public List<EventEntity> findBySyswebBetweenDates(String sysweb, Date startDate, Date endDate) {
         Query query = getCurrentSession().createQuery("from EventEntity " +
                 "where syswebBySyswebId.name =:sysweb and data between :startDate and :endDate");
@@ -98,6 +118,83 @@ public class EventDao extends BaseDao<Integer, EventEntity> {
         query.setParameter("endDate", endDate);
         return (List<EventEntity>) query.list();
     }
+
+    public ArrayList<EventEntity> findBySelectedDay(String clazzName, String testName, String sysweb, String locale, Date date){
+        String sqlQuery = "from EventEntity " +
+                "where DAY(data) = DAY(:date) ";
+        /*where DAY(data) = DAY(:date) ")*/
+        if (!clazzName.equals("")){
+            sqlQuery = sqlQuery + "and testByTestId.clazzByClassId.name =:clazzName ";
+        }
+        if (!testName.equals("")){
+            sqlQuery = sqlQuery + "and testByTestId.name =:testName ";
+        }
+        if (!sysweb.equals("")){
+            sqlQuery = sqlQuery + "and syswebBySyswebId.name =:sysweb ";
+        }
+        if (!locale.equals("")){
+            sqlQuery = sqlQuery + "and localeByLocaleId.locale =:locale ";
+        }
+
+        Query query = getCurrentSession().createQuery(sqlQuery);
+        query.setCacheMode(CacheMode.IGNORE);
+        if (!clazzName.equals("")){
+            query.setParameter("clazzName", clazzName);
+        }
+        if (!testName.equals("")){
+            query.setParameter("testName", testName);
+        }
+        if (!sysweb.equals("")){
+            query.setParameter("sysweb", sysweb);
+        }
+        if (!locale.equals("")){
+            query.setParameter("locale", locale);
+        }
+        query.setParameter("date", date);
+        ArrayList<EventEntity> results = (ArrayList<EventEntity>) query.list();
+        return results;
+    }
+
+    public ArrayList<EventEntity> findBySelected(String clazzName, String testName, String sysweb, String locale, Date startDate, Date endDate){
+        String sqlQuery = "from EventEntity " +
+                "where data between :startDate and :endDate ";
+        if (!clazzName.equals("")){
+            sqlQuery = sqlQuery + "and testByTestId.clazzByClassId.name =:clazzName ";
+        }
+        if (!testName.equals("")){
+            sqlQuery = sqlQuery + "and testByTestId.name =:testName ";
+        }
+        if (!sysweb.equals("")){
+            sqlQuery = sqlQuery + "and syswebBySyswebId.name =:sysweb ";
+        }
+        if (!locale.equals("")){
+            sqlQuery = sqlQuery + "and localeByLocaleId.locale =:locale ";
+        }
+
+        Query query = getCurrentSession().createQuery(sqlQuery);
+        query.setCacheMode(CacheMode.IGNORE);
+        if (!clazzName.equals("")){
+            query.setParameter("clazzName", clazzName);
+        }
+        if (!testName.equals("")){
+            query.setParameter("testName", testName);
+        }
+        if (!sysweb.equals("")){
+            query.setParameter("sysweb", sysweb);
+        }
+        if (!locale.equals("")){
+            query.setParameter("locale", locale);
+        }
+        query.setParameter("startDate", startDate);
+        query.setParameter("endDate", endDate);
+        ArrayList<EventEntity> results = (ArrayList<EventEntity>) query.list();
+        return results;
+    }
+
+    /*String sql = "SELECT first_name, salary FROM EMPLOYEE";
+
+
+    List results = query.list();*/
 
     public List<EventEntity> findByClassNameTestNameSyswebBetweenDates(String clazzName, String testName, String sysweb, Date startDate, Date endDate) {
         Query query = getCurrentSession().createQuery("from EventEntity " +

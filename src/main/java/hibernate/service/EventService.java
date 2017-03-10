@@ -2,12 +2,11 @@ package hibernate.service;
 
 import hibernate.dao.EventDao;
 import hibernate.entities.EventEntity;
-import hibernate.utils.DBLogger;
 
 import javax.faces.bean.ApplicationScoped;
-import javax.faces.bean.ManagedBean;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -126,11 +125,57 @@ public class EventService {
         return result;
     }
 
+    public List<EventEntity> findCurrentMonthEvents() {
+        eventDao.openCurrentSession();
+        Date date = new Date();
+        List<EventEntity> result = eventDao.findByMonthEvents(date);
+        eventDao.closeCurrentSession();
+        return result;
+    }
+
+    public List<EventEntity> findByMonthEvents(Date date) {
+        eventDao.openCurrentSession();
+        List<EventEntity> result = eventDao.findByMonthEvents(date);
+        eventDao.closeCurrentSession();
+        return result;
+    }
+
+    public List<EventEntity> findByDayEvents(Date date) {
+        eventDao.openCurrentSession();
+        List<EventEntity> result = eventDao.findByDayEvents(date);
+        eventDao.closeCurrentSession();
+        return result;
+    }
+
+    public List<EventEntity> findByCurrentDayEvents() {
+        eventDao.openCurrentSession();
+        Date date = new Date();
+        List<EventEntity> result = eventDao.findByDayEvents(date);
+        eventDao.closeCurrentSession();
+        return result;
+    }
+
+    /*findByDayEvents*/
+
     public List<EventEntity> findByTestNameBetweenDates(String testName, Date startDate, Date endDate) {
         eventDao.openCurrentSession();
         List<EventEntity> result = eventDao.findByTestNameBetweenDates(testName, startDate, endDate);
         eventDao.closeCurrentSession();
         return result;
+    }
+
+    public ArrayList<EventEntity> findBySelected(String clazzName, String testName, String sysweb, String locale, Date startDate, Date endDate){
+        eventDao.openCurrentSession();
+        ArrayList<EventEntity> results = eventDao.findBySelected(clazzName, testName, sysweb, locale, startDate, endDate);
+        eventDao.closeCurrentSession();
+        return results;
+    }
+
+    public ArrayList<EventEntity> findBySelectedDay(String clazzName, String testName, String sysweb, String locale, Date date){
+        eventDao.openCurrentSession();
+        ArrayList<EventEntity> results = eventDao.findBySelectedDay(clazzName, testName, sysweb, locale, date);
+        eventDao.closeCurrentSession();
+        return results;
     }
 
     public List<EventEntity> findBySyswebBetweenDates(String sysweb, Date startDate, Date endDate) {
