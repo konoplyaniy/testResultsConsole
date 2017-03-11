@@ -16,10 +16,21 @@
         <ui:include src="resources/templates/headers.xhtml"/>
     </ui:insert>
 
+    <!--REFRESH FORM EVERY 5 SECONDS (on server machine it  update time will be changed to  3-5 minutes)-->
+    <h:form id="hiddenForm" style="display:none">
+        <h:commandButton id="update_event_form" action="#{eventTableExporter.init()}">
+            <f:ajax render=":event_form" />
+        </h:commandButton>
+    </h:form>
+    <script type="text/javascript">
+        setInterval(function() {
+            document.getElementById("hiddenForm:update_event_form").click();
+        }, 5000);
+    </script>
+
     <h:form id="event_form">
-        <p:dataTable id="event_table" var="event"
+        <p:dataTable id="event_table" var="eventByLocale"
                      stickyHeader="true"
-                     rowKey="#{event.data}"
                      value="#{eventTableExporter.eventByLocale}">
 
             <!--EXPORTERS NOT WORKING FOR SUBTABLES-->
@@ -38,7 +49,7 @@
             <!--EXPORTERS END-->
 
             <f:facet name="header">
-                Failed unchecked tests for crazydomain.com.au
+                Failed tests for crazydomain.com.au [current month], for see other use search
             </f:facet>
 
             <p:columnGroup type="header">
@@ -52,34 +63,34 @@
                 </p:row>
             </p:columnGroup>
 
-            <p:subTable var="eventComAuLocale" value="#{event.events}" id="subTable">
+            <p:subTable var="event" value="#{eventByLocale.events}" id="subTable">
                 <f:facet name="header">
-                    <h:outputText value="#{event.locale}"/>
+                    <h:outputText value="#{eventByLocale.locale}"/>
                 </f:facet>
                 <p:column style="width: 120px">
-                    <h:outputText value="#{eventComAuLocale.data}">
+                    <h:outputText value="#{event.data}">
                         <f:convertDateTime pattern="yyyy-MM-dd HH:mm:ss"/>
                     </h:outputText>
                 </p:column>
 
                 <p:column>
-                    <h:outputText var="id" value="#{eventComAuLocale.testByTestId.clazzByClassId.name}"/>
+                    <h:outputText var="id" value="#{event.testByTestId.clazzByClassId.name}"/>
                 </p:column>
 
                 <p:column>
-                    <h:outputText var="id" value="#{eventComAuLocale.testByTestId.name} "/>
+                    <h:outputText var="id" value="#{event.testByTestId.name} "/>
                 </p:column>
 
                 <p:column>
-                    <h:outputText value="#{eventComAuLocale.syswebBySyswebId.name}"/>
+                    <h:outputText value="#{event.syswebBySyswebId.name}"/>
                 </p:column>
 
                 <p:column>
-                    <h:outputText value="#{eventComAuLocale.params}"/>
+                    <h:outputText value="#{event.params}"/>
                 </p:column>
 
                 <p:column>
-                    <p:link value="#{eventComAuLocale.url}" href="#{eventComAuLocale.url}" style="color: blue"/>
+                    <p:link value="#{event.url}" href="#{event.url}" style="color: blue"/>
                 </p:column>
 
                 <p:columnGroup type="footer">
@@ -89,7 +100,7 @@
                         <p:column footerText="" style="text-align:right"/>
                         <p:column footerText="" style="text-align:right"/>
                         <p:column footerText="Total failed: " style="text-align:left; font-size: 16px"/>
-                        <p:column footerText="#{event.failedTestsCount}" style="text-align:left; font-size: 16px"/>
+                        <p:column footerText="#{eventByLocale.failedTestsCount}" style="text-align:left; font-size: 16px"/>
                     </p:row>
                 </p:columnGroup>
             </p:subTable>
