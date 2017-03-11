@@ -16,7 +16,7 @@ import java.util.*;
  */
 @ManagedBean
 public class DiagramView implements Serializable {
-    private LineChartModel model;
+    private LineChartModel modelPerDate;
     private BarChartModel modelByLocale;
     private BarChartModel modelBySysweb;
 
@@ -26,134 +26,122 @@ public class DiagramView implements Serializable {
 
     @PostConstruct
     public void init() {
-        createModel();
-        createSyswebModel();
-        createLocaleModel();
+        createBarChartByLocale();
+        createBarChartBySysweb();
+        createLineChartByDates();
     }
 
-    private void createSyswebModel() {
+    private void createBarChartByLocale() {
+        ArrayList<EventEntity> eventList = getEvents();
+//      here key is locale, value is count of failed test in this locale
+        HashMap<String, Integer> map = new HashMap<>();
+        eventList.forEach(event -> {
+            String locale = event.getLocaleByLocaleId().getLocale();
+            if (!map.containsKey(locale)) {
+                map.put(locale, 1);
+            } else {
+                int count = map.get(locale) + 1;
+                map.put(locale, count);
+            }
+        });
+        modelByLocale = new BarChartModel();
+        ChartSeries chartSeries;
+        /*System.out.println("map size =" + map.size());*/
+        for (Map.Entry<String, Integer> entry : map.entrySet()) {
+            chartSeries = new ChartSeries();
+            chartSeries.setLabel(entry.getKey() + " locale");
+            chartSeries.set(entry.getKey(), entry.getValue());
+            modelByLocale.addSeries(chartSeries);
+        }
+        Axis xAxis = modelByLocale.getAxis(AxisType.X);
+        xAxis.setLabel("Locales");
+        Axis yAxis = modelByLocale.getAxis(AxisType.Y);
+        yAxis.setLabel("Count");
+        modelByLocale.setLegendPosition("e");
+        modelByLocale.setLegendPlacement(LegendPlacement.OUTSIDEGRID);
+        modelByLocale.setTitle("Failed tests for current month");
+    }
+
+    private ArrayList<EventEntity> getEvents() {
         EventService service = new EventService();
-        ArrayList<EventEntity> entities1;
-        ArrayList<EventEntity> entities2;
-        ArrayList<EventEntity> entities3;
+        return service.findByCurrentMonthEvents();
+    }
 
-        entities1 = (ArrayList<EventEntity>) service.findBySysweb("SYSWEB4.UK.SYRAHOST.COM");
-        entities2 = (ArrayList<EventEntity>) service.findBySysweb("SYSWEB3.UK.SYRAHOST.COM");
-        entities3 = (ArrayList<EventEntity>) service.findBySysweb("SYSWEB5.UK.SYRAHOST.COM");
-
-        ChartSeries sysweb7 = new ChartSeries();
-        ChartSeries sysweb3 = new ChartSeries();
-        ChartSeries sysweb4 = new ChartSeries();
-
-        sysweb7.setLabel("SYSWEB4.UK.SYRAHOST.COM");
-        sysweb7.set("SYSWEB4.UK.SYRAHOST.COM", entities1.size());
-
-        sysweb3.setLabel("SYSWEB3.UK.SYRAHOST.COM");
-        sysweb3.set("SYSWEB3.UK.SYRAHOST.COM", entities2.size());
-
-        sysweb4.setLabel("SYSWEB5.UK.SYRAHOST.COM");
-        sysweb4.set("SYSWEB5.UK.SYRAHOST.COM", entities3.size());
+    // bad working if Chart series is added 8-9 times
+    private void createBarChartBySysweb() {
+        ArrayList<EventEntity> eventList = getEvents();
+//      here key is locale, value is count of failed test in this locale
+        HashMap<String, Integer> map = new HashMap<>();
+        eventList.forEach(event -> {
+            String sysweb = event.getSyswebBySyswebId().getName();
+            if (!map.containsKey(sysweb)) {
+                map.put(sysweb, 1);
+            } else {
+                int count = map.get(sysweb) + 1;
+                map.put(sysweb, count);
+            }
+        });
 
         modelBySysweb = new BarChartModel();
-        modelBySysweb.addSeries(sysweb3);
-        modelBySysweb.addSeries(sysweb4);
-        modelBySysweb.addSeries(sysweb7);
-        modelByLocale.setLegendPosition("e");
-        modelByLocale.setLegendPlacement(LegendPlacement.OUTSIDEGRID);
-        modelBySysweb.setTitle("Syswebs");
-        modelBySysweb.setAnimate(true);
+        ChartSeries chartSeries;
+        /*System.out.println("sys web map size =" + map.size());*/
+        for (Map.Entry<String, Integer> entry : map.entrySet()) {
+            chartSeries = new ChartSeries();
+            chartSeries.setLabel(entry.getKey());
+            chartSeries.set(entry.getKey(), entry.getValue());
+            modelBySysweb.addSeries(chartSeries);
+        }
+        Axis xAxis = modelBySysweb.getAxis(AxisType.X);
+        xAxis.setLabel("Syswebs");
+        Axis yAxis = modelBySysweb.getAxis(AxisType.Y);
+        yAxis.setLabel("Count");
+        modelBySysweb.setLegendPosition("ne");
+        modelBySysweb.setLegendPlacement(LegendPlacement.OUTSIDEGRID);
+        modelBySysweb.setTitle("Failed tests for current month");
     }
 
-    private void createLocaleModel() {
+    private void createLineChartByDates() {
+        // events per Day
+        DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         EventService service = new EventService();
-        ArrayList<EventEntity> entities1;
-        ArrayList<EventEntity> entities2;
 
-        entities1 = (ArrayList<EventEntity>) service.findByLocale("CO.UK");
-        entities2 = (ArrayList<EventEntity>) service.findByLocale("COM.AU");
+//      here get start date first day in month
+        Date startDate;
+        Calendar calendar_start = Calendar.getInstance();
+        calendar_start.set(Calendar.DAY_OF_MONTH,calendar_start.getActualMinimum(Calendar.DAY_OF_MONTH));
+        startDate = calendar_start.getTime();
 
-        ChartSeries uaLocale = new ChartSeries();
-        ChartSeries comAuLocale = new ChartSeries();
+        Date endDate = new Date();
 
-        uaLocale.setLabel("co.uk locale");
-        uaLocale.set("au", entities1.size());
+//        Object where will be saved all data needed to build diagram (in this case date and count of failed tests)
+        LineChartSeries series = new LineChartSeries();
+        Calendar start = Calendar.getInstance();
+        start.setTime(startDate);
+        Calendar end = Calendar.getInstance();
+        end.setTime(endDate);
 
-        comAuLocale.setLabel(".com.au locale");
-        comAuLocale.set("com.au", entities2.size());
+//        per day add to series date and count of failed tests
+        for (Date date = start.getTime(); start.before(end); start.add(Calendar.DATE, 1), date = start.getTime()) {
+            ArrayList<EventEntity> eventList = service.findByDayEvents(date);
+            series.set(formatter.format(date), eventList.size());
+        }
 
-        modelByLocale = new BarChartModel();
-        modelByLocale.addSeries(comAuLocale);
-        modelByLocale.addSeries(uaLocale);
-        modelByLocale.setLegendPosition("e");
-        modelByLocale.setLegendPlacement(LegendPlacement.OUTSIDEGRID);
-        modelByLocale.setTitle("Locales");
-        modelByLocale.setAnimate(true);
+        modelPerDate = new LineChartModel();
+        modelPerDate.addSeries(series);
+        modelPerDate.setTitle("Failed tests for period: " + formatter.format(startDate) + " - " + formatter.format(endDate));
+        modelPerDate.getAxis(AxisType.Y).setLabel("Count");
+        DateAxis axis = new DateAxis("Dates");
+        axis.setTickAngle(-50);
+        axis.setTickFormat("%b %#d, %y");
+        modelPerDate.getAxes().put(AxisType.X, axis);
     }
 
     public BarChartModel getModelByLocale() {
         return modelByLocale;
     }
 
-    private void createModel() {
-        DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        LineChartModel lineChartModel = new LineChartModel();
-        LineChartSeries series = new LineChartSeries();
-        series.setLabel("Checked tests");
-
-        EventService service = new EventService();
-
-        Date startDate = new Date();
-        startDate.setYear(117);
-        startDate.setMonth(1);
-        startDate.setDate(20);
-        startDate.setHours(0);
-        startDate.setMinutes(0);
-        startDate.setSeconds(0);
-
-        Date endDate = new Date();
-        endDate.setYear(117);
-        endDate.setMonth(1);
-        endDate.setDate(20);
-        endDate.setHours(23);
-        endDate.setMinutes(59);
-        endDate.setSeconds(59);
-
-        startDate.setDate(20);
-        endDate.setDate(20);
-        ArrayList<EventEntity> entities3;
-        entities3 = (ArrayList<EventEntity>) service.findBetweenDate(startDate, endDate);
-        String startt = formatter.format(startDate);
-        series.set(formatter.format(startDate), entities3.size());
-
-        startDate.setDate(21);
-        endDate.setDate(21);
-        ArrayList<EventEntity> entities4;
-        entities4 = (ArrayList<EventEntity>) service.findBetweenDate(startDate, endDate);
-        series.set(formatter.format(startDate), entities4.size());
-
-        startDate.setDate(23);
-        endDate.setDate(23);
-        System.out.println();
-        ArrayList<EventEntity> entities5;
-        entities5 = (ArrayList<EventEntity>) service.findBetweenDate(startDate, endDate);
-        String endd = formatter.format(endDate);
-        series.set(formatter.format(startDate), entities5.size());
-
-        lineChartModel.addSeries(series);
-
-        model = new LineChartModel();
-        model.addSeries(series);
-        model.setTitle("Failed tests " + startt + " - " + endd);
-        model.getAxis(AxisType.Y).setLabel("Count");
-        DateAxis axis = new DateAxis("Dates");
-        axis.setTickAngle(-50);
-//        axis.setMax("2017-28-02");
-        axis.setTickFormat("%b %#d, %y");
-        model.getAxes().put(AxisType.X, axis);
-    }
-
-    public LineChartModel getModel() {
-        return model;
+    public LineChartModel getModelPerDate() {
+        return modelPerDate;
     }
 
 }
