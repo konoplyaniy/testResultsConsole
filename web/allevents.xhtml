@@ -6,14 +6,12 @@
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:p="http://primefaces.org/ui"
       xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:c="http://java.sun.com/jsp/jstl/core"
-      xmlns:pe="http://primefaces.org/ui/extensions"
->
+      xmlns:c="http://java.sun.com/jsp/jstl/core">
 <h:head>
     <h:outputStylesheet library="css" name="styles.css"/>
 </h:head>
 <h:body>
-    <title>Dreamscape Networks | QA | Event table</title>
+    <title>Dreamscape Networks | QA | All Unchecked Events</title>
     <ui:insert name="header">
         <ui:include src="resources/templates/headers.xhtml"/>
     </ui:insert>
@@ -40,19 +38,17 @@
             <!--EXPORTERS END-->
 
             <f:facet name="header">
-                Failed tests for crazydomain.com.au
+                Failed unchecked tests for crazydomain.com.au
             </f:facet>
 
             <p:columnGroup type="header">
                 <p:row>
                     <p:column headerText="Date" style="width: 120px"/>
-                    <p:column headerText="Class name"/>
-                    <p:column headerText="Group name"/>
-                    <p:column headerText="Test name"/>
+                    <p:column headerText="Class name" />
+                    <p:column headerText="Test name" />
                     <p:column headerText="Sysweb" style="width: 175px"/>
                     <p:column headerText="Params"/>
                     <p:column headerText="URL"/>
-                    <p:column style="width: 80px;" headerText="Status"/>
                 </p:row>
             </p:columnGroup>
 
@@ -60,8 +56,7 @@
                 <f:facet name="header">
                     <h:outputText value="#{event.locale}"/>
                 </f:facet>
-                <p:column sortBy="#{eventComAuLocale.data}"
-                          style="width: 120px">
+                <p:column style="width: 120px">
                     <h:outputText value="#{eventComAuLocale.data}">
                         <f:convertDateTime pattern="yyyy-MM-dd HH:mm:ss"/>
                     </h:outputText>
@@ -69,10 +64,6 @@
 
                 <p:column>
                     <h:outputText var="id" value="#{eventComAuLocale.testByTestId.clazzByClassId.name}"/>
-                </p:column>
-
-                <p:column>
-                    <h:outputText var="id" value="#{eventComAuLocale.testByTestId.groupByGroupId.name}"/>
                 </p:column>
 
                 <p:column>
@@ -91,16 +82,8 @@
                     <p:link value="#{eventComAuLocale.url}" href="#{eventComAuLocale.url}" style="color: blue"/>
                 </p:column>
 
-                <p:column style="width: 80px;"
-                          sortBy="#{eventComAuLocale.checked}">
-                    <h:outputText value="#{eventTableExporter.getCheckFlag(eventComAuLocale)}"/>
-                </p:column>
-
-
                 <p:columnGroup type="footer">
                     <p:row>
-                        <p:column footerText="" style="text-align:right"/>
-                        <p:column footerText="" style="text-align:right"/>
                         <p:column footerText="" style="text-align:right"/>
                         <p:column footerText="" style="text-align:right"/>
                         <p:column footerText="" style="text-align:right"/>
