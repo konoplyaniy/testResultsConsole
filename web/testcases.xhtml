@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html" xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+<h:head>
+    <h:outputStylesheet library="css" name="styles.css"/>
+</h:head>
+<h:body>
+    <title>Test cases | QA | Dreamscape Networks</title>
+    <ui:insert name="header">
+        <ui:include src="resources/templates/headers.xhtml"/>
+    </ui:insert>
+
+    <p:panel header="Select class name and test name for search" styleClass="MyPanelStyleClass">
+        <h:form id="options_form">
+            <div class="ui-g">
+                <div class="ui-g-2">
+                    <p:outputLabel for="classNameDropDown" value="Class name"/><br></br>
+                    <p:selectOneMenu id="classNameDropDown" value="#{testCasesView.clazzName}" effect="fold"
+                                     editable="true" styleClass="MyDropDown">
+                        <f:selectItem itemLabel="" itemValue="" noSelectionOption="true"/>
+                        <f:selectItems value="#{testCasesView.clazzNames}"/>
+                    </p:selectOneMenu>
+                </div>
+                <div class="ui-g-2">
+                    <p:outputLabel for="testNameDropDown" value="Test name"/><br></br>
+                    <p:selectOneMenu id="testNameDropDown" value="#{testCasesView.testName}" effect="fold"
+                                     editable="true" styleClass="MyDropDown">
+                        <f:selectItem itemLabel="" itemValue="All"/>
+                        <f:selectItems value="#{testCasesView.testNames}"/>
+                    </p:selectOneMenu>
+                </div>
+                <div class="ui-g-2">
+                    <p:outputLabel for="submitButton" value="" style="display: none"/><br></br>
+                    <p:commandButton value="Search" id="submitButton" icon="ui-icon-circle-triangle-e"
+                                     style="height: 40px; padding: 5px !important; border: none"
+                                     update="search_results"
+                                     action="#{testCasesView.clickSearchButton()}">
+                    </p:commandButton>
+                </div>
+            </div>
+        </h:form>
+
+        <!--SEARH RESULTS-->
+
+    <h:panelGroup id="search_results">
+        <p:panel header="Test case example" rendered="#{testCasesView.visibleResultsForm}">
+        <h:panelGrid id="deleteBrowser" columns="2" border="1"
+                     cellpadding="5" cellspacing="1" style="font-size: 14px">
+            <h:outputLabel value="Test name"/>
+            <h:outputLabel value="Login in header test"/>
+            <h:outputLabel value="Parameters"/>
+            <h:outputLabel value="userName, password"/>
+            <h:outputLabel value="Steps"/>
+            2) Go to https://www.example.com/<br></br>
+            3) Click on [UP CART ITEMS] with text "0 items"<br></br>
+            4) Click on [SIGN IN HEADER TAB] with text "Sign In"<br></br>
+            5) Input "userName" in [USERNAME FIELD IN HEADER]<br></br>
+            6) Input "password" in [USER PASSWORD IN HEADER]<br></br>
+            7) Click on [SIGN IN HEADER SUBMIT BUTTON] with text "Sign In"<br></br>
+            <h:outputLabel value="Expected" />
+            <h:outputLabel value="you are logged to front" />
+            <h:outputLabel value="Maven run command" />
+            <h:outputLabel value="mvn -Dtest=loginInHeaderTest test"/>
+            <h:outputLabel value="Additional info"/>
+            <h:outputLabel value=""/>
+        </h:panelGrid>
+        </p:panel>
+    </h:panelGroup>
+    </p:panel>
+</h:body>
+</html>
