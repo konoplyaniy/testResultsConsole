@@ -15,18 +15,13 @@ import org.primefaces.event.UnselectEvent;
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
-import javax.swing.text.html.parser.Entity;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
-/**
- * Created by Sergiy.K on 03-Feb-17.
- */
 @ManagedBean
 @SessionScoped
 public class EventTableExporter implements Serializable {
@@ -42,30 +37,27 @@ public class EventTableExporter implements Serializable {
     private String checkFlag;
     private EventEntity selectedEvent;
     private List<EventEntity> selectedEvents;
-
-
-    @ManagedProperty("#{eventService}")
     private EventService eventService;
 
     @PostConstruct
     public void init() {
         eventService = new EventService();
-        events = eventService.findAll();
+        events = eventService.findByCurrentMonthEvents();
 
-        System.out.println("1. events.size()events.size()  = " + events.size());
-        System.out.println("initLocalesEntities");
+        /*System.out.println("1. events.size()events.size()  = " + events.size());
+        System.out.println("initLocalesEntities");*/
         eventsComAuLocale = new ArrayList<>();
         eventsCoUkLocale = new ArrayList<>();
         eventsInLocale = new ArrayList<>();
         eventsCoNzLocale = new ArrayList<>();
-        System.out.println("2. events.size()events.size()  = " + events.size());
+        /*System.out.println("2. events.size()events.size()  = " + events.size());*/
         events.forEach(eventEntity -> {
-            System.out.println("current locale: " + eventEntity.getLocaleByLocaleId().getLocale().toLowerCase());
+            /*System.out.println("current locale: " + eventEntity.getLocaleByLocaleId().getLocale().toLowerCase());*/
             switch (eventEntity.getLocaleByLocaleId().getLocale().toLowerCase()) {
                 case "com.au":
-                    System.out.println("case 1");
+                    /*System.out.println("case 1");*/
                     eventsComAuLocale.add(eventEntity);
-                    System.out.println("eventsComAuLocale.size = " + eventsComAuLocale.size());
+                    /*System.out.println("eventsComAuLocale.size = " + eventsComAuLocale.size());*/
                     break;
                 case "co.uk":
                     eventsCoUkLocale.add(eventEntity);
@@ -85,9 +77,9 @@ public class EventTableExporter implements Serializable {
         eventByLocale.add(new ListEntities("in", eventsInLocale));
     }
 
-    public class ListEntities {
+    public class ListEntities implements Serializable{
         String locale;
-        ArrayList<EventEntity> events;
+        ArrayList<EventEntity> events = new ArrayList<>();
 
         public String getLocale() {
             return locale;
@@ -138,7 +130,7 @@ public class EventTableExporter implements Serializable {
     }
 
     public void clickApplyButton() {
-        EventEntity event = new EventEntity();
+        EventEntity event;
         System.out.println("click apply");
         if (selectedEvents != null) {
             for (EventEntity eventEntity : selectedEvents) {
@@ -153,16 +145,6 @@ public class EventTableExporter implements Serializable {
         }
     }
 
-    public void onRowSelect(SelectEvent event) {
-        FacesMessage msg = new FacesMessage("Event Selected", ((EventEntity) event.getObject()).getEventId() + "");
-        FacesContext.getCurrentInstance().addMessage(null, msg);
-    }
-
-    public void onRowUnSelect(UnselectEvent event) {
-        FacesMessage msg = new FacesMessage("Event Unselected", ((EventEntity) event.getObject()).getEventId() + "");
-        FacesContext.getCurrentInstance().addMessage(null, msg);
-    }
-
     public HashSet<String> getLocales() {
         HashSet<String> set = new HashSet<>();
         ArrayList<EventEntity> events = (ArrayList<EventEntity>) getEvents();
@@ -172,10 +154,6 @@ public class EventTableExporter implements Serializable {
 
     public List<EventEntity> getEvents() {
         return events;
-    }
-
-    public void setEventService(EventService service) {
-        this.eventService = service;
     }
 
     public String getCheckFlag(EventEntity eventEntity) {
@@ -208,7 +186,6 @@ public class EventTableExporter implements Serializable {
     public List<EventEntity> getEventsComAuLocale() {
         return eventsComAuLocale;
     }
-
 
 }
 
