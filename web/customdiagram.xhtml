@@ -130,7 +130,7 @@
                 </p:panel>
 
                 <!--BarChart model failed by locales-->
-                <div class="ui-g-12 ui-md-4 ui-lg-4" style="height:320px; min-width: 1050px; width: 750px;">
+                <div class="ui-g-12 ui-md-4 ui-lg-4" style="height:320px; min-width: 800px; width: 750px;">
                     <p:panel id="locale_panel" style="margin-bottom:10px;">
                         <h:form id="locales_diagram_form">
                             <p:panel header="Failed tests by locales">
@@ -143,12 +143,12 @@
                 </div>
 
                 <!--BarChart model failed by syswebs-->
-                <div class="ui-g-12 ui-md-4 ui-lg-4" style="height:320px; min-width: 1900px; width: 750px;">
+                <div class="ui-g-12 ui-md-4 ui-lg-4" style="height:320px; min-width: 800px; width: 750px;">
                     <p:panel id="sysweb_panel" style="margin-bottom:10px;">
                         <h:form id="syswebs_diagram_form">
                             <p:panel header="Failed tests by syswebs">
                                 <p:chart type="bar" model="#{buildDiagramView.modelBySysweb}"
-                                         style="height:300px; width: 1700px;"
+                                         style="height:300px; width: 700px;"
                                          id="sysweb_bar_chart"/>
                             </p:panel>
                         </h:form>
