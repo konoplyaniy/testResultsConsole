@@ -43,75 +43,75 @@ public class EventService {
         return result;
     }
 
-    public List<EventEntity> findByTestName(String testName) {
+    public ArrayList<EventEntity> findByTestName(String testName) {
         eventDao.openCurrentSession();
-        List<EventEntity> result = eventDao.findByTestName(testName);
+        ArrayList<EventEntity> result = eventDao.findByTestName(testName);
         eventDao.closeCurrentSession();
         return result;
     }
 
-    public List<EventEntity> findByGroupName(String groupName) {
-        List<EventEntity> result;
+    public ArrayList<EventEntity> findByGroupName(String groupName) {
+        ArrayList<EventEntity> result;
         eventDao.openCurrentSession();
         result = eventDao.findByGroupName(groupName);
         eventDao.closeCurrentSession();
         return result;
     }
 
-    public List<EventEntity> findByClassName(String className) {
-        List<EventEntity> result;
+    public ArrayList<EventEntity> findByClassName(String className) {
+        ArrayList<EventEntity> result;
         eventDao.openCurrentSession();
         result = eventDao.findByClassName(className);
         eventDao.closeCurrentSession();
         return result;
     }
 
-    public List<EventEntity> findByBrowser(String browser) {
+    public ArrayList<EventEntity> findByBrowser(String browser) {
         eventDao.openCurrentSession();
-        List<EventEntity> result = eventDao.findByBrowser(browser);
+        ArrayList<EventEntity> result = eventDao.findByBrowser(browser);
         eventDao.closeCurrentSession();
         return result;
     }
 
-    public List<EventEntity> findByPcOS(String pcOs) {
+    public ArrayList<EventEntity> findByPcOS(String pcOs) {
         eventDao.openCurrentSession();
-        List<EventEntity> result = eventDao.findByPcOS(pcOs);
+        ArrayList<EventEntity> result = eventDao.findByPcOS(pcOs);
         eventDao.closeCurrentSession();
         return result;
     }
 
-    public List<EventEntity> findByPcName(String pcName) {
+    public ArrayList<EventEntity> findByPcName(String pcName) {
         eventDao.openCurrentSession();
-        List<EventEntity> result = eventDao.findByPcName(pcName);
+        ArrayList<EventEntity> result = eventDao.findByPcName(pcName);
         eventDao.closeCurrentSession();
         return result;
     }
 
-    public List<EventEntity> findBySysweb(String sysweb) {
+    public ArrayList<EventEntity> findBySysweb(String sysweb) {
         eventDao.openCurrentSession();
-        List<EventEntity> result = eventDao.findBySysweb(sysweb);
+        ArrayList<EventEntity> result = eventDao.findBySysweb(sysweb);
         eventDao.closeCurrentSession();
         return result;
     }
 
-    public List<EventEntity> findByLocale(String locale) {
+    public ArrayList<EventEntity> findByLocale(String locale) {
         eventDao.openCurrentSession();
-        List<EventEntity> result = eventDao.findByLocale(locale);
+        ArrayList<EventEntity> result = eventDao.findByLocale(locale);
         eventDao.closeCurrentSession();
         return result;
     }
 
-    public List<EventEntity> findBetweenDate(Date startDate, Date endDate) {
+    public ArrayList<EventEntity> findBetweenDate(Date startDate, Date endDate) {
         eventDao.openCurrentSession();
-        List<EventEntity> result = eventDao.findBetweenDates(startDate, endDate);
+        ArrayList<EventEntity> result = eventDao.findBetweenDates(startDate, endDate);
         eventDao.closeCurrentSession();
         return result;
     }
 
-    public List<EventEntity> findCurrentMonthEvents() {
+    public ArrayList<EventEntity> findByCurrentMonthEvents() {
         eventDao.openCurrentSession();
         Date date = new Date();
-        List<EventEntity> result = eventDao.findByMonthEvents(date);
+        ArrayList<EventEntity> result = eventDao.findByMonthEvents(date);
         eventDao.closeCurrentSession();
         return result;
     }
@@ -123,22 +123,20 @@ public class EventService {
         return result;
     }
 
-    public List<EventEntity> findByDayEvents(Date date) {
+    public ArrayList<EventEntity> findByDayEvents(Date date) {
         eventDao.openCurrentSession();
-        List<EventEntity> result = eventDao.findByDayEvents(date);
+        ArrayList<EventEntity> result = eventDao.findByDayEvents(date);
         eventDao.closeCurrentSession();
         return result;
     }
 
-    public List<EventEntity> findByCurrentDayEvents() {
+    public ArrayList<EventEntity> findByCurrentDayEvents() {
         eventDao.openCurrentSession();
         Date date = new Date();
-        List<EventEntity> result = eventDao.findByDayEvents(date);
+        ArrayList<EventEntity> result = eventDao.findByDayEvents(date);
         eventDao.closeCurrentSession();
         return result;
     }
-
-    /*findByDayEvents*/
 
     public List<EventEntity> findByTestNameBetweenDates(String testName, Date startDate, Date endDate) {
         eventDao.openCurrentSession();
@@ -159,63 +157,6 @@ public class EventService {
         ArrayList<EventEntity> results = eventDao.findBySelectedDay(clazzName, testName, sysweb, locale, date);
         eventDao.closeCurrentSession();
         return results;
-    }
-
-    public List<EventEntity> findBySyswebBetweenDates(String sysweb, Date startDate, Date endDate) {
-        eventDao.openCurrentSession();
-        List<EventEntity> result = eventDao.findBySyswebBetweenDates(sysweb, startDate, endDate);
-        eventDao.closeCurrentSession();
-        return result;
-    }
-
-    public List<EventEntity> findBySyswebTestNameBetweenDates(String sysweb, String testName, Date startDate, Date endDate) {
-        eventDao.openCurrentSession();
-        List<EventEntity> result = eventDao.findBySyswebTestNameBetweenDates(sysweb, testName, startDate, endDate);
-        eventDao.closeCurrentSession();
-        return result;
-    }
-
-    public List<EventEntity> findBySyswebTestNameLocaleBetweenDates(String sysweb, String testName, String locale, Date startDate, Date endDate) {
-        eventDao.openCurrentSession();
-        List<EventEntity> result = eventDao.findBySyswebTestNameLocaleBetweenDates(sysweb, testName, locale, startDate, endDate);
-        eventDao.closeCurrentSession();
-        return result;
-    }
-
-    public List<EventEntity> findByClassNameBetweenDates(String clazzName, Date startDate, Date endDate) {
-        eventDao.openCurrentSession();
-        List<EventEntity> result = eventDao
-                .findByClassNameBetweenDates(clazzName, startDate, endDate);
-        eventDao.closeCurrentSession();
-        return result;
-    }
-
-    public List<EventEntity> findByClassNameTestNameBetweenDates(String clazzName, String testName,
-                                                                 Date startDate, Date endDate) {
-        eventDao.openCurrentSession();
-        List<EventEntity> result = eventDao
-                .findByClassNameTestNameBetweenDates(clazzName, testName, startDate, endDate);
-        eventDao.closeCurrentSession();
-        return result;
-    }
-
-    public List<EventEntity> findByClassNameTestNameSyswebBetweenDates(String clazzName, String testName, String sysweb,
-                                                                       Date startDate, Date endDate) {
-        eventDao.openCurrentSession();
-        List<EventEntity> result = eventDao
-                .findByClassNameTestNameSyswebBetweenDates(clazzName, testName, sysweb, startDate, endDate);
-        eventDao.closeCurrentSession();
-        return result;
-    }
-
-
-    public List<EventEntity> findByClassNameTestNameSyswebLocaleBetweenDates(String clazzName, String testName, String sysweb,
-                                                                             String locale, Date startDate, Date endDate) {
-        eventDao.openCurrentSession();
-        List<EventEntity> result = eventDao
-                .findByClassNameTestNameSyswebLocaleBetweenDates(clazzName, testName, sysweb, locale, startDate, endDate);
-        eventDao.closeCurrentSession();
-        return result;
     }
 
     public List<EventEntity> findAllChecked() {
