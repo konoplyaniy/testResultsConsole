@@ -1,16 +1,13 @@
 package web.exporter;
 
-import hibernate.dao.BrowserDao;
 import hibernate.entities.BrowserEntity;
 import hibernate.service.BrowserService;
 import org.primefaces.context.RequestContext;
-import org.primefaces.event.RowEditEvent;
 
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
-import javax.faces.context.FacesContext;
 import java.util.List;
 
 /**

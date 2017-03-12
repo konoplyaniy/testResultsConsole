@@ -1,14 +1,12 @@
 package hibernate.dao;
 
 import hibernate.entities.EventEntity;
-import hibernate.service.BrowserService;
-import org.apache.poi.ss.formula.functions.Even;
-import org.hibernate.*;
-import org.primefaces.model.chart.LineChartSeries;
+import org.hibernate.CacheMode;
+import org.hibernate.Query;
+import org.hibernate.Transaction;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 /**
  * Created by Sergiy.K on 26-Jan-17.

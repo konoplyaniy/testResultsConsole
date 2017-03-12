@@ -1,8 +1,5 @@
 package hibernate.entities;
 
-import hibernate.service.ClazzService;
-import hibernate.service.GroupService;
-
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Collection;

@@ -4,10 +4,7 @@ import hibernate.dao.EventDao;
 import hibernate.entities.EventEntity;
 
 import javax.faces.bean.ApplicationScoped;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 

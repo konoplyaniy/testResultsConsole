@@ -1,10 +1,5 @@
 package hibernate.entities;
 
-import hibernate.service.BrowserService;
-import hibernate.service.LocaleService;
-import hibernate.service.PcService;
-import hibernate.service.SyswebService;
-
 import javax.persistence.*;
 import java.util.Date;
 

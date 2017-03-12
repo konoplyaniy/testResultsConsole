@@ -2,25 +2,21 @@ package web.exporter;
 
 import hibernate.entities.EventEntity;
 import hibernate.service.EventService;
-
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.IndexedColors;
 import org.apache.poi.ss.usermodel.Row;
-import org.primefaces.event.SelectEvent;
-import org.primefaces.event.UnselectEvent;
 
 import javax.annotation.PostConstruct;
-import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
-import javax.faces.context.FacesContext;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 @ManagedBean
 @SessionScoped
@@ -33,16 +29,19 @@ public class EventTableExporter implements Serializable {
     private ArrayList<EventEntity> eventsCoNzLocale;
 
     private ArrayList<ListEntities> eventByLocale;
-
     private String checkFlag;
     private EventEntity selectedEvent;
     private List<EventEntity> selectedEvents;
+
+
+    @ManagedProperty("#{eventService}")
     private EventService eventService;
 
     @PostConstruct
     public void init() {
         eventService = new EventService();
-        events = eventService.findByCurrentMonthEvents();
+        events = eventService.findByCurrentDayEvents();
+        /*events = eventService.findByCurrentMonthEvents();*/
 
         /*System.out.println("1. events.size()events.size()  = " + events.size());
         System.out.println("initLocalesEntities");*/
@@ -68,6 +67,9 @@ public class EventTableExporter implements Serializable {
                 case "co.nz":
                     eventsCoNzLocale.add(eventEntity);
                     break;
+                case "nz":
+                    eventsCoNzLocale.add(eventEntity);
+                    break;
             }
         });
         eventByLocale = new ArrayList<>();
@@ -77,9 +79,9 @@ public class EventTableExporter implements Serializable {
         eventByLocale.add(new ListEntities("in", eventsInLocale));
     }
 
-    public class ListEntities implements Serializable{
+    public class ListEntities implements Serializable {
         String locale;
-        ArrayList<EventEntity> events = new ArrayList<>();
+        ArrayList<EventEntity> events;
 
         public String getLocale() {
             return locale;
@@ -156,6 +158,10 @@ public class EventTableExporter implements Serializable {
         return events;
     }
 
+    public void setEventService(EventService service) {
+        this.eventService = service;
+    }
+
     public String getCheckFlag(EventEntity eventEntity) {
         if (eventEntity.getChecked() == 1) {
             checkFlag = "checked";
@@ -185,6 +191,16 @@ public class EventTableExporter implements Serializable {
 
     public List<EventEntity> getEventsComAuLocale() {
         return eventsComAuLocale;
+    }
+
+    public String getCurrentDate() {
+        Date today = new Date();
+        DateFormat formatter = new SimpleDateFormat("dd.MM.yyyy");
+        return formatter.format(today);
+    }
+
+    public TimeZone getTimeZone(){
+        return TimeZone.getDefault();
     }
 
 }

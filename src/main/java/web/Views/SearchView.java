@@ -1,14 +1,17 @@
 package web.Views;
 
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.*;
-import javax.annotation.PostConstruct;
-import javax.faces.bean.ManagedBean;
-
 import hibernate.entities.EventEntity;
 import hibernate.service.EventService;
+
+import javax.annotation.PostConstruct;
+import javax.faces.bean.ManagedBean;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.TimeZone;
 
 @ManagedBean
 public class SearchView {

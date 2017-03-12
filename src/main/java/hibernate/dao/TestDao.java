@@ -5,9 +5,6 @@ import org.hibernate.Query;
 
 import java.util.List;
 
-/**
- * Created by Sergiy.K on 26-Jan-17.
- */
 public class TestDao extends BaseDao<Integer, TestEntity> {
     @Override
     public void persist(TestEntity entity) {

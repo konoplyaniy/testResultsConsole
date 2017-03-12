@@ -28,7 +28,7 @@ public abstract class BaseDao<K, T> {
         }
     }
 
-    public  SessionFactory getSessionFactory() {
+    public SessionFactory getSessionFactory() {
         return sessionFactory;
     }
 

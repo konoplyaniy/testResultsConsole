@@ -4,7 +4,6 @@ import hibernate.dao.TestDao;
 import hibernate.entities.TestEntity;
 
 import javax.faces.bean.ApplicationScoped;
-import javax.faces.bean.ManagedBean;
 import java.util.List;
 
 /**
@@ -16,6 +15,13 @@ public class TestService {
 
     public TestService() {
         testDao = new TestDao();
+    }
+
+    public boolean isExist(String clazzName,String testName){
+        testDao.openCurrentSessionwithTransaction();
+        boolean result = testDao.exists(clazzName, testName);
+        testDao.closeCurrentSessionwithTransaction();
+        return result;
     }
 
     public void persist(TestEntity entity) {

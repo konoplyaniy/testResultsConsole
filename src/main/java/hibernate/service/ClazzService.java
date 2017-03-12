@@ -6,7 +6,6 @@ import hibernate.entities.ClazzEntity;
 import hibernate.utils.DBLogger;
 
 import javax.faces.bean.ApplicationScoped;
-import javax.faces.bean.ManagedBean;
 import java.util.List;
 
 /**

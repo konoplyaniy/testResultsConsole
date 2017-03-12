@@ -19,15 +19,14 @@
     <!--REFRESH FORM EVERY 5 SECONDS (on server machine it  update time will be changed to  3-5 minutes)-->
     <h:form id="hiddenForm" style="display:none">
         <h:commandButton id="update_event_form" action="#{eventTableExporter.init()}">
-            <f:ajax render=":event_form" />
+            <f:ajax render=":event_form"/>
         </h:commandButton>
     </h:form>
     <script type="text/javascript">
-        setInterval(function() {
+        setInterval(function () {
             document.getElementById("hiddenForm:update_event_form").click();
         }, 5000);
     </script>
-
     <h:form id="event_form">
         <p:dataTable id="event_table" var="eventByLocale"
                      stickyHeader="true"
@@ -48,15 +47,27 @@
             </f:facet>
             <!--EXPORTERS END-->
 
+
+            <!--COLUMN SELECTOR BAD WORKING WILL BE DELETED OR EDITED-->
+            <f:facet name="{ColumnSelector}" id="columnSelector">
+                <p:commandButton id="toggler" type="button" value="Select columns"
+                                 style="float:right;
+                                 background-color: gray;"
+                                 icon="ui-icon-calculator"/>
+                <p:columnToggler id="columnTogler"
+                                 datasource="event_table"
+                                 trigger="toggler"/>
+            </f:facet>
+
             <f:facet name="header">
-                Failed tests for crazydomain.com.au [current month], for see other use search
+                Failed tests for crazydomain.com.au #{eventTableExporter.currentDate}, for see other use search
             </f:facet>
 
             <p:columnGroup type="header">
                 <p:row>
                     <p:column headerText="Date" style="width: 120px"/>
-                    <p:column headerText="Class name" />
-                    <p:column headerText="Test name" />
+                    <p:column headerText="Class name"/>
+                    <p:column headerText="Test name"/>
                     <p:column headerText="Sysweb" style="width: 175px"/>
                     <p:column headerText="Params"/>
                     <p:column headerText="URL"/>
@@ -65,11 +76,13 @@
 
             <p:subTable var="event" value="#{eventByLocale.events}" id="subTable">
                 <f:facet name="header">
-                    <h:outputText value="#{eventByLocale.locale}"/>
+                    <h:outputText value="Locale: #{eventByLocale.locale}" style="text-align:right; font-size: 15px"/>
+                    <h:outputText value=" Failed: #{eventByLocale.failedTestsCount}"
+                                  style="text-align:right; font-size: 15px"/>
                 </f:facet>
                 <p:column style="width: 120px">
                     <h:outputText value="#{event.data}">
-                        <f:convertDateTime pattern="yyyy-MM-dd HH:mm:ss"/>
+                        <f:convertDateTime pattern="dd.MM.yyyy HH:mm:ss" timeZone="#{eventTableExporter.timeZone}"/>
                     </h:outputText>
                 </p:column>
 
@@ -93,16 +106,6 @@
                     <p:link value="#{event.url}" href="#{event.url}" style="color: blue"/>
                 </p:column>
 
-                <p:columnGroup type="footer">
-                    <p:row>
-                        <p:column footerText="" style="text-align:right"/>
-                        <p:column footerText="" style="text-align:right"/>
-                        <p:column footerText="" style="text-align:right"/>
-                        <p:column footerText="" style="text-align:right"/>
-                        <p:column footerText="Total failed: " style="text-align:left; font-size: 16px"/>
-                        <p:column footerText="#{eventByLocale.failedTestsCount}" style="text-align:left; font-size: 16px"/>
-                    </p:row>
-                </p:columnGroup>
             </p:subTable>
         </p:dataTable>
     </h:form>

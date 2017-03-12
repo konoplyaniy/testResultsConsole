@@ -17,51 +17,54 @@
     <!--REFRESH FORM EVERY 5 SECONDS (on server machine it  update time will be changed to  3-5 minutes)-->
     <h:form id="hiddenForm" style="display:none">
         <h:commandButton id="update_diagram_form" action="#{diagramView.init()}">
-            <f:ajax render=":diagram_form" />
+            <f:ajax render=":diagram_form"/>
         </h:commandButton>
     </h:form>
     <script type="text/javascript">
-        setInterval(function() {
+        setInterval(function () {
             document.getElementById("hiddenForm:update_diagram_form").click();
         }, 5000);
     </script>
 
     <h:form id="diagram_form">
-    <div class="ui-g">
-        <h:form>
-            <h:form id="diagram_date">
-                <p:panel id="panel1" style="margin-bottom:10px;">
-                    <p:chart type="line" model="#{diagramView.modelPerDate}" style="height:300px; width: 700px;" id="chart"/>
-                </p:panel>
+        <div class="ui-g">
+            <h:form>
+                <h:form id="diagram_date">
+                    <p:panel id="panel1" style="margin-bottom:10px;">
+                        <p:chart type="line" model="#{diagramView.modelPerDate}" style="height:300px; width: 700px;"
+                                 id="chart"/>
+                    </p:panel>
+                </h:form>
             </h:form>
-        </h:form>
-    </div>
-    <div class="ui-g">
-        <div class="ui-g-12 ui-md-4 ui-lg-4" id="panel2_form" style="height:320px; min-width: 550px; width: 550px;">
-            <p:panel id="panel2" style="margin-bottom:10px;">
-                <h:form id="diagram_sysweb">
-                    <p:chart type="bar" model="#{diagramView.modelBySysweb}" style="height:300px;width: 500px;"
-                             id="chart_sysweb"/>
-                </h:form>
-            </p:panel>
         </div>
+        <div class="ui-g">
+            <div class="ui-g-12 ui-md-4 ui-lg-4" id="panel2_form" style="height:320px; min-width: 550px; width: 550px;">
+                <p:panel id="panel2" style="margin-bottom:10px;">
+                    <h:form id="diagram_sysweb">
+                        <p:chart type="bar" model="#{diagramView.modelBySysweb}" style="height:300px;width: 500px;"
+                                 id="chart_sysweb"/>
+                    </h:form>
+                </p:panel>
+            </div>
 
-        <div class="ui-g-12 ui-md-4 ui-lg-4" id="panel3_form" style="height:320px; min-width: 550px; width: 550px;">
-            <p:panel id="panel3" style="margin-bottom:10px;">
-                <h:form id="diagram_locales">
-                    <p:chart type="bar" model="#{diagramView.modelByLocale}" style="height:300px; width: 500px;"
-                             id="bar_chart"/>
-                </h:form>
-            </p:panel>
+            <div class="ui-g-12 ui-md-4 ui-lg-4" id="panel3_form" style="height:320px; min-width: 550px; width: 550px;">
+                <p:panel id="panel3" style="margin-bottom:10px;">
+                    <h:form id="diagram_locales">
+                        <p:chart type="bar" model="#{diagramView.modelByLocale}" style="height:300px; width: 500px;"
+                                 id="bar_chart"/>
+                    </h:form>
+                </p:panel>
+            </div>
         </div>
-    </div>
     </h:form>
     <!--END-->
 
-    <!-- CUSOM DIAGRAM -->
-    <div style="padding: 10px">
-    <p:separator style="width:100%; height:5px; background-color: black; opacity: 0.4;" />
+
+    <div style="padding: 20px">
+        <p:separator style="width:100%; height:5px; background-color: black; opacity: 0.4;"/>
     </div>
+
+    <!-- CUSOM DIAGRAM -->
     <h:form>
         <p:selectBooleanCheckbox value="#{buildDiagramView.advancedBuildChecked}" itemLabel="Advanced build"
                                  style="color: #ffffff; font-weight: bold; font-size: 14px"
@@ -179,7 +182,8 @@
                 </p:panel>
 
                 <!--BarChart model failed by locales-->
-                <div class="ui-g-12 ui-md-4 ui-lg-4" style="height:320px; min-width: 800px; width: 750px; padding: 10px;">
+                <div class="ui-g-12 ui-md-4 ui-lg-4"
+                     style="height:320px; min-width: 800px; width: 750px; padding: 10px;">
                     <p:panel id="locale_panel" style="margin-bottom:10px;">
                         <h:form id="custom_locales_diagram_form">
                             <p:panel header="Failed tests by locales">
@@ -192,7 +196,8 @@
                 </div>
 
                 <!--BarChart model failed by syswebs-->
-                <div class="ui-g-12 ui-md-4 ui-lg-4" style="height:320px; min-width: 800px; width: 750px; padding: 10px;">
+                <div class="ui-g-12 ui-md-4 ui-lg-4"
+                     style="height:320px; min-width: 800px; width: 750px; padding: 10px;">
                     <p:panel id="sysweb_panel" style="margin-bottom:10px;">
                         <h:form id="custom_syswebs_diagram_form">
                             <p:panel header="Failed tests by syswebs">
