@@ -32,18 +32,6 @@ public abstract class BaseDao<K, T> {
         return sessionFactory;
     }
 
-    public abstract void persist(T entity);
-
-    public abstract void update(T entity);
-
-    public abstract T findById(K key);
-
-    public abstract void delete(T entity);
-
-    public abstract List<T> findAll();
-
-    public abstract void deleteAll();
-
     private static final ThreadLocal<Session> session = new ThreadLocal<Session>();
 
     public static void closeSession() throws HibernateException {

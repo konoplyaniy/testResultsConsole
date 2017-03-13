@@ -14,7 +14,7 @@ import java.io.Serializable;
  * Created by Sergiy.K on 10-Feb-17.
  */
 @ManagedBean
-public class UserLoginView implements Serializable{
+public class UserLoginView implements Serializable {
     private boolean loggedIn = false;
 
     private String username;
@@ -41,7 +41,7 @@ public class UserLoginView implements Serializable{
         return loggedIn;
     }
 
-    public void logout(){
+    public void logout() {
         loggedIn = false;
     }
 

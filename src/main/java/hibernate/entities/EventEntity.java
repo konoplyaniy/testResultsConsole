@@ -18,6 +18,7 @@ public class EventEntity {
     private String url;
     private String message;
     private String params;
+    private String website;
     private int browserId;
     private TestEntity testByTestId;
     private LocaleEntity localeByLocaleId;
@@ -137,6 +138,16 @@ public class EventEntity {
 
     public void setChecked(int checked) {
         this.checked = checked;
+    }
+
+    @Basic
+    @Column(name = "website", nullable = false)
+    public String getWebsite() {
+        return website;
+    }
+
+    public void setWebsite(String website) {
+        this.website = website;
     }
 
     @Override

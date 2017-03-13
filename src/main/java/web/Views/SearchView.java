@@ -91,7 +91,6 @@ public class SearchView {
             DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             formatter.setTimeZone(TimeZone.getDefault());
             formatter.format(startDate);
-            System.out.println("Get start date " + formatter.format(startDate));
         }
         return startDate;
     }
@@ -105,7 +104,6 @@ public class SearchView {
             DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             formatter.setTimeZone(TimeZone.getDefault());
             formatter.format(endDate);
-            System.out.println("Get end date " + formatter.format(endDate));
         }
         return endDate;
     }
@@ -119,9 +117,7 @@ public class SearchView {
     }
 
     public void setTestName(String testName) {
-        System.out.println("set test name");
         this.testName = testName;
-        System.out.println("test name = " + testName);
     }
 
     public String getSysweb() {
@@ -129,9 +125,7 @@ public class SearchView {
     }
 
     public void setSysweb(String sysweb) {
-        System.out.println("set sysweb");
         this.sysweb = sysweb;
-        System.out.println("sysweb = " + sysweb);
     }
 
     public String getLocale() {

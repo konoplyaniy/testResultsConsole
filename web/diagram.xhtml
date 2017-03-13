@@ -66,13 +66,13 @@
 
     <!-- CUSOM DIAGRAM -->
     <h:form>
-        <p:selectBooleanCheckbox value="#{buildDiagramView.advancedBuildChecked}" itemLabel="Advanced build"
+        <p:selectBooleanCheckbox value="#{diagramView.advancedBuildChecked}" itemLabel="Advanced build"
                                  style="color: #ffffff; font-weight: bold; font-size: 14px"
                                  onchange="submit()">
             <p:ajax event="change" update="searchFields"/>
         </p:selectBooleanCheckbox>
     </h:form>
-    <h:form rendered="#{buildDiagramView.advancedBuildChecked}" id="searchFields">
+    <h:form rendered="#{diagramView.advancedBuildChecked}" id="searchFields">
         <!--<h:form id="searchFields">-->
 
         <p:panel header="Select options for build diagram">
@@ -83,7 +83,7 @@
                         <p:calendar id="startDate"
                                     styleClass="MyCalendarClass"
                                     required="true"
-                                    value="#{buildDiagramView.startDate}"
+                                    value="#{diagramView.startDate}"
                                     pattern="MM-dd-yyyy HH:mm:ss"
                                     placeholder="Start Date"/>
                     </div>
@@ -92,54 +92,54 @@
                         <p:calendar id="endDate"
                                     required="true"
                                     styleClass="MyCalendarClass"
-                                    value="#{buildDiagramView.endDate}"
+                                    value="#{diagramView.endDate}"
                                     pattern="MM-dd-yyyy HH:mm:ss"
                                     placeholder="End Date"/>
                     </div>
                     <div class="ui-g-2">
                         <p:outputLabel for="classNameDropDown" value="Class name"/><br></br>
-                        <p:selectOneMenu id="classNameDropDown" value="#{buildDiagramView.clazzName}" effect="fold"
+                        <p:selectOneMenu id="classNameDropDown" value="#{diagramView.clazzName}" effect="fold"
                                          editable="true" styleClass="MyDropDown">
                             <f:selectItem itemValue="" noSelectionOption="true"/>
-                            <f:selectItems value="#{buildDiagramView.clazzNames}"/>
+                            <f:selectItems value="#{diagramView.clazzNames}"/>
                         </p:selectOneMenu>
                     </div>
                     <div class="ui-g-2">
                         <p:outputLabel for="testNameDropDown" value="Test name"/><br></br>
-                        <p:selectOneMenu id="testNameDropDown" value="#{buildDiagramView.testName}" effect="fold"
+                        <p:selectOneMenu id="testNameDropDown" value="#{diagramView.testName}" effect="fold"
                                          editable="true" styleClass="MyDropDown">
                             <f:selectItem itemValue="All"/>
-                            <f:selectItems value="#{buildDiagramView.testNames}"/>
+                            <f:selectItems value="#{diagramView.testNames}"/>
                         </p:selectOneMenu>
                     </div>
                     <div class="ui-g-2">
                         <p:outputLabel for="syswebDropDown" value="Sysweb"/><br></br>
-                        <p:selectOneMenu id="syswebDropDown" value="#{buildDiagramView.sysweb}" effect="fold"
+                        <p:selectOneMenu id="syswebDropDown" value="#{diagramView.sysweb}" effect="fold"
                                          editable="true" styleClass="MyDropDown">
                             <f:selectItem itemValue="All"/>
-                            <f:selectItems value="#{buildDiagramView.syswebs}"/>
+                            <f:selectItems value="#{diagramView.syswebs}"/>
                         </p:selectOneMenu>
                     </div>
                     <div class="ui-g-2">
                         <p:outputLabel for="localeDropDown" value="Locale"/><br></br>
-                        <p:selectOneMenu id="localeDropDown" value="#{buildDiagramView.locale}" effect="fold"
+                        <p:selectOneMenu id="localeDropDown" value="#{diagramView.locale}" effect="fold"
                                          editable="true" styleClass="MyDropDown">
                             <f:selectItem itemValue="All"/>
-                            <f:selectItems value="#{buildDiagramView.locales}"/>
+                            <f:selectItems value="#{diagramView.locales}"/>
                         </p:selectOneMenu>
                     </div>
                     <div>
                         <p:commandButton value="Build" id="submitButton" icon="ui-icon-circle-triangle-e"
                                          style="height: 40px; padding: 5px !important; border: none"
                                          update="diagramForm"
-                                         action="#{buildDiagramView.clickBuildButton()}">
+                                         action="#{diagramView.clickBuildButton()}">
                         </p:commandButton>
                     </div>
                     <div>
                         <p:commandButton value="Hide" id="HideButton" icon="ui-icon-circle-triangle-n"
                                          style="height: 40px; padding: 5px !important; border: none"
                                          update="diagramForm"
-                                         action="#{buildDiagramView.clickHideButton()}">
+                                         action="#{diagramView.clickHideButton()}">
                         </p:commandButton>
                     </div>
                 </div>
@@ -154,11 +154,11 @@
 
             <p:panelGrid id="display" columns="2" columnClasses="label,value">
                 <h:outputText value="Datetime start:"/>
-                <h:outputText value="#{buildDiagramView.startDate}">
+                <h:outputText value="#{diagramView.startDate}">
                     <f:convertDateTime pattern="MM-dd-yyyy HH:mm:ss"/>
                 </h:outputText>
                 <h:outputText value="Datetime end:"/>
-                <h:outputText value="#{buildDiagramView.endDate}">
+                <h:outputText value="#{diagramView.endDate}">
                     <f:convertDateTime pattern="MM-dd-yyyy HH:mm:ss"/>
                 </h:outputText>
             </p:panelGrid>
@@ -168,13 +168,13 @@
     <!--DIAGRAMS-->
 
     <h:panelGroup id="diagramForm">
-        <h:form rendered="#{buildDiagramView.clickedBuild}">
+        <h:form rendered="#{diagramView.clickedBuild}">
             <div class="ui-g">
                 <!--line chart model events per day-->
                 <p:panel id="date_panel" style="margin-bottom:10px;">
                     <h:form id="custom_diagram_by_date_form">
                         <p:panel header="Failed tests by dates">
-                            <p:chart type="line" model="#{buildDiagramView.lineChartModel}"
+                            <p:chart type="line" model="#{diagramView.lineChartModelCustom}"
                                      style="height:300px; width: 800px;"
                                      id="date_line_chart"/>
                         </p:panel>
@@ -187,7 +187,7 @@
                     <p:panel id="locale_panel" style="margin-bottom:10px;">
                         <h:form id="custom_locales_diagram_form">
                             <p:panel header="Failed tests by locales">
-                                <p:chart type="bar" model="#{buildDiagramView.modelByLocale}"
+                                <p:chart type="bar" model="#{diagramView.modelByLocaleCustom}"
                                          style="height:300px; width: 700px;"
                                          id="locale_bar_chart"/>
                             </p:panel>
@@ -201,7 +201,7 @@
                     <p:panel id="sysweb_panel" style="margin-bottom:10px;">
                         <h:form id="custom_syswebs_diagram_form">
                             <p:panel header="Failed tests by syswebs">
-                                <p:chart type="bar" model="#{buildDiagramView.modelBySysweb}"
+                                <p:chart type="bar" model="#{diagramView.modelBySyswebCustom}"
                                          style="height:300px; width: 700px;"
                                          id="sysweb_bar_chart"/>
                             </p:panel>

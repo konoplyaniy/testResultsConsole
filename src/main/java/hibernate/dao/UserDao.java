@@ -10,7 +10,7 @@ import java.util.List;
  * Created by Sergiy.K on 07-Feb-17.
  */
 public class UserDao extends BaseDao<Integer, UserEntity> {
-    @Override
+
     public void persist(UserEntity entity) {
     }
 
@@ -21,7 +21,7 @@ public class UserDao extends BaseDao<Integer, UserEntity> {
         return (query.uniqueResult() != null);
     }
 
-    public UserEntity getUser(String userName, String password){
+    public UserEntity getUser(String userName, String password) {
         System.out.println(userName);
         System.out.println(password);
         openCurrentSession();
@@ -30,19 +30,16 @@ public class UserDao extends BaseDao<Integer, UserEntity> {
             query.setString("userName", userName);
             query.setString("password", password);
             return (UserEntity) query.uniqueResult();
-        }catch (NoResultException e){
+        } catch (NoResultException e) {
             return null;
-        }
-        finally {
+        } finally {
             closeCurrentSession();
         }
     }
 
-    @Override
     public void update(UserEntity entity) {
     }
 
-    @Override
     public UserEntity findById(Integer key) {
         try {
 //            UserEntity user = (UserEntity) em.createQuery("SELECT u from User u where u.nameUser = :name and u.password = :password").setParameter("name", nameUser).setParameter("password", password).getSingleResult();
@@ -53,17 +50,10 @@ public class UserDao extends BaseDao<Integer, UserEntity> {
         return null;
     }
 
-    @Override
-    public void delete(UserEntity entity) {
-
-    }
-
-    @Override
     public List<UserEntity> findAll() {
         return null;
     }
 
-    @Override
     public void deleteAll() {
 
     }

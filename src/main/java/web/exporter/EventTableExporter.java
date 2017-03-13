@@ -133,7 +133,7 @@ public class EventTableExporter implements Serializable {
 
     public void clickApplyButton() {
         EventEntity event;
-        System.out.println("click apply");
+        /*System.out.println("click apply");*/
         if (selectedEvents != null) {
             for (EventEntity eventEntity : selectedEvents) {
                 event = eventEntity;

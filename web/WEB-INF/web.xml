@@ -20,7 +20,7 @@
 
     <!-- Welcome page -->
     <welcome-file-list>
-        <welcome-file>exporter/test.xhtml</welcome-file>
+        <welcome-file>exporter/allcrazyevents.xhtml</welcome-file>
     </welcome-file-list>
 
     <!-- JSF mapping -->

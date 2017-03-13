@@ -18,11 +18,11 @@
     <!--REFRESH FORM EVERY 5 SECONDS (on server machine it  update time will be changed to  3-5 minutes)-->
     <h:form id="hiddenForm" style="display:none">
         <h:commandButton id="update_event_form" action="#{eventTableExporter.init()}">
-            <f:ajax render=":event_form" />
+            <f:ajax render=":event_form"/>
         </h:commandButton>
     </h:form>
     <script type="text/javascript">
-        setInterval(function() {
+        setInterval(function () {
             document.getElementById("hiddenForm:update_event_form").click();
         }, 5000);
     </script>

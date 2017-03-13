@@ -135,21 +135,14 @@ public class EventService {
         return result;
     }
 
-    public List<EventEntity> findByTestNameBetweenDates(String testName, Date startDate, Date endDate) {
-        eventDao.openCurrentSession();
-        List<EventEntity> result = eventDao.findByTestNameBetweenDates(testName, startDate, endDate);
-        eventDao.closeCurrentSession();
-        return result;
-    }
-
-    public ArrayList<EventEntity> findBySelected(String clazzName, String testName, String sysweb, String locale, Date startDate, Date endDate){
+    public ArrayList<EventEntity> findBySelected(String clazzName, String testName, String sysweb, String locale, Date startDate, Date endDate) {
         eventDao.openCurrentSession();
         ArrayList<EventEntity> results = eventDao.findBySelected(clazzName, testName, sysweb, locale, startDate, endDate);
         eventDao.closeCurrentSession();
         return results;
     }
 
-    public ArrayList<EventEntity> findBySelectedDay(String clazzName, String testName, String sysweb, String locale, Date date){
+    public ArrayList<EventEntity> findBySelectedDay(String clazzName, String testName, String sysweb, String locale, Date date) {
         eventDao.openCurrentSession();
         ArrayList<EventEntity> results = eventDao.findBySelectedDay(clazzName, testName, sysweb, locale, date);
         eventDao.closeCurrentSession();

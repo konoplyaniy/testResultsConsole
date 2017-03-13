@@ -46,30 +46,30 @@
 
         <!--SEARH RESULTS-->
 
-    <h:panelGroup id="search_results">
-        <p:panel header="Test case example" rendered="#{testCasesView.visibleResultsForm}">
-        <h:panelGrid id="deleteBrowser" columns="2" border="1"
-                     cellpadding="5" cellspacing="1" style="font-size: 14px">
-            <h:outputLabel value="Test name"/>
-            <h:outputLabel value="Login in header test"/>
-            <h:outputLabel value="Parameters"/>
-            <h:outputLabel value="userName, password"/>
-            <h:outputLabel value="Steps"/>
-            2) Go to https://www.example.com/<br></br>
-            3) Click on [UP CART ITEMS] with text "0 items"<br></br>
-            4) Click on [SIGN IN HEADER TAB] with text "Sign In"<br></br>
-            5) Input "userName" in [USERNAME FIELD IN HEADER]<br></br>
-            6) Input "password" in [USER PASSWORD IN HEADER]<br></br>
-            7) Click on [SIGN IN HEADER SUBMIT BUTTON] with text "Sign In"<br></br>
-            <h:outputLabel value="Expected" />
-            <h:outputLabel value="you are logged to front" />
-            <h:outputLabel value="Maven run command" />
-            <h:outputLabel value="mvn -Dtest=loginInHeaderTest test"/>
-            <h:outputLabel value="Additional info"/>
-            <h:outputLabel value=""/>
-        </h:panelGrid>
-        </p:panel>
-    </h:panelGroup>
+        <h:panelGroup id="search_results">
+            <p:panel header="Test case example" rendered="#{testCasesView.visibleResultsForm}">
+                <h:panelGrid id="deleteBrowser" columns="2" border="1"
+                             cellpadding="5" cellspacing="1" style="font-size: 14px">
+                    <h:outputLabel value="Test name"/>
+                    <h:outputLabel value="Login in header test"/>
+                    <h:outputLabel value="Parameters"/>
+                    <h:outputLabel value="userName, password"/>
+                    <h:outputLabel value="Steps"/>
+                    2) Go to https://www.example.com/<br></br>
+                    3) Click on [UP CART ITEMS] with text "0 items"<br></br>
+                    4) Click on [SIGN IN HEADER TAB] with text "Sign In"<br></br>
+                    5) Input "userName" in [USERNAME FIELD IN HEADER]<br></br>
+                    6) Input "password" in [USER PASSWORD IN HEADER]<br></br>
+                    7) Click on [SIGN IN HEADER SUBMIT BUTTON] with text "Sign In"<br></br>
+                    <h:outputLabel value="Expected"/>
+                    <h:outputLabel value="you are logged to front"/>
+                    <h:outputLabel value="Maven run command"/>
+                    <h:outputLabel value="mvn -Dtest=loginInHeaderTest test"/>
+                    <h:outputLabel value="Additional info"/>
+                    <h:outputLabel value=""/>
+                </h:panelGrid>
+            </p:panel>
+        </h:panelGroup>
     </p:panel>
 </h:body>
 </html>

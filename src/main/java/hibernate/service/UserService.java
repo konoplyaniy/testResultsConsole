@@ -40,13 +40,6 @@ public class UserService {
         return user;
     }
 
-    public void delete(Integer id) {
-        userDao.openCurrentSessionwithTransaction();
-        UserEntity locale = userDao.findById(id);
-        userDao.delete(locale);
-        userDao.closeCurrentSessionwithTransaction();
-    }
-
     public List<UserEntity> findAll() {
         userDao.openCurrentSession();
         List<UserEntity> locales = userDao.findAll();
