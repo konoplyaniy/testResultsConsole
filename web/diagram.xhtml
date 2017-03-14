@@ -14,7 +14,7 @@
         <ui:include src="resources/templates/headers.xhtml"/>
     </div>
 
-   <!-- REFRESH FORM EVERY 5 SECONDS (on server machine it  update time will be changed to  3-5 minutes)-->
+    <!-- REFRESH FORM EVERY 5 SECONDS (on server machine it  update time will be changed to  3-5 minutes)-->
     <h:form id="hiddenForm" style="display:none">
         <h:commandButton id="update_diagram_form" action="#{diagramView.init()}">
             <f:ajax render=":diagram_form"/>
@@ -29,26 +29,26 @@
     <h:panelGroup id="diagram_forms">
         <h:form id="diagram_form">
             <div class="ui-g">
-                <div class="ui-g-12 ui-md-4 ui-lg-4" style="height:320px; min-width: 550px; width: 550px;">
+                <div class="ui-g-12 ui-md-4 ui-lg-4" style="height:320px; min-width: 750px; width: 550px;">
                     <p:panel header="Failed test by dates" style="margin-bottom:10px;">
                         <p:chart type="line" model="#{diagramView.modelPerDate}"
                                  style="height:300px; width: 700px;"
                                  id="chart"/>
                     </p:panel>
                 </div>
-                    <div class="ui-g-12 ui-md-4 ui-lg-4" style="height:320px; min-width: 550px; width: 550px;">
-                        <p:panel header="Failed tests by locales" style="margin-bottom:10px;">
-                            <p:chart type="bar" model="#{diagramView.modelByLocale}"
-                                     style="height:300px; width: 500px;"
-                                     id="bar_chart"/>
-                        </p:panel>
-                    </div>
-                    <div class="ui-g-12 ui-md-4 ui-lg-4" style="height:320px; min-width: 550px; width: 550px;">
-                        <p:panel header="Failed tests by syswebs" style="margin-bottom:10px;">
-                            <p:chart type="bar" model="#{diagramView.modelBySysweb}"
-                                     style="height:300px;width: 500px;"
-                                     id="chart_sysweb"/>
-                        </p:panel>
+                <div class="ui-g-12 ui-md-4 ui-lg-4" style="height:320px; min-width: 550px; width: 550px;">
+                    <p:panel header="Failed tests by locales" style="margin-bottom:10px;">
+                        <p:chart type="bar" model="#{diagramView.modelByLocale}"
+                                 style="height:300px; width: 500px;"
+                                 id="bar_chart"/>
+                    </p:panel>
+                </div>
+                <div class="ui-g-12 ui-md-4 ui-lg-4" style="height:320px; min-width: 550px; width: 550px;">
+                    <p:panel header="Failed tests by syswebs" style="margin-bottom:10px;">
+                        <p:chart type="bar" model="#{diagramView.modelBySysweb}"
+                                 style="height:300px;width: 500px;"
+                                 id="chart_sysweb"/>
+                    </p:panel>
                 </div>
             </div>
         </h:form>
@@ -125,19 +125,18 @@
                     <div>
                         <p:commandButton value="Build" id="submitButton" icon="ui-icon-circle-triangle-e"
                                          style="height: 40px; padding: 5px !important; border: none"
-                                         update="diagramForm"
+                                         update="custom_diagrams"
                                          action="#{diagramView.clickBuildButton()}">
                         </p:commandButton>
                     </div>
                     <div>
                         <p:commandButton value="Hide" id="HideButton" icon="ui-icon-circle-triangle-n"
                                          style="height: 40px; padding: 5px !important; border: none"
-                                         update="diagramForm"
+                                         update="custom_diagrams"
                                          action="#{diagramView.clickHideButton()}">
                         </p:commandButton>
                     </div>
                 </div>
-
             </h:form>
         </p:panel>
 
@@ -164,7 +163,7 @@
     <h:panelGroup id="custom_diagrams">
         <h:form rendered="#{diagramView.clickedBuild}">
             <div class="ui-g">
-                <div class="ui-g-12 ui-md-4 ui-lg-4" style="height:320px; min-width: 550px; width: 550px;">
+                <div class="ui-g-12 ui-md-4 ui-lg-4" style="height:320px; min-width: 750px; width: 550px;">
                     <p:panel header="Failed tests by dates" style="margin: 10px;">
                         <p:chart type="line" model="#{diagramView.lineChartModelCustom}"
                                  style="height:300px; width: 700px;"
