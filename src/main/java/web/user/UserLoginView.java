@@ -1,7 +1,7 @@
 package web.user;
 
-import hibernate.dao.UserDao;
-import hibernate.entities.UserEntity;
+import db_worker.dao.UserDao;
+import db_worker.entities.UserEntity;
 import org.primefaces.context.RequestContext;
 
 import javax.faces.application.FacesMessage;
@@ -10,9 +10,6 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import java.io.Serializable;
 
-/**
- * Created by Sergiy.K on 10-Feb-17.
- */
 @ManagedBean
 public class UserLoginView implements Serializable {
     private boolean loggedIn = false;

@@ -1,16 +1,13 @@
 package web.Views;
 
-import hibernate.entities.EventEntity;
-import hibernate.service.EventService;
+import db_worker.entities.EventEntity;
+import db_worker.service.EventService;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import java.util.ArrayList;
 import java.util.HashSet;
 
-/**
- * Created by geser on 11.03.17.
- */
 @ManagedBean
 public class TestCasesView {
     private String testName = "";

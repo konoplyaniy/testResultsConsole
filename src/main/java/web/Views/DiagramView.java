@@ -1,7 +1,9 @@
 package web.Views;
 
-import hibernate.entities.EventEntity;
-import hibernate.service.EventService;
+//import hibernate.entities.EventEntity;
+//import hibernate.service.EventService;
+import db_worker.entities.EventEntity;
+import db_worker.service.EventService;
 import org.primefaces.model.chart.*;
 
 import javax.annotation.PostConstruct;

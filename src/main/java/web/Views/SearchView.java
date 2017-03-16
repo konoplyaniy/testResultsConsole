@@ -1,11 +1,15 @@
 package web.Views;
 
 
-import hibernate.entities.EventEntity;
-import hibernate.service.EventService;
+//import hibernate.entities.EventEntity;
+//import hibernate.service.EventService;
+
+import db_worker.entities.EventEntity;
+import db_worker.service.EventService;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
+import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -14,7 +18,7 @@ import java.util.HashSet;
 import java.util.TimeZone;
 
 @ManagedBean
-public class SearchView {
+public class SearchView implements Serializable{
     private Date startDate;
     private Date endDate;
     private String testName = "";

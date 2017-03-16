@@ -1,7 +1,7 @@
 package web.exporter;
 
-import hibernate.entities.EventEntity;
-import hibernate.service.EventService;
+import db_worker.entities.EventEntity;
+import db_worker.service.EventService;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
@@ -11,7 +11,6 @@ import org.apache.poi.ss.usermodel.Row;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import java.io.Serializable;
 import java.text.DateFormat;
@@ -33,8 +32,6 @@ public class EventTableExporter implements Serializable {
     private EventEntity selectedEvent;
     private List<EventEntity> selectedEvents;
 
-
-    @ManagedProperty("#{eventService}")
     private EventService eventService;
 
     @PostConstruct
