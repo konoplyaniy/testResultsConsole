@@ -26,9 +26,10 @@
         }, 5000);
     </script>
 
-    <h:panelGroup id="diagram_forms">
+    <div>
+    <h:panelGroup id="diagram_forms" >
         <h:form id="diagram_form">
-            <div class="ui-g">
+            <div class="ui-g" style="height: 400px">
                 <div class="ui-g-12 ui-md-4 ui-lg-4" style="height:320px; min-width: 750px; width: 550px;">
                     <p:panel header="Failed test by dates" style="margin-bottom:10px;">
                         <p:chart type="line" model="#{diagramView.modelPerDate}"
@@ -49,13 +50,14 @@
                                  style="height:300px;width: 500px;"
                                  id="chart_sysweb"/>
                     </p:panel>
-                </div>
+               </div>
             </div>
         </h:form>
     </h:panelGroup>
+    </div>
     <!--END-->
 
-    <div style="padding: 60px">
+    <div class="ui-g-12">
         <p:separator style="width:100%; height:5px; background-color: black; opacity: 0.4;"/>
     </div>
 
