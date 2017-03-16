@@ -1,5 +1,7 @@
 package web.exporter;
 
+import db_worker.dao.BaseDao;
+import db_worker.dao.EventDao;
 import db_worker.entities.EventEntity;
 import db_worker.service.EventService;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
@@ -8,6 +10,7 @@ import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.IndexedColors;
 import org.apache.poi.ss.usermodel.Row;
+import org.hibernate.Session;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
@@ -128,18 +131,34 @@ public class EventTableExporter implements Serializable {
         }
     }
 
+   public void changeEventStatus(int eventID, int setStatus) {
+        Session session = BaseDao.getSessionFactory().openSession();
+                session.beginTransaction();
+
+                EventDao dao = new EventDao(session);
+                EventEntity entity = dao.findById(eventID);
+                System.out.println(entity.getChecked());
+                entity.setChecked(setStatus);
+                dao.update(entity);
+                System.out.println(entity.getChecked());
+                session.getTransaction().commit();
+                session.close();
+    }
+
     public void clickApplyButton() {
         EventEntity event;
-        /*System.out.println("click apply");*/
+        System.out.println("click apply");
         if (selectedEvents != null) {
+
+            System.out.println("selected events: " + selectedEvents.size());
             for (EventEntity eventEntity : selectedEvents) {
                 event = eventEntity;
+                System.out.println("before update: " + event.getChecked());
                 if (eventEntity.getChecked() == 0) {
-                    event.setChecked(1);
+                    changeEventStatus(event.getEventId(), 1);
                 } else {
-                    event.setChecked(0);
+                    changeEventStatus(event.getEventId(), 1);
                 }
-                eventService.update(eventEntity);
             }
         }
     }
@@ -196,7 +215,7 @@ public class EventTableExporter implements Serializable {
         return formatter.format(today);
     }
 
-    public TimeZone getTimeZone(){
+    public TimeZone getTimeZone() {
         return TimeZone.getDefault();
     }
 

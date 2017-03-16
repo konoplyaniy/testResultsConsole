@@ -15,7 +15,7 @@
         <ui:include src="resources/templates/headers.xhtml"/>
     </ui:insert>
 
-    <!--REFRESH FORM EVERY 5 SECONDS (on server machine it  update time will be changed to  3-5 minutes)-->
+   <!-- &lt;!&ndash;REFRESH FORM EVERY 5 SECONDS (on server machine it  update time will be changed to  3-5 minutes)&ndash;&gt;
     <h:form id="hiddenForm" style="display:none">
         <h:commandButton id="update_event_form" action="#{eventTableExporter.init()}">
             <f:ajax render=":event_form"/>
@@ -25,7 +25,7 @@
         setInterval(function () {
             document.getElementById("hiddenForm:update_event_form").click();
         }, 5000);
-    </script>
+    </script>-->
 
     <h:form id="event_form">
         <p:dataTable id="event_table" var="event"
@@ -123,7 +123,6 @@
                     <h:outputText value="URL"/>
                 </f:facet>
                 <p:link value="#{event.url}" href="#{event.url}" style="color: blue"/>
-                <!--<h:outputText value="#{event.url}"/>-->
             </p:column>
             <p:column style="width: 80px;"
                       sortBy="#{event.checked}">
@@ -137,8 +136,10 @@
             <f:facet name="footer">
                 <p:commandButton icon="ui-icon-circle-check" value="Apply"
                                  actionListener="#{eventTableExporter.clickApplyButton()}"
+                                 action="#{eventTableExporter.init()}"
                                  style="width: 400px; height: 50px"
                                  update=":event_form:event_table">
+                    <f:ajax render=":event_form"/>
                 </p:commandButton>
             </f:facet>
         </p:dataTable>
