@@ -63,6 +63,8 @@
           <element id="library" level="project" name="Maven: org.apache.lucene:lucene-smartcn:3.5.0" />
           <element id="library" level="project" name="Maven: org.apache.lucene:lucene-stempel:3.5.0" />
           <element id="library" level="project" name="Maven: log4j:log4j:1.2.14" />
+          <element id="library" level="project" name="Maven: joda-time:joda-time:2.9.7" />
+          <element id="library" level="project" name="hibernate_worker" />
         </element>
       </element>
       <element id="javaee-facet-resources" facet="testResultsConsole/web/Web" />
