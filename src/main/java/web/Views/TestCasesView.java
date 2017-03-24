@@ -1,15 +1,20 @@
 package web.Views;
 
-import db_worker.entities.EventEntity;
-import db_worker.service.EventService;
+import db_worker.entities.TestcaseEntity;
+import db_worker.service.TestCaseService;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
+import java.io.Serializable;
 import java.util.ArrayList;
+
 import java.util.HashSet;
 
 @ManagedBean
-public class TestCasesView {
+@SessionScoped
+public class TestCasesView implements Serializable {
+    private TestcaseEntity testcaseEntity;
     private String testName = "";
     private String clazzName = "";
     private HashSet<String> clazzNames;
@@ -22,14 +27,15 @@ public class TestCasesView {
     }
 
     private void initDropdownsData() {
-        EventService service = new EventService();
-        ArrayList<EventEntity> eventList = (ArrayList<EventEntity>) service.findAll();
+        TestCaseService service = new TestCaseService();
+        ArrayList<TestcaseEntity> testCaseList = service.findAll();
+
         HashSet<String> testNames = new HashSet<>();
         HashSet<String> clazzes = new HashSet<>();
 
-        eventList.forEach(eventEntity -> {
-            testNames.add(eventEntity.getTestByTestId().getName());
-            clazzes.add(eventEntity.getTestByTestId().getClazzByClassId().getName());
+        testCaseList.forEach(testCase -> {
+            testNames.add(testCase.getTestName());
+            clazzes.add(testCase.getClassName());
         });
 
         setTestNames(testNames);
@@ -38,13 +44,24 @@ public class TestCasesView {
 
     public void clickSearchButton() {
         if (!getClazzName().equals("") && !getTestName().equals("")) {
+            testcaseEntity = new TestCaseService().findByClassNameTestName(getClazzName(), getTestName());
+            System.out.println(testcaseEntity);
             setVisibleResultsForm(true);
         }
     }
 
-    /*here will be added methods for get or generating test cases for display
-    for now will be used written test case example (hard code)*/
-
+    public static void main(String[] args) {
+        TestcaseEntity testCase = new TestcaseEntity();
+        testCase.setClassName("class name");
+        testCase.setTestName("testName");
+        testCase.setParameters("parameter1, parameter2");
+        testCase.setDescription("Description");
+        testCase.setSteps("step1, step2, step3");
+        testCase.setExpectedResult("expected result");
+        testCase.setAditionalInfo("additional info");
+        testCase.setMavenFront("command1");
+        testCase.setMavenMembers("command2");
+    }
 
     public String getTestName() {
         return testName;
@@ -52,6 +69,7 @@ public class TestCasesView {
 
     public void setTestName(String testName) {
         this.testName = testName;
+        System.out.println("set testName " + testName);
     }
 
     public String getClazzName() {
@@ -60,6 +78,7 @@ public class TestCasesView {
 
     public void setClazzName(String clazzName) {
         this.clazzName = clazzName;
+        System.out.println("set className " + testName);
     }
 
     public HashSet<String> getClazzNames() {
@@ -84,5 +103,13 @@ public class TestCasesView {
 
     public void setVisibleResultsForm(boolean visibleResultsForm) {
         this.visibleResultsForm = visibleResultsForm;
+    }
+
+    public TestcaseEntity getTestcaseEntity() {
+        return testcaseEntity;
+    }
+
+    public void setTestcaseEntity(TestcaseEntity testcaseEntity) {
+        this.testcaseEntity = testcaseEntity;
     }
 }

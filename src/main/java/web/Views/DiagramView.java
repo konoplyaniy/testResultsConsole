@@ -1,19 +1,22 @@
 package web.Views;
 
-//import hibernate.entities.EventEntity;
-//import hibernate.service.EventService;
 import db_worker.entities.EventEntity;
 import db_worker.service.EventService;
 import org.primefaces.model.chart.*;
 
 import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
+import javax.faces.context.FacesContext;
+import javax.faces.validator.ValidatorException;
 import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
 @ManagedBean
+@SessionScoped
 public class DiagramView implements Serializable {
     private LineChartModel modelPerDate;
     private BarChartModel modelByLocale;
@@ -44,7 +47,7 @@ public class DiagramView implements Serializable {
     @PostConstruct
     public void init() {
         modelPerDate = initLineChartModel(false);
-        modelByLocale = initBarChartModel(true, false, "locale", "Locales");
+        modelByLocale = initBarChartModel(true, false, "", "Locales");
         modelBySysweb = initBarChartModel(false, false, "", "Syswebs");
     }
 
@@ -73,10 +76,16 @@ public class DiagramView implements Serializable {
         if (getStartDate() != null && getEndDate() != null &&
                 getTestName() != null && getSysweb() != null
                 && getLocale() != null) {
-            lineChartModelCustom = initLineChartModel(true);
-            modelByLocaleCustom = initBarChartModel(true, true, "locale", "Locales");
-            modelBySyswebCustom = initBarChartModel(false, true, "", "Syswebs");
-            clickedBuild = true;
+            if (getStartDate().before(getEndDate())) {
+                lineChartModelCustom = initLineChartModel(true);
+                modelByLocaleCustom = initBarChartModel(true, true, "locale", "Locales");
+                modelBySyswebCustom = initBarChartModel(false, true, "", "Syswebs");
+                clickedBuild = true;
+            } else {
+                setAdvancedBuildChecked(true);
+                FacesContext.getCurrentInstance().addMessage(null,
+                        new FacesMessage(FacesMessage.SEVERITY_ERROR, "Validation Error", " Start Date must be earlier then End Date"));
+            }
         }
     }
 

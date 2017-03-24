@@ -1,14 +1,14 @@
 package web.Views;
 
 
-//import hibernate.entities.EventEntity;
-//import hibernate.service.EventService;
-
 import db_worker.entities.EventEntity;
 import db_worker.service.EventService;
 
 import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
+import javax.faces.context.FacesContext;
 import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -18,7 +18,8 @@ import java.util.HashSet;
 import java.util.TimeZone;
 
 @ManagedBean
-public class SearchView implements Serializable{
+@SessionScoped
+public class SearchView implements Serializable {
     private Date startDate;
     private Date endDate;
     private String testName = "";
@@ -59,8 +60,11 @@ public class SearchView implements Serializable{
     }
 
     public void clickSearchButton() {
-        if (getStartDate() != null && getEndDate() != null) {
+        if (getStartDate() != null && getEndDate() != null && getStartDate().before(getEndDate())) {
             setVisibleResultsForm(true);
+        } else {
+            FacesContext.getCurrentInstance().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR, "Validation Error", " Start Date must be earlier then End Date"));
         }
     }
 

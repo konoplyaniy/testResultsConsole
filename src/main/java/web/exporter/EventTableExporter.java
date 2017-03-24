@@ -11,12 +11,18 @@ import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.IndexedColors;
 import org.apache.poi.ss.usermodel.Row;
 import org.hibernate.Session;
+import org.primefaces.event.CellEditEvent;
+import org.primefaces.event.RowEditEvent;
+
 
 import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.faces.context.FacesContext;
 import java.io.Serializable;
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -36,27 +42,20 @@ public class EventTableExporter implements Serializable {
     private List<EventEntity> selectedEvents;
 
     private EventService eventService;
+    private boolean detailClicked = false;
 
     @PostConstruct
     public void init() {
         eventService = new EventService();
         events = eventService.findByCurrentDayEvents();
-        /*events = eventService.findByCurrentMonthEvents();*/
-
-        /*System.out.println("1. events.size()events.size()  = " + events.size());
-        System.out.println("initLocalesEntities");*/
         eventsComAuLocale = new ArrayList<>();
         eventsCoUkLocale = new ArrayList<>();
         eventsInLocale = new ArrayList<>();
         eventsCoNzLocale = new ArrayList<>();
-        /*System.out.println("2. events.size()events.size()  = " + events.size());*/
         events.forEach(eventEntity -> {
-            /*System.out.println("current locale: " + eventEntity.getLocaleByLocaleId().getLocale().toLowerCase());*/
             switch (eventEntity.getLocaleByLocaleId().getLocale().toLowerCase()) {
                 case "com.au":
-                    /*System.out.println("case 1");*/
                     eventsComAuLocale.add(eventEntity);
-                    /*System.out.println("eventsComAuLocale.size = " + eventsComAuLocale.size());*/
                     break;
                 case "co.uk":
                     eventsCoUkLocale.add(eventEntity);
@@ -82,6 +81,7 @@ public class EventTableExporter implements Serializable {
     public class ListEntities implements Serializable {
         String locale;
         ArrayList<EventEntity> events;
+        ArrayList<EventEntity> uncheckedEvents;
 
         public String getLocale() {
             return locale;
@@ -93,6 +93,20 @@ public class EventTableExporter implements Serializable {
 
         public ArrayList<EventEntity> getEvents() {
             return events;
+        }
+
+        public ArrayList<EventEntity> getUncheckedEvents() {
+            uncheckedEvents = new ArrayList<>();
+            events.forEach(event -> {
+                if (event.getChecked() == 0) {
+                    uncheckedEvents.add(event);
+                }
+            });
+            return uncheckedEvents;
+        }
+
+        public void setUncheckedEvents(ArrayList<EventEntity> uncheckedEvents) {
+            this.uncheckedEvents = uncheckedEvents;
         }
 
         public void setEvents(ArrayList<EventEntity> events) {
@@ -131,29 +145,22 @@ public class EventTableExporter implements Serializable {
         }
     }
 
-   public void changeEventStatus(int eventID, int setStatus) {
+    public void changeEventStatus(int eventID, int setStatus) {
         Session session = BaseDao.getSessionFactory().openSession();
-                session.beginTransaction();
-
-                EventDao dao = new EventDao(session);
-                EventEntity entity = dao.findById(eventID);
-                System.out.println(entity.getChecked());
-                entity.setChecked(setStatus);
-                dao.update(entity);
-                System.out.println(entity.getChecked());
-                session.getTransaction().commit();
-                session.close();
+        session.beginTransaction();
+        EventDao dao = new EventDao(session);
+        EventEntity entity = dao.findById(eventID);
+        entity.setChecked(setStatus);
+        dao.update(entity);
+        session.getTransaction().commit();
+        session.close();
     }
 
     public void clickApplyButton() {
         EventEntity event;
-//        System.out.println("click apply");
         if (selectedEvents != null) {
-
-//            System.out.println("selected events: " + selectedEvents.size());
             for (EventEntity eventEntity : selectedEvents) {
                 event = eventEntity;
-//                System.out.println("before update: " + event.getChecked());
                 if (eventEntity.getChecked() == 0) {
                     changeEventStatus(event.getEventId(), 1);
                 } else {
@@ -161,6 +168,58 @@ public class EventTableExporter implements Serializable {
                 }
             }
         }
+    }
+
+    public void clickShowEventDetail() {
+        /*System.out.println("click by event with date = " + entity.getData());*/
+        detailClicked = true;
+        setDetailClicked(true);
+    }
+
+    public boolean isDetailClicked() {
+        return detailClicked;
+    }
+
+    public void setDetailClicked(boolean detailClicked) {
+        System.out.println("set " +detailClicked);
+        this.detailClicked = detailClicked;
+    }
+
+    public void onRowEdit(RowEditEvent event) {
+        FacesMessage msg = new FacesMessage("Your changes saved", "");
+        FacesContext.getCurrentInstance().addMessage(null, msg);
+    }
+
+    public void onRowCancel(RowEditEvent event) {
+        FacesMessage msg = new FacesMessage("Edit Cancelled", "");
+        FacesContext.getCurrentInstance().addMessage(null, msg);
+    }
+
+    public void onCellEdit(CellEditEvent event) throws ParseException {
+        Object newValue = event.getNewValue();
+        System.out.println("edit cell");
+
+        System.out.println("new value " + event.getNewValue());
+        System.out.println("old value " + event.getOldValue());
+        System.out.println("row key " + event.getRowKey());
+
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String dateString = event.getRowKey().replace(".0", "");
+        System.out.println(dateString);
+
+        Date date = formatter.parse(dateString);
+
+        Session session = BaseDao.getSessionFactory().openSession();
+
+        session.beginTransaction();
+        EventDao dao = new EventDao(session);
+        EventEntity eventEntity = dao.findByDate(date);
+        eventEntity.setCausedBy(newValue.toString());
+        dao.update(eventEntity);
+        session.getTransaction().commit();
+        session.close();
+
+        System.out.println(eventEntity.getCausedBy() + " ");
     }
 
     public HashSet<String> getLocales() {
@@ -194,6 +253,7 @@ public class EventTableExporter implements Serializable {
     }
 
     public void setSelectedEvent(EventEntity selectedEvent) {
+        System.out.println("select event with ID:" + selectedEvent.getData());
         this.selectedEvent = selectedEvent;
     }
 
