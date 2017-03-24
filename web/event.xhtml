@@ -8,6 +8,7 @@
       xmlns:ui="http://java.sun.com/jsf/facelets">
 <h:head>
     <h:outputStylesheet library="css" name="styles.css"/>
+    <link rel="icon" type="image/x-icon" href="/resources/images/favicon-16x16.png"/>
 </h:head>
 <h:body>
     <title>Dreamscape Networks | QA | Event table</title>
@@ -15,7 +16,6 @@
         <ui:include src="resources/templates/headers.xhtml"/>
     </ui:insert>
 
-   <!-- &lt;!&ndash;REFRESH FORM EVERY 5 SECONDS (on server machine it  update time will be changed to  3-5 minutes)&ndash;&gt;
     <h:form id="hiddenForm" style="display:none">
         <h:commandButton id="update_event_form" action="#{eventTableExporter.init()}">
             <f:ajax render=":event_form"/>
@@ -23,9 +23,15 @@
     </h:form>
     <script type="text/javascript">
         setInterval(function () {
-            document.getElementById("hiddenForm:update_event_form").click();
-        }, 5000);
-    </script>-->
+            var $form = $('#event_form');
+
+            if ($form.length) {
+                document.getElementById("hiddenForm:update_event_form").click();
+            }
+        }, 300000);
+    </script>
+
+    <!---->
 
     <h:form id="event_form">
         <p:dataTable id="event_table" var="event"
@@ -38,8 +44,10 @@
                      rowsPerPageTemplate="40,60,80"
                      rows="#{eventTableExporter.events.size()}"
                      style="margin-bottom:15px"
+                     showDetail="true"
                      widgetVar="eventTable"
-                     selection="#{eventTableExporter.selectedEvents}">
+                     selection="#{eventTableExporter.selectedEvents}"
+                     editable="true" editMode="cell">
             <f:facet name="{Exporters}">
                 <h:commandLink>
                     <p:graphicImage value="/resources/images/xls.png" width="32"/>
@@ -62,6 +70,8 @@
                                  datasource="event_table"
                                  trigger="toggler"/>
             </f:facet>
+
+            <!--<p:ajax event="cellEdit" listener="#{eventTableExporter.onCellEdit}" update="event_form:event_table"/>-->
 
             <f:facet name="header">
                 Failed tests for current month
@@ -88,48 +98,51 @@
                       sortBy="#{event.localeByLocaleId.locale}">
                 <h:outputText value="#{event.localeByLocaleId.locale}"/>
             </p:column>
-            <p:column>
-                <f:facet name="header">
-                    <h:outputText value="Class name"/>
-                </f:facet>
+            <p:column sortBy="#{event.testByTestId.clazzByClassId.name}" headerText="Class name">
                 <h:outputText var="id" value="#{event.testByTestId.clazzByClassId.name}"/>
             </p:column>
-            <p:column>
-                <f:facet name="header">
-                    <h:outputText value="Group name"/>
-                </f:facet>
-                <h:outputText var="id" value="#{event.testByTestId.groupByGroupId.name}"/>
+
+            <p:column sortBy="#{event.testByTestId.name}" headerText="Test name">
+                <p:commandButton value="#{event.testByTestId.name}"
+                                 style="border: none"
+                                 process="event_table"
+                                 update=":event_form:multiEventDetail"
+                                 oncomplete="PF('multiEventDialog').show()">
+                <f:setPropertyActionListener value="#{event}" target="#{eventTableExporter.selectedEvent}" />
+            </p:commandButton>
+
             </p:column>
-            <p:column>
-                <f:facet name="header">
-                    <h:outputText value="Test name"/>
-                </f:facet>
-                <h:outputText var="id" value="#{event.testByTestId.name} "/>
-            </p:column>
-            <p:column>
-                <f:facet name="header">
-                    <h:outputText value="Sysweb"/>
-                </f:facet>
+            <p:column headerText="Sysweb">
                 <h:outputText value="#{event.syswebBySyswebId.name}"/>
             </p:column>
-            <p:column>
-                <f:facet name="header">
-                    <h:outputText value="Params"/>
-                </f:facet>
+            <p:column headerText="Params">
                 <h:outputText value="#{event.params}"/>
             </p:column>
-            <p:column>
-                <f:facet name="header">
-                    <h:outputText value="URL"/>
-                </f:facet>
+            <p:column headerText="URL">
                 <p:link value="#{event.url}" href="#{event.url}" style="color: blue"/>
             </p:column>
+            <p:column headerText="Ticket">
+
+                <p:cellEditor>
+                    <f:facet name="output">
+                        <p:link value="ticket" href="#{event.causedBy}" style="color: blue"
+                                rendered="#{not empty event.causedBy}"/>
+                        <p:commandButton value="Add" rendered="#{empty event.causedBy}"/>
+                    </f:facet>
+                    <f:facet name="input">
+                        <p:inputText value="#{event.causedBy}" style="width:96%" label="Ticket"/>
+                    </f:facet>
+                </p:cellEditor>
+            </p:column>
             <p:column style="width: 80px;"
+                      headerText="Status"
                       sortBy="#{event.checked}">
-                <f:facet name="header">
-                    <h:outputText value="Status"/>
-                </f:facet>
-                <h:outputText value="#{eventTableExporter.getCheckFlag(event)}"/>
+                <h:outputText value="#{eventTableExporter.getCheckFlag(event)}"
+                              rendered="#{eventTableExporter.getCheckFlag(event) eq 'checked'}"
+                              style="background: greenyellow;"/>
+                <h:outputText value="#{eventTableExporter.getCheckFlag(event)}"
+                              rendered="#{eventTableExporter.getCheckFlag(event) eq 'unchecked'}"
+                              style="background: coral;"/>
             </p:column>
             <p:column selectionMode="multiple" style="width:16px;text-align:center">
             </p:column>
@@ -143,6 +156,22 @@
                 </p:commandButton>
             </f:facet>
         </p:dataTable>
+
+      <!--  <p:contextMenu for="event_form:event_table" widgetVar="cMenu">
+            <p:menuitem value="Show steps" icon="ui-icon-search"
+                        onclick="PF('multiEventDialog').show()"/>
+            <p:menuitem value="Hide Menu" icon="ui-icon-close" onclick="PF('cMenu').hide()"/>
+        </p:contextMenu>-->
+
+        <p:dialog header="Selected Events" widgetVar="multiEventDialog" modal="true" showEffect="fade" hideEffect="fade"
+                  resizable="false" width="200">
+            <p:outputPanel id="multiEventDetail" style="text-align:center;">
+                <ui:repeat value="#{eventTableExporter.selectedEvent}" var="event">
+                    <h:outputText value="#{event.data} - #{event.testByTestId.name}" style="display:block"/>
+                </ui:repeat>
+            </p:outputPanel>
+        </p:dialog>
+
     </h:form>
 </h:body>
 </html>

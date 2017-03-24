@@ -7,6 +7,7 @@
       xmlns:ui="http://java.sun.com/jsf/facelets">
 <h:head>
     <h:outputStylesheet library="css" name="styles.css"/>
+    <link rel="icon" type="image/x-icon" href="/resources/images/favicon-16x16.png"/>
 </h:head>
 <h:body>
     <title>Dreamscape Networks | QA | Search</title>
@@ -38,7 +39,7 @@
                 <div class="ui-g-2">
                     <p:outputLabel for="classNameDropDown" value="Class name"/><br></br>
                     <p:selectOneMenu id="classNameDropDown" value="#{searchView.clazzName}" effect="fold"
-                                     editable="true" styleClass="MyDropDown">
+                                     styleClass="MyDropDown">
                         <f:selectItem itemLabel="" itemValue="" noSelectionOption="true"/>
                         <f:selectItems value="#{searchView.clazzNames}"/>
                     </p:selectOneMenu>
@@ -46,7 +47,7 @@
                 <div class="ui-g-2">
                     <p:outputLabel for="testNameDropDown" value="Test name"/><br></br>
                     <p:selectOneMenu id="testNameDropDown" value="#{searchView.testName}" effect="fold"
-                                     editable="true" styleClass="MyDropDown">
+                                     styleClass="MyDropDown">
                         <f:selectItem itemLabel="" itemValue="All"/>
                         <f:selectItems value="#{searchView.testNames}"/>
                     </p:selectOneMenu>
@@ -54,7 +55,7 @@
                 <div class="ui-g-2">
                     <p:outputLabel for="syswebDropDown" value="Sysweb"/><br></br>
                     <p:selectOneMenu id="syswebDropDown" value="#{searchView.sysweb}" effect="fold"
-                                     editable="true" styleClass="MyDropDown">
+                                     styleClass="MyDropDown">
                         <f:selectItem itemLabel="" itemValue="All"/>
                         <f:selectItems value="#{searchView.syswebs}"/>
                     </p:selectOneMenu>
@@ -62,7 +63,7 @@
                 <div class="ui-g-2">
                     <p:outputLabel for="localeDropDown" value="Locale"/><br></br>
                     <p:selectOneMenu id="localeDropDown" value="#{searchView.locale}" effect="fold"
-                                     editable="true" styleClass="MyDropDown">
+                                     styleClass="MyDropDown">
                         <f:selectItem itemLabel="" itemValue="All"/>
                         <f:selectItems value="#{searchView.locales}"/>
                     </p:selectOneMenu>
@@ -71,6 +72,7 @@
                     <p:commandButton value="Search" id="submitButton" icon="ui-icon-circle-triangle-e"
                                      style="height: 40px; padding: 5px !important; border: none"
                                      update="search_result"
+                                     ajax="false"
                                      action="#{searchView.clickSearchButton()}">
                     </p:commandButton>
                 </div>

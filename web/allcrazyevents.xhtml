@@ -9,6 +9,7 @@
       xmlns:c="http://java.sun.com/jsp/jstl/core">
 <h:head>
     <h:outputStylesheet library="css" name="styles.css"/>
+    <link rel="icon" type="image/x-icon" href="/resources/images/favicon-16x16.png"/>
 </h:head>
 <h:body>
     <title>Dreamscape Networks | QA | All Unchecked Events</title>
@@ -24,9 +25,14 @@
     </h:form>
     <script type="text/javascript">
         setInterval(function () {
-            document.getElementById("hiddenForm:update_event_form").click();
-        }, 5000);
+            var $form = $('#event_form');
+
+            if ($form.length) {
+                document.getElementById("hiddenForm:update_event_form").click();
+            }
+        }, 300000);
     </script>
+
     <h:form id="event_form">
         <p:dataTable id="event_table" var="eventByLocale"
                      stickyHeader="true"
@@ -60,7 +66,7 @@
             </f:facet>
 
             <f:facet name="header">
-                Failed tests for crazydomain.com.au #{eventTableExporter.currentDate}, for see other use search
+                Failed tests for crazydomains #{eventTableExporter.currentDate}, for see other use search
             </f:facet>
 
             <p:columnGroup type="header">
@@ -74,20 +80,16 @@
                 </p:row>
             </p:columnGroup>
 
-            <p:subTable var="event" value="#{eventByLocale.events}" id="subTable">
+            <p:subTable var="event" value="#{eventByLocale.uncheckedEvents}" id="subTable">
                 <f:facet name="header">
                     <h:outputText value="Locale: #{eventByLocale.locale}" style="text-align:right; font-size: 15px"/>
-                    <h:outputText value=" Failed: #{eventByLocale.failedTestsCount}"
+                    <h:outputText value=" | Total failed: #{eventByLocale.failedTestsCount}"
                                   style="text-align:right; font-size: 15px"/>
                 </f:facet>
                 <p:column style="width: 120px">
                     <h:outputText value="#{event.data}">
                         <f:convertDateTime pattern="dd.MM.yyyy HH:mm:ss" timeZone="#{eventTableExporter.timeZone}"/>
                     </h:outputText>
-                </p:column>
-
-                <p:column>
-                    <p:link value="#{event.website}" href="#{event.website}" style="color: blue"/>
                 </p:column>
 
                 <p:column>
