@@ -27,6 +27,10 @@ public class EventEntity implements Serializable {
     private SyswebEntity syswebBySyswebId;
     private PcEntity pcByPcId;
     private BrowserEntity browserByBrowserId;
+    private String steps;
+    private String ticket;
+    private String status;
+
 
     public EventEntity() {
     }
@@ -120,6 +124,36 @@ public class EventEntity implements Serializable {
 
     public void setCausedBy(String causedBy) {
         this.causedBy = causedBy;
+    }
+
+    @Basic
+    @Column(name = "steps", nullable = true, length = 1000)
+    public String getSteps() {
+        return steps;
+    }
+
+    public void setSteps(String steps) {
+        this.steps = steps;
+    }
+
+    @Basic
+    @Column(name = "ticket", nullable = true, length = 300)
+    public String getTicket() {
+        return ticket;
+    }
+
+    public void setTicket(String ticket) {
+        this.ticket = ticket;
+    }
+
+    @Basic
+    @Column(name = "status", nullable = true, length = 45)
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     @Override

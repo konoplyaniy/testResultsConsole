@@ -71,7 +71,7 @@
                                  trigger="toggler"/>
             </f:facet>
 
-            <!--<p:ajax event="cellEdit" listener="#{eventTableExporter.onCellEdit}" update="event_form:event_table"/>-->
+            <p:ajax event="cellEdit" listener="#{eventTableExporter.onCellEdit}" update="event_form:event_table"/>
 
             <f:facet name="header">
                 Failed tests for current month
@@ -107,9 +107,12 @@
                                  style="border: none"
                                  process="event_table"
                                  update=":event_form:multiEventDetail"
-                                 oncomplete="PF('multiEventDialog').show()">
-                <f:setPropertyActionListener value="#{event}" target="#{eventTableExporter.selectedEvent}" />
-            </p:commandButton>
+                                 oncomplete="PF('multiEventDialog').show()"
+                                 id="seeStepsButton">
+                    <f:setPropertyActionListener value="#{event}" target="#{eventTableExporter.selectedEvent}"/>
+                </p:commandButton>
+                <p:tooltip id="tipTestName" for="seeStepsButton" value="Click to see steps" position="top"
+                           styleClass="MyToolTip"/>
 
             </p:column>
             <p:column headerText="Sysweb">
@@ -125,49 +128,41 @@
 
                 <p:cellEditor>
                     <f:facet name="output">
-                        <p:link value="ticket" href="#{event.causedBy}" style="color: blue"
-                                rendered="#{not empty event.causedBy}"/>
-                        <p:commandButton value="Add" rendered="#{empty event.causedBy}"/>
+                        <p:link value="ticket" href="#{event.ticket}" style="color: blue"
+                                rendered="#{not empty event.ticket}"/>
+                        <p:commandButton value="Add" rendered="#{empty event.ticket}"/>
                     </f:facet>
                     <f:facet name="input">
-                        <p:inputText value="#{event.causedBy}" style="width:96%" label="Ticket"/>
+                        <p:inputText value="#{event.ticket}" style="width:96%" label="Ticket"/>
                     </f:facet>
                 </p:cellEditor>
             </p:column>
-            <p:column style="width: 80px;"
-                      headerText="Status"
-                      sortBy="#{event.checked}">
-                <h:outputText value="#{eventTableExporter.getCheckFlag(event)}"
-                              rendered="#{eventTableExporter.getCheckFlag(event) eq 'checked'}"
-                              style="background: greenyellow;"/>
-                <h:outputText value="#{eventTableExporter.getCheckFlag(event)}"
-                              rendered="#{eventTableExporter.getCheckFlag(event) eq 'unchecked'}"
-                              style="background: coral;"/>
+
+            <p:column headerText="Status">
+                <p:cellEditor>
+                    <f:facet name="output">
+                        <h:outputText value="#{event.status}    " style="text-align: center"/>
+                        <p:graphicImage value="/resources/images/plus_icons/favicon-16x16.png" rendered="#{event.status eq 'Checked, Issue'}" style="align-self: center"/>
+                        <p:graphicImage value="/resources/images/closed_icons/favicon-16x16.png" rendered="#{event.status eq 'Checked, Fixed'}" style="align-self: center"/>
+                        <p:graphicImage value="/resources/images/accept_icons/favicon-16x16.png" rendered="#{event.status eq 'Checked'}" style="align-self: center"/>
+
+                    </f:facet>
+                    <f:facet name="input">
+                        <h:selectOneMenu value="#{event.status}" style="width:80%;">
+                            <f:selectItems value="#{eventTableExporter.statusesList}"/>
+                        </h:selectOneMenu>
+                    </f:facet>
+                </p:cellEditor>
             </p:column>
+
             <p:column selectionMode="multiple" style="width:16px;text-align:center">
             </p:column>
-            <f:facet name="footer">
-                <p:commandButton icon="ui-icon-circle-check" value="Apply"
-                                 actionListener="#{eventTableExporter.clickApplyButton()}"
-                                 action="#{eventTableExporter.init()}"
-                                 style="width: 400px; height: 50px"
-                                 update=":event_form:event_table">
-                    <f:ajax render=":event_form"/>
-                </p:commandButton>
-            </f:facet>
         </p:dataTable>
-
-      <!--  <p:contextMenu for="event_form:event_table" widgetVar="cMenu">
-            <p:menuitem value="Show steps" icon="ui-icon-search"
-                        onclick="PF('multiEventDialog').show()"/>
-            <p:menuitem value="Hide Menu" icon="ui-icon-close" onclick="PF('cMenu').hide()"/>
-        </p:contextMenu>-->
-
-        <p:dialog header="Selected Events" widgetVar="multiEventDialog" modal="true" showEffect="fade" hideEffect="fade"
-                  resizable="false" width="200">
-            <p:outputPanel id="multiEventDetail" style="text-align:center;">
+        <p:dialog header="Steps" widgetVar="multiEventDialog" modal="true" showEffect="fade" hideEffect="fade"
+                  resizable="false" width="1000">
+            <p:outputPanel id="multiEventDetail" style="text-align:left;">
                 <ui:repeat value="#{eventTableExporter.selectedEvent}" var="event">
-                    <h:outputText value="#{event.data} - #{event.testByTestId.name}" style="display:block"/>
+                    <h:outputText value="#{event.steps}" style="display:block" styleClass="preformatted"/>
                 </ui:repeat>
             </p:outputPanel>
         </p:dialog>

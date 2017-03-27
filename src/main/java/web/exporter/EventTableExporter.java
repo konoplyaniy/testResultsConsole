@@ -42,7 +42,6 @@ public class EventTableExporter implements Serializable {
     private List<EventEntity> selectedEvents;
 
     private EventService eventService;
-    private boolean detailClicked = false;
 
     @PostConstruct
     public void init() {
@@ -78,6 +77,15 @@ public class EventTableExporter implements Serializable {
         eventByLocale.add(new ListEntities("in", eventsInLocale));
     }
 
+    public ArrayList<String> getStatusesList() {
+        ArrayList<String> statuses = new ArrayList<>();
+        statuses.add("Checked");
+        statuses.add("Checked, Issue");
+        statuses.add("Checked, Fixed");
+        statuses.add("Unchecked");
+        return statuses;
+    }
+
     public class ListEntities implements Serializable {
         String locale;
         ArrayList<EventEntity> events;
@@ -98,7 +106,7 @@ public class EventTableExporter implements Serializable {
         public ArrayList<EventEntity> getUncheckedEvents() {
             uncheckedEvents = new ArrayList<>();
             events.forEach(event -> {
-                if (event.getChecked() == 0) {
+                if (!event.getStatus().equals("checked")) {
                     uncheckedEvents.add(event);
                 }
             });
@@ -156,6 +164,7 @@ public class EventTableExporter implements Serializable {
         session.close();
     }
 
+
     public void clickApplyButton() {
         EventEntity event;
         if (selectedEvents != null) {
@@ -170,24 +179,10 @@ public class EventTableExporter implements Serializable {
         }
     }
 
-    public void clickShowEventDetail() {
-        /*System.out.println("click by event with date = " + entity.getData());*/
-        detailClicked = true;
-        setDetailClicked(true);
-    }
-
-    public boolean isDetailClicked() {
-        return detailClicked;
-    }
-
-    public void setDetailClicked(boolean detailClicked) {
-        System.out.println("set " +detailClicked);
-        this.detailClicked = detailClicked;
-    }
-
     public void onCellEdit(CellEditEvent event) throws ParseException {
         Object newValue = event.getNewValue();
-        System.out.println("edit cell");
+        String columnName = event.getColumn().getHeaderText();
+        System.out.println("edit cell " + columnName);
 
         System.out.println("new value " + event.getNewValue());
         System.out.println("old value " + event.getOldValue());
@@ -204,12 +199,18 @@ public class EventTableExporter implements Serializable {
         session.beginTransaction();
         EventDao dao = new EventDao(session);
         EventEntity eventEntity = dao.findByDate(date);
-        eventEntity.setCausedBy(newValue.toString());
+        if (columnName.equals("Status")) {
+            eventEntity.setStatus(newValue.toString());
+        }
+        if (columnName.equals("Ticket")) {
+            eventEntity.setTicket(newValue.toString());
+        }
         dao.update(eventEntity);
+        System.out.println("" + eventEntity.getStatus());
         session.getTransaction().commit();
         session.close();
 
-        System.out.println(eventEntity.getCausedBy() + " ");
+        System.out.println("end cell edit ");
     }
 
     public HashSet<String> getLocales() {
@@ -227,23 +228,12 @@ public class EventTableExporter implements Serializable {
         this.eventService = service;
     }
 
-    public String getCheckFlag(EventEntity eventEntity) {
-        if (eventEntity.getChecked() == 1) {
-            checkFlag = "checked";
-        } else checkFlag = "unchecked";
-        return checkFlag;
-    }
-
-    public void setCheckFlag(String checkFlag) {
-        this.checkFlag = checkFlag;
-    }
 
     public EventEntity getSelectedEvent() {
         return selectedEvent;
     }
 
     public void setSelectedEvent(EventEntity selectedEvent) {
-        System.out.println("select event with ID:" + selectedEvent.getData());
         this.selectedEvent = selectedEvent;
     }
 
