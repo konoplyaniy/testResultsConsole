@@ -16,7 +16,7 @@
     </div>
 
     <!-- REFRESH FORM EVERY 5 SECONDS (on server machine it  update time will be changed to  3-5 minutes)-->
-    <!--<h:form id="hiddenForm" style="display:none">
+    <h:form id="hiddenForm" style="display:none">
         <h:commandButton id="update_diagram_form" action="#{diagramView.init()}">
             <f:ajax render=":diagram_form"/>
         </h:commandButton>
@@ -25,44 +25,44 @@
         setInterval(function () {
             var $form = $('#diagram_form');
 
-            if ($form.length){
+            if ($form.length) {
                 document.getElementById("hiddenForm:update_diagram_form").click();
             }
         }, 300000);
-    </script>-->
+    </script>
 
-    <!--<script type="text/javascript" src="dateValidation.js"></script>-->
-
+    <!--<script type="text/javascript" src="dateValidation.js"></script>
+    <script type="text/javascript" src="refreshForm.js"></script>-->
 
 
     <div>
-    <h:panelGroup id="diagram_forms" >
-        <h:form id="diagram_form">
-            <div class="ui-g" style="height: 400px">
-                <div class="ui-g-12 ui-md-4 ui-lg-4" style="height:320px; min-width: 750px; width: 550px;">
-                    <p:panel header="Failed test by dates" style="margin-bottom:10px;">
-                        <p:chart type="line" model="#{diagramView.modelPerDate}"
-                                 style="height:300px; width: 700px;"
-                                 id="chart"/>
-                    </p:panel>
+        <h:panelGroup id="diagram_forms">
+            <h:form id="diagram_form">
+                <div class="ui-g" style="height: 400px">
+                    <div class="ui-g-12 ui-md-4 ui-lg-4" style="height:320px; min-width: 750px; width: 550px;">
+                        <p:panel header="Failed test by dates" style="margin-bottom:10px;">
+                            <p:chart type="line" model="#{diagramView.modelPerDate}"
+                                     style="height:300px; width: 700px;"
+                                     id="chart"/>
+                        </p:panel>
+                    </div>
+                    <div class="ui-g-12 ui-md-4 ui-lg-4" style="height:320px; min-width: 550px; width: 550px;">
+                        <p:panel header="Failed tests by locales" style="margin-bottom:10px;">
+                            <p:chart type="bar" model="#{diagramView.modelByLocale}"
+                                     style="height:300px; width: 500px;"
+                                     id="bar_chart"/>
+                        </p:panel>
+                    </div>
+                    <div class="ui-g-12 ui-md-4 ui-lg-4" style="height:320px; min-width: 550px; width: 550px;">
+                        <p:panel header="Failed tests by syswebs" style="margin-bottom:10px;">
+                            <p:chart type="bar" model="#{diagramView.modelBySysweb}"
+                                     style="height:300px;width: 500px;"
+                                     id="chart_sysweb"/>
+                        </p:panel>
+                    </div>
                 </div>
-                <div class="ui-g-12 ui-md-4 ui-lg-4" style="height:320px; min-width: 550px; width: 550px;">
-                    <p:panel header="Failed tests by locales" style="margin-bottom:10px;">
-                        <p:chart type="bar" model="#{diagramView.modelByLocale}"
-                                 style="height:300px; width: 500px;"
-                                 id="bar_chart"/>
-                    </p:panel>
-                </div>
-                <div class="ui-g-12 ui-md-4 ui-lg-4" style="height:320px; min-width: 550px; width: 550px;">
-                    <p:panel header="Failed tests by syswebs" style="margin-bottom:10px;">
-                        <p:chart type="bar" model="#{diagramView.modelBySysweb}"
-                                 style="height:300px;width: 500px;"
-                                 id="chart_sysweb"/>
-                    </p:panel>
-               </div>
-            </div>
-        </h:form>
-    </h:panelGroup>
+            </h:form>
+        </h:panelGroup>
     </div>
     <!--END-->
 
