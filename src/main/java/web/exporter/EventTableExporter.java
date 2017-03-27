@@ -185,16 +185,6 @@ public class EventTableExporter implements Serializable {
         this.detailClicked = detailClicked;
     }
 
-    public void onRowEdit(RowEditEvent event) {
-        FacesMessage msg = new FacesMessage("Your changes saved", "");
-        FacesContext.getCurrentInstance().addMessage(null, msg);
-    }
-
-    public void onRowCancel(RowEditEvent event) {
-        FacesMessage msg = new FacesMessage("Edit Cancelled", "");
-        FacesContext.getCurrentInstance().addMessage(null, msg);
-    }
-
     public void onCellEdit(CellEditEvent event) throws ParseException {
         Object newValue = event.getNewValue();
         System.out.println("edit cell");
