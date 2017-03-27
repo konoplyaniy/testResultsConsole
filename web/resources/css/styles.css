@@ -78,3 +78,8 @@
     overflow: hidden;
     padding: 4px;
 }
+
+/* for save line separators in String */
+.preformatted {
+    white-space: pre-wrap;
+}
