@@ -52,32 +52,24 @@
                 <h:panelGrid id="deleteBrowser" columns="2" border="1"
                              cellpadding="5" cellspacing="1" style="font-size: 14px">
                     <h:outputLabel value="Test name" style="font-weight: bold"/>
-                    <pre style="text-align: left">
-                    #{testCasesView.testcaseEntity.getTestName()}
-                    </pre>
-                    <!--<h:outputLabel value="#{testCasesView.testcaseEntity.getTestName()}"/>-->
+                    <h:outputLabel value="#{testCasesView.testcaseEntity.getTestName()}" styleClass="preformatted"/>
+
                     <h:outputLabel value="Parameters" style="font-weight: bold"/>
-                    <pre>
-                        #{testCasesView.testcaseEntity.getParameters()}
-                    </pre>
-                    <!--<h:outputLabel value="#{testCasesView.testcaseEntity.getParameters()}"/>-->
+                    <h:outputLabel value="#{testCasesView.testcaseEntity.getParameters()}" styleClass="preformatted"/>
+
                     <h:outputLabel value="Steps" style="font-weight: bold"/>
-                    <pre>#{testCasesView.testcaseEntity.getSteps()}</pre>
+                    <h:outputLabel value="#{testCasesView.testcaseEntity.getSteps()}" styleClass="preformatted"/>
+
                     <h:outputLabel value="Expected" style="font-weight: bold"/>
-                    <pre>
-                        #{testCasesView.testcaseEntity.getExpectedResult()}
-                    </pre>
-                    <!--<h:outputLabel value="#{testCasesView.testcaseEntity.getExpectedResult()}"/>-->
+                    <h:outputLabel value="#{testCasesView.testcaseEntity.getExpectedResult()}"
+                                   styleClass="preformatted"/>
+
                     <h:outputLabel value="Additional info" style="font-weight: bold"/>
-                    <pre>
-                        #{testCasesView.testcaseEntity.getAditionalInfo()}
-                    </pre>
-                    <!--<h:outputLabel value="#{testCasesView.testcaseEntity.getAditionalInfo()}"/>-->
+                    <h:outputLabel value="#{testCasesView.testcaseEntity.getAditionalInfo()}"
+                                   styleClass="preformatted"/>
+
                     <h:outputLabel value="Maven run command" style="font-weight: bold"/>
-                    <pre>
-                        #{testCasesView.testcaseEntity.getMavenFront()}
-                    </pre>
-                    <!--<h:outputLabel value="#{testCasesView.testcaseEntity.getMavenFront()}"/>-->
+                    <h:outputLabel value="#{testCasesView.testcaseEntity.getMavenFront()}" styleClass="preformatted"/>
                 </h:panelGrid>
             </p:panel>
         </h:panelGroup>
