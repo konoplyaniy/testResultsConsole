@@ -53,4 +53,9 @@
             <encoding>cp-1251</encoding>
         </locale-encoding-mapping>
     </locale-encoding-mapping-list>
+    <!--For prevent  ViewException.-->
+    <context-param>
+        <param-name>javax.faces.STATE_SAVING_METHOD</param-name>
+        <param-value>client</param-value>
+    </context-param>
 </web-app>

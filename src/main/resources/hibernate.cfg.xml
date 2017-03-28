@@ -11,6 +11,8 @@
         <property name="hibernate.hbm2ddl.auto">update</property>
         <property name="hibernate.connection.username">root</property>
         <property name="hibernate.connection.password">Selenium2015DreamTest</property>
+        <property name="hibernate.current_session_context_class">thread</property>
+        <property name="connection.pool_size">12</property>
         <!--Entities-->
         <mapping class="db_worker.entities.BrowserEntity"/>
         <mapping class="db_worker.entities.ClazzEntity"/>
