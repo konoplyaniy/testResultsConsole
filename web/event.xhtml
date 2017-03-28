@@ -47,7 +47,8 @@
                      showDetail="true"
                      widgetVar="eventTable"
                      selection="#{eventTableExporter.selectedEvents}"
-                     editable="true" editMode="cell">
+                     editable="true"
+                     editMode="cell">
             <f:facet name="{Exporters}">
                 <h:commandLink>
                     <p:graphicImage value="/resources/images/xls.png" width="32"/>
@@ -142,11 +143,13 @@
                 <p:cellEditor>
                     <f:facet name="output">
                         <p:graphicImage value="/resources/images/plus_icons/favicon-16x16.png"
-                                        rendered="#{event.status eq 'Checked, Issue'}" style="align-self: center"/>
+                                        rendered="#{event.status eq 'Checked, Issue'}"/>
                         <p:graphicImage value="/resources/images/closed_icons/favicon-16x16.png"
-                                        rendered="#{event.status eq 'Checked, Fixed'}" style="align-self: center"/>
+                                        rendered="#{event.status eq 'Checked, Fixed'}"/>
                         <p:graphicImage value="/resources/images/accept_icons/favicon-16x16.png"
-                                        rendered="#{event.status eq 'Checked'}" style="align-self: center"/>
+                                        rendered="#{event.status eq 'Checked'}"/>
+                        <p:graphicImage value="/resources/images/question_icons/favicon-16x16.png"
+                                        rendered="#{event.status eq 'Unchecked'}" />
                         <h:outputText value="#{event.status}"
                                       rendered="#{event.status eq 'Checked' or event.status eq 'Checked, Fixed'}"
                                       style="background: greenyellow;"/>
@@ -161,15 +164,12 @@
                     </f:facet>
                 </p:cellEditor>
             </p:column>
-
-            <p:column selectionMode="multiple" style="width:16px;text-align:center">
-            </p:column>
         </p:dataTable>
         <p:dialog header="Steps" widgetVar="multiEventDialog" modal="true" showEffect="fade" hideEffect="fade"
                   resizable="false" width="1000">
             <p:outputPanel id="multiEventDetail" style="text-align:left;">
                 <ui:repeat value="#{eventTableExporter.selectedEvent}" var="event">
-                    <h:outputText value="#{event.steps}" style="display:block" styleClass="preformatted"/>
+                    <h:outputText value="#{event.steps}" style="display:block" styleClass="preformatted" />
                 </ui:repeat>
             </p:outputPanel>
         </p:dialog>

@@ -30,7 +30,7 @@
                     <p:outputLabel for="testNameDropDown" value="Test name"/><br></br>
                     <p:selectOneMenu id="testNameDropDown" value="#{testCasesView.testName}" effect="fold"
                                      styleClass="MyDropDown">
-                        <f:selectItem itemLabel="" itemValue="All"/>
+                        <f:selectItem itemLabel="" itemValue="" noSelectionOption="true"/>
                         <f:selectItems value="#{testCasesView.testNames}"/>
                     </p:selectOneMenu>
                 </div>
@@ -52,24 +52,24 @@
                 <h:panelGrid id="deleteBrowser" columns="2" border="1"
                              cellpadding="5" cellspacing="1" style="font-size: 14px">
                     <h:outputLabel value="Test name" style="font-weight: bold"/>
-                    <h:outputLabel value="#{testCasesView.testcaseEntity.getTestName()}" styleClass="preformatted"/>
+                    <h:outputLabel value="#{testCasesView.testcaseEntity.getTestName()}" styleClass="preformatted" escape="false"/>
 
                     <h:outputLabel value="Parameters" style="font-weight: bold"/>
-                    <h:outputLabel value="#{testCasesView.testcaseEntity.getParameters()}" styleClass="preformatted"/>
+                    <h:outputLabel value="#{testCasesView.testcaseEntity.getParameters()}" styleClass="preformatted" escape="false"/>
 
                     <h:outputLabel value="Steps" style="font-weight: bold"/>
-                    <h:outputLabel value="#{testCasesView.testcaseEntity.getSteps()}" styleClass="preformatted"/>
+                    <h:outputLabel value="#{testCasesView.testcaseEntity.getSteps()}" styleClass="preformatted" escape="false"/>
 
                     <h:outputLabel value="Expected" style="font-weight: bold"/>
                     <h:outputLabel value="#{testCasesView.testcaseEntity.getExpectedResult()}"
-                                   styleClass="preformatted"/>
+                                   styleClass="preformatted" escape="false"/>
 
                     <h:outputLabel value="Additional info" style="font-weight: bold"/>
                     <h:outputLabel value="#{testCasesView.testcaseEntity.getAditionalInfo()}"
-                                   styleClass="preformatted"/>
+                                   styleClass="preformatted" escape="false"/>
 
                     <h:outputLabel value="Maven run command" style="font-weight: bold"/>
-                    <h:outputLabel value="#{testCasesView.testcaseEntity.getMavenFront()}" styleClass="preformatted"/>
+                    <h:outputLabel value="#{testCasesView.testcaseEntity.getMavenFront()}" styleClass="preformatted" escape="false"/>
                 </h:panelGrid>
             </p:panel>
         </h:panelGroup>

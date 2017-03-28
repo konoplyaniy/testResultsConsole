@@ -31,8 +31,8 @@
         }, 300000);
     </script>
 
-    <!--<script type="text/javascript" src="dateValidation.js"></script>
-    <script type="text/javascript" src="refreshForm.js"></script>-->
+<!--    <script type="text/javascript" src="dateValidation.js"></script>-->
+    <!--<script type="text/javascript" src="refreshForm.js"></script>-->
 
 
     <div>
@@ -113,7 +113,7 @@
                         <p:outputLabel for="testNameDropDown" value="Test name"/><br></br>
                         <p:selectOneMenu id="testNameDropDown" value="#{diagramView.testName}" effect="fold"
                                          styleClass="MyDropDown">
-                            <f:selectItem itemValue="All"/>
+                            <f:selectItem itemValue=""/>
                             <f:selectItems value="#{diagramView.testNames}"/>
                         </p:selectOneMenu>
                     </div>
@@ -121,7 +121,7 @@
                         <p:outputLabel for="syswebDropDown" value="Sysweb"/><br></br>
                         <p:selectOneMenu id="syswebDropDown" value="#{diagramView.sysweb}" effect="fold"
                                          styleClass="MyDropDown">
-                            <f:selectItem itemValue="All"/>
+                            <f:selectItem itemValue=""/>
                             <f:selectItems value="#{diagramView.syswebs}"/>
                         </p:selectOneMenu>
                     </div>
@@ -129,7 +129,7 @@
                         <p:outputLabel for="localeDropDown" value="Locale"/><br></br>
                         <p:selectOneMenu id="localeDropDown" value="#{diagramView.locale}" effect="fold"
                                          styleClass="MyDropDown">
-                            <f:selectItem itemValue="All"/>
+                            <f:selectItem itemValue=""/>
                             <f:selectItems value="#{diagramView.locales}"/>
                         </p:selectOneMenu>
                     </div>

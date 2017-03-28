@@ -48,7 +48,7 @@
                     <p:outputLabel for="testNameDropDown" value="Test name"/><br></br>
                     <p:selectOneMenu id="testNameDropDown" value="#{searchView.testName}" effect="fold"
                                      styleClass="MyDropDown">
-                        <f:selectItem itemLabel="" itemValue="All"/>
+                        <f:selectItem itemLabel="" itemValue=""/>
                         <f:selectItems value="#{searchView.testNames}"/>
                     </p:selectOneMenu>
                 </div>
@@ -56,7 +56,7 @@
                     <p:outputLabel for="syswebDropDown" value="Sysweb"/><br></br>
                     <p:selectOneMenu id="syswebDropDown" value="#{searchView.sysweb}" effect="fold"
                                      styleClass="MyDropDown">
-                        <f:selectItem itemLabel="" itemValue="All"/>
+                        <f:selectItem itemLabel="" itemValue=""/>
                         <f:selectItems value="#{searchView.syswebs}"/>
                     </p:selectOneMenu>
                 </div>
@@ -64,7 +64,7 @@
                     <p:outputLabel for="localeDropDown" value="Locale"/><br></br>
                     <p:selectOneMenu id="localeDropDown" value="#{searchView.locale}" effect="fold"
                                      styleClass="MyDropDown">
-                        <f:selectItem itemLabel="" itemValue="All"/>
+                        <f:selectItem itemLabel="" itemValue=""/>
                         <f:selectItems value="#{searchView.locales}"/>
                     </p:selectOneMenu>
                 </div>
