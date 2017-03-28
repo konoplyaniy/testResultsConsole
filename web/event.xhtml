@@ -74,7 +74,7 @@
             <p:ajax event="cellEdit" listener="#{eventTableExporter.onCellEdit}" update="event_form:event_table"/>
 
             <f:facet name="header">
-                Failed tests for current month
+                Failed tests for #{eventTableExporter.currentDate}, for see other use search
             </f:facet>
 
             <p:column style="width: 20px;">
@@ -141,11 +141,18 @@
             <p:column headerText="Status">
                 <p:cellEditor>
                     <f:facet name="output">
-                        <h:outputText value="#{event.status}    " style="text-align: center"/>
-                        <p:graphicImage value="/resources/images/plus_icons/favicon-16x16.png" rendered="#{event.status eq 'Checked, Issue'}" style="align-self: center"/>
-                        <p:graphicImage value="/resources/images/closed_icons/favicon-16x16.png" rendered="#{event.status eq 'Checked, Fixed'}" style="align-self: center"/>
-                        <p:graphicImage value="/resources/images/accept_icons/favicon-16x16.png" rendered="#{event.status eq 'Checked'}" style="align-self: center"/>
-
+                        <p:graphicImage value="/resources/images/plus_icons/favicon-16x16.png"
+                                        rendered="#{event.status eq 'Checked, Issue'}" style="align-self: center"/>
+                        <p:graphicImage value="/resources/images/closed_icons/favicon-16x16.png"
+                                        rendered="#{event.status eq 'Checked, Fixed'}" style="align-self: center"/>
+                        <p:graphicImage value="/resources/images/accept_icons/favicon-16x16.png"
+                                        rendered="#{event.status eq 'Checked'}" style="align-self: center"/>
+                        <h:outputText value="#{event.status}"
+                                      rendered="#{event.status eq 'Checked' or event.status eq 'Checked, Fixed'}"
+                                      style="background: greenyellow;"/>
+                        <h:outputText value="#{event.status}"
+                                      rendered="#{event.status eq 'Unchecked' or event.status eq 'Checked, Issue'}"
+                                      style="background: coral;"/>
                     </f:facet>
                     <f:facet name="input">
                         <h:selectOneMenu value="#{event.status}" style="width:80%;">
