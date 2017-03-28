@@ -11,6 +11,7 @@ import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.IndexedColors;
 import org.apache.poi.ss.usermodel.Row;
 import org.hibernate.Session;
+import org.primefaces.component.datatable.DataTable;
 import org.primefaces.event.CellEditEvent;
 import org.primefaces.event.RowEditEvent;
 
@@ -37,15 +38,12 @@ public class EventTableExporter implements Serializable {
     private ArrayList<EventEntity> eventsCoNzLocale;
 
     private ArrayList<ListEntities> eventByLocale;
-    private String checkFlag;
     private EventEntity selectedEvent;
     private List<EventEntity> selectedEvents;
 
-    private EventService eventService;
-
     @PostConstruct
     public void init() {
-        eventService = new EventService();
+        EventService eventService = new EventService();
         events = eventService.findByCurrentDayEvents();
         eventsComAuLocale = new ArrayList<>();
         eventsCoUkLocale = new ArrayList<>();
@@ -106,7 +104,7 @@ public class EventTableExporter implements Serializable {
         public ArrayList<EventEntity> getUncheckedEvents() {
             uncheckedEvents = new ArrayList<>();
             events.forEach(event -> {
-                if (!event.getStatus().equals("checked")) {
+                if (!event.getStatus().toLowerCase().equals("checked")) {
                     uncheckedEvents.add(event);
                 }
             });
@@ -164,52 +162,23 @@ public class EventTableExporter implements Serializable {
         session.close();
     }
 
-
-    public void clickApplyButton() {
-        EventEntity event;
-        if (selectedEvents != null) {
-            for (EventEntity eventEntity : selectedEvents) {
-                event = eventEntity;
-                if (eventEntity.getChecked() == 0) {
-                    changeEventStatus(event.getEventId(), 1);
-                } else {
-                    changeEventStatus(event.getEventId(), 1);
-                }
-            }
-        }
-    }
-
     public void onCellEdit(CellEditEvent event) throws ParseException {
         Object newValue = event.getNewValue();
+        EventEntity eventEntity = (EventEntity) ((DataTable) event.getComponent()).getRowData();
+        System.out.println("edit event,  data = " + eventEntity.getData());
+
         String columnName = event.getColumn().getHeaderText();
         System.out.println("edit cell " + columnName);
 
         System.out.println("new value " + event.getNewValue());
         System.out.println("old value " + event.getOldValue());
-        System.out.println("row key " + event.getRowKey());
-
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        String dateString = event.getRowKey().replace(".0", "");
-        System.out.println(dateString);
-
-        Date date = formatter.parse(dateString);
-
-        Session session = BaseDao.getSessionFactory().openSession();
-
-        session.beginTransaction();
-        EventDao dao = new EventDao(session);
-        EventEntity eventEntity = dao.findByDate(date);
         if (columnName.equals("Status")) {
             eventEntity.setStatus(newValue.toString());
         }
         if (columnName.equals("Ticket")) {
             eventEntity.setTicket(newValue.toString());
         }
-        dao.update(eventEntity);
-        System.out.println("" + eventEntity.getStatus());
-        session.getTransaction().commit();
-        session.close();
-
+        new EventService().update(eventEntity);
         System.out.println("end cell edit ");
     }
 
@@ -223,11 +192,6 @@ public class EventTableExporter implements Serializable {
     public List<EventEntity> getEvents() {
         return events;
     }
-
-    public void setEventService(EventService service) {
-        this.eventService = service;
-    }
-
 
     public EventEntity getSelectedEvent() {
         return selectedEvent;
