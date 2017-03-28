@@ -1,14 +1,18 @@
 package db_worker.service;
 
 
+import db_worker.dao.BaseDao;
 import db_worker.dao.EventDao;
 import db_worker.entities.EventEntity;
+import org.hibernate.Session;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class EventService extends BaseService{
+public class EventService{
+    public static final Session session = new BaseDao().openCurrentSession();
+
     private static EventDao eventDao;
 
     public EventService(){
@@ -140,8 +144,10 @@ public class EventService extends BaseService{
     }
 
     public ArrayList<EventEntity> findBySelected(String clazzName, String testName, String sysweb, String locale, Date startDate, Date endDate) {
+        System.out.println("Service");
         eventDao.openCurrentSession();
         ArrayList<EventEntity> results = eventDao.findBySelected(clazzName, testName, sysweb, locale, startDate, endDate);
+        System.out.println("find in service events " + results.size());
         eventDao.closeCurrentSession();
         return results;
     }

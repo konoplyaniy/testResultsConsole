@@ -16,7 +16,7 @@ import java.util.HashSet;
  */
 public class TestDB {
 
-    public static void testAdd() {
+  /*  public static void testAdd() {
         Session session = BaseDao.getSessionFactory().openSession();
         session.beginTransaction();
 
@@ -127,7 +127,7 @@ public class TestDB {
         session.getTransaction().commit();
         session.close();
 
-    }
+    }*/
 
     public static void testTable() {
 
@@ -152,7 +152,30 @@ public class TestDB {
     }
 
     public static void main(String[] args) {
-        System.out.println(new EventService().findbyId(1).getUrl());
+        EventService eventService = new EventService();
+        System.out.println(eventService.findByCurrentDayEvents().size());
+
+     /*   System.out.println(new EventService().findbyId(1).getUrl());
+
+
+        Session session = BaseDao.getSessionFactory().openSession();
+
+        session.beginTransaction();
+        EventDao dao = new EventDao(session);
+        EventEntity eventEntity = dao.findById(1);
+        eventEntity.setSteps("1) Go to https://www.crazydomains.in/domain-names/search/\n" +
+                "2) Input \"myfirstbuyincrazy.bzh\" in [DOMAIN SEARCH FIELD]\n" +
+                "3) Click on [SEARCH BUTTON] with text \"Search\"\n" +
+                "REDIRECT TO https://www.crazydomains.in/domain-names/search/?token=013d3a6c3ca9d23ed2859e137db039d5&domain=myfirstbuyincrazy.bzh ANSWER GET FROM : [SYSWEB3.UK.SYRAHOST.COM] \n" +
+                "\n" +
+                "What went wrong? (Screenshot(s) in attachment): \n" +
+                "WebDriver Wait for element timeout Exception expected [true] but found [false]\n");
+
+        *//*eventEntity.setCausedBy(newValue.toString());*//*
+        dao.update(eventEntity);
+        session.getTransaction().commit();
+        session.close();
+        System.out.println("end");*/
 //        long start = System.currentTimeMillis();
 //        testAdd();
 //        System.out.println(start - System.currentTimeMillis());

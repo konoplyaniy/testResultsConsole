@@ -6,7 +6,9 @@ import db_worker.entities.TestcaseEntity;
 
 import java.util.ArrayList;
 
-public class TestCaseService extends BaseService {
+import static db_worker.service.EventService.session;
+
+public class TestCaseService{
     private static TestCaseDao testCaseDao;
 
     public TestCaseService() {

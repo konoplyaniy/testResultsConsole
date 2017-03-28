@@ -25,22 +25,13 @@ public class BaseDao<K, T> {
         return sessionFactory;
     }
 
-    private static final ThreadLocal<Session> session = new ThreadLocal<Session>();
-
-    public static void closeSession() throws HibernateException {
-        Session s = session.get();
-        if (s != null) {
-            s.close();
-            session.remove();
-        }
-    }
-
     private Session currentSession;
 
     private static Transaction currentTransaction;
 
     public Session openCurrentSession() {
-        currentSession = getSessionFactory().openSession();
+        if (currentSession == null || !currentSession.isOpen())
+            currentSession = getSessionFactory().openSession();
         return currentSession;
     }
 
@@ -51,12 +42,10 @@ public class BaseDao<K, T> {
     }
 
     public void closeCurrentSession() {
-        try {
+        if (currentSession != null && currentSession.isOpen()) {
             currentSession.close();
-        } catch (SessionException e){
-
+            currentSession = null;
         }
-        /*closeSession();*/
     }
 
     public void closeCurrentSessionwithTransaction() {
@@ -68,17 +57,5 @@ public class BaseDao<K, T> {
 
     public Session getCurrentSession() {
         return currentSession;
-    }
-
-    public void setCurrentSession(Session currentSession) {
-        this.currentSession = currentSession;
-    }
-
-    public static Transaction getCurrentTransaction() {
-        return currentTransaction;
-    }
-
-    public void setCurrentTransaction(Transaction currentTransaction) {
-        this.currentTransaction = currentTransaction;
     }
 }
