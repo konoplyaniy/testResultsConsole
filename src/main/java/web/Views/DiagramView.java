@@ -1,7 +1,10 @@
 package web.Views;
 
-import db_worker.entities.EventEntity;
-import db_worker.service.EventService;
+import db_worker.HibernateUtil;
+import db_worker.dao.EventDao;
+import db_worker.entities.*;
+
+import org.hibernate.Session;
 import org.primefaces.model.chart.*;
 
 import javax.annotation.PostConstruct;
@@ -43,6 +46,12 @@ public class DiagramView implements Serializable {
         return modelBySysweb;
     }
 
+    private static Session session;
+
+    static {
+        session = HibernateUtil.getSessionFactory().openSession();
+    }
+
     @PostConstruct
     public void init() {
         modelPerDate = initLineChartModel(false);
@@ -52,18 +61,20 @@ public class DiagramView implements Serializable {
 
     //  INIT DROPDOWNS LIST
     private void initDropdownsData() {
-        EventService service = new EventService();
-        ArrayList<EventEntity> eventList = (ArrayList<EventEntity>) service.findAll();
         HashSet<String> testNames = new HashSet<>();
         HashSet<String> syswebs = new HashSet<>();
         HashSet<String> locales = new HashSet<>();
         HashSet<String> clazzes = new HashSet<>();
-        eventList.forEach(eventEntity -> {
-            testNames.add(eventEntity.getTestByTestId().getName());
-            syswebs.add(eventEntity.getSyswebBySyswebId().getName());
-            locales.add(eventEntity.getLocaleByLocaleId().getLocale());
-            clazzes.add(eventEntity.getTestByTestId().getClazzByClassId().getName());
-        });
+
+        ArrayList<TestEntity> testEntities = new ArrayList<>(session.createQuery("from TestEntity").list());
+        ArrayList<SyswebEntity> syswebEntities = new ArrayList<>(session.createQuery("from SyswebEntity ").list());
+        ArrayList<LocaleEntity> localeEntities = new ArrayList<>(session.createQuery("from LocaleEntity ").list());
+        ArrayList<ClazzEntity> clazzEntities = new ArrayList<>(session.createQuery("from ClazzEntity ").list());
+
+        testEntities.forEach(testEntity -> testNames.add(testEntity.getName()));
+        syswebEntities.forEach(syswebEntity -> syswebs.add(syswebEntity.getName()));
+        localeEntities.forEach(localeEntity -> locales.add(localeEntity.getLocale()));
+        clazzEntities.forEach(clazzEntity -> clazzes.add(clazzEntity.getName()));
 
         setTestNames(testNames);
         setLocales(locales);
@@ -101,8 +112,14 @@ public class DiagramView implements Serializable {
 
         /* init events list*/
         if (!isCustomDiagram) {
+            /*System.out.println("init events for default barchart model");*/
             events = getEvents();
-        } else events = getEventsCustom();
+            System.out.println(events.size());
+        } else {
+            /*System.out.println("init events for custom barchart model");*/
+            events = getEventsCustom();
+            System.out.println(events.size());
+        }
 
         /*init map for series*/
         events.forEach(event -> {
@@ -155,7 +172,6 @@ public class DiagramView implements Serializable {
     public LineChartModel initLineChartModel(boolean isCustomDiagram) {
         // events per Day
         DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd ");
-        EventService service = new EventService();
         Date startDate;
         Date endDate;
 
@@ -178,14 +194,18 @@ public class DiagramView implements Serializable {
         end.setTime(endDate);
 
         /*per day add to series date and count of failed tests*/
-        if (isCustomDiagram) {
+        if (!isCustomDiagram) {
+            /*System.out.println("default diagram");*/
             for (Date date = start.getTime(); start.before(end); start.add(Calendar.DATE, 1), date = start.getTime()) {
-                ArrayList<EventEntity> eventList = service.findByDayEvents(date);
+                ArrayList<EventEntity> eventList = new EventDao(session).findByDayEvents(date);
                 series.set(formatter.format(date), eventList.size());
             }
         } else {
+            /*System.out.println("custom diagram");*/
             for (Date date = start.getTime(); start.before(end); start.add(Calendar.DATE, 1), date = start.getTime()) {
-                ArrayList<EventEntity> eventList = service.findBySelectedDay(getClazzName(), getTestName(), getSysweb(), getLocale(), date);
+                /*System.out.println("clazz name " + getClazzName() + " test name " + getTestName() + " sysweb " + getSysweb() + " locale " + getLocale());*/
+                ArrayList<EventEntity> eventList = new EventDao(session).findBySelectedDay(getClazzName(), getTestName(), getSysweb(), getLocale(), date);
+                System.out.println(eventList.size());
                 series.set(formatter.format(date), eventList.size());
             }
         }
@@ -204,13 +224,12 @@ public class DiagramView implements Serializable {
     }
 
     private ArrayList<EventEntity> getEvents() {
-        EventService service = new EventService();
-        return service.findByCurrentMonthEvents();
+        return new EventDao(session).findByMonthEvents(new Date());
+
     }
 
     private ArrayList<EventEntity> getEventsCustom() {
-        EventService service = new EventService();
-        return service.findBySelected(getClazzName(), getTestName(), getSysweb(), getLocale(), getStartDate(), getEndDate());
+        return new EventDao(session).findBySelected(getClazzName(), getTestName(), getSysweb(), getLocale(), getStartDate(), getEndDate());
     }
 
     public BarChartModel getModelByLocale() {

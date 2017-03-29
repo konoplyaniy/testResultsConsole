@@ -1,9 +1,8 @@
 package web.exporter;
 
-import db_worker.dao.BaseDao;
+import db_worker.HibernateUtil;
 import db_worker.dao.EventDao;
 import db_worker.entities.EventEntity;
-import db_worker.service.EventService;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
@@ -11,16 +10,14 @@ import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.IndexedColors;
 import org.apache.poi.ss.usermodel.Row;
 import org.hibernate.Session;
+import org.hibernate.Transaction;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.event.CellEditEvent;
-import org.primefaces.event.RowEditEvent;
 
 
 import javax.annotation.PostConstruct;
-import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
-import javax.faces.context.FacesContext;
 import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -30,25 +27,41 @@ import java.util.*;
 @ManagedBean
 @SessionScoped
 public class EventTableExporter implements Serializable {
+    public static Session session;
+
+    static {
+        session = HibernateUtil.getSessionFactory().openSession();
+    }
+
     private List<EventEntity> events;
 
     private ArrayList<EventEntity> eventsComAuLocale;
     private ArrayList<EventEntity> eventsCoUkLocale;
     private ArrayList<EventEntity> eventsInLocale;
     private ArrayList<EventEntity> eventsCoNzLocale;
+    private ArrayList<EventEntity> eventsAeLocale;
 
     private ArrayList<ListEntities> eventByLocale;
     private EventEntity selectedEvent;
     private List<EventEntity> selectedEvents;
 
+    public static void main(String[] args) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        ArrayList<EventEntity> events = new EventDao(session).findByDayEvents(new Date());
+        System.out.println(events.size());
+        session.close();
+    }
+
     @PostConstruct
     public void init() {
-        EventService eventService = new EventService();
-        events = eventService.findByCurrentDayEvents();
+        events = new EventDao(session).findByDayEvents(new Date());
         eventsComAuLocale = new ArrayList<>();
         eventsCoUkLocale = new ArrayList<>();
         eventsInLocale = new ArrayList<>();
         eventsCoNzLocale = new ArrayList<>();
+        eventsAeLocale = new ArrayList<>();
+        System.out.println("events size " + events.size());
+
         events.forEach(eventEntity -> {
             switch (eventEntity.getLocaleByLocaleId().getLocale().toLowerCase()) {
                 case "com.au":
@@ -66,6 +79,9 @@ public class EventTableExporter implements Serializable {
                 case "nz":
                     eventsCoNzLocale.add(eventEntity);
                     break;
+                case "ae":
+                    eventsAeLocale.add(eventEntity);
+                    break;
             }
         });
         eventByLocale = new ArrayList<>();
@@ -73,6 +89,7 @@ public class EventTableExporter implements Serializable {
         eventByLocale.add(new ListEntities("co.uk", eventsCoUkLocale));
         eventByLocale.add(new ListEntities("co.nz", eventsCoNzLocale));
         eventByLocale.add(new ListEntities("in", eventsInLocale));
+        eventByLocale.add(new ListEntities("ae", eventsAeLocale));
     }
 
     public ArrayList<String> getStatusesList() {
@@ -151,17 +168,6 @@ public class EventTableExporter implements Serializable {
         }
     }
 
-    public void changeEventStatus(int eventID, int setStatus) {
-        Session session = BaseDao.getSessionFactory().openSession();
-        session.beginTransaction();
-        EventDao dao = new EventDao(session);
-        EventEntity entity = dao.findById(eventID);
-        entity.setChecked(setStatus);
-        dao.update(entity);
-        session.getTransaction().commit();
-        session.close();
-    }
-
     public void onCellEdit(CellEditEvent event) throws ParseException {
         Object newValue = event.getNewValue();
         EventEntity eventEntity = (EventEntity) ((DataTable) event.getComponent()).getRowData();
@@ -178,7 +184,10 @@ public class EventTableExporter implements Serializable {
         if (columnName.equals("Ticket")) {
             eventEntity.setTicket(newValue.toString());
         }
-        new EventService().update(eventEntity);
+
+        Transaction tr = session.beginTransaction();
+        new EventDao(session).update(eventEntity);
+        tr.commit();
         System.out.println("end cell edit ");
     }
 

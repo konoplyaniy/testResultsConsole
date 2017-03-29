@@ -1,8 +1,11 @@
 package web.Views;
 
 
-import db_worker.entities.EventEntity;
-import db_worker.service.EventService;
+import db_worker.HibernateUtil;
+import db_worker.dao.EventDao;
+import db_worker.entities.*;
+
+import org.hibernate.Session;
 
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
@@ -33,25 +36,32 @@ public class SearchView implements Serializable {
     private HashSet<String> syswebs;
     private ArrayList<EventEntity> resultEventsList;
 
+    public static Session session;
+
+    static {
+        session = HibernateUtil.getSessionFactory().openSession();
+    }
+
     @PostConstruct
     public void initDropDowns() {
         initDropdownsData();
     }
 
     private void initDropdownsData() {
-        EventService service = new EventService();
-        ArrayList<EventEntity> eventList = (ArrayList<EventEntity>) service.findAll();
         HashSet<String> testNames = new HashSet<>();
         HashSet<String> syswebs = new HashSet<>();
         HashSet<String> locales = new HashSet<>();
         HashSet<String> clazzes = new HashSet<>();
 
-        eventList.forEach(eventEntity -> {
-            testNames.add(eventEntity.getTestByTestId().getName());
-            syswebs.add(eventEntity.getSyswebBySyswebId().getName());
-            locales.add(eventEntity.getLocaleByLocaleId().getLocale());
-            clazzes.add(eventEntity.getTestByTestId().getClazzByClassId().getName());
-        });
+        ArrayList<TestEntity> testEntities = new ArrayList<>(session.createQuery("from TestEntity").list());
+        ArrayList<SyswebEntity> syswebEntities = new ArrayList<>(session.createQuery("from SyswebEntity ").list());
+        ArrayList<LocaleEntity> localeEntities = new ArrayList<>(session.createQuery("from LocaleEntity ").list());
+        ArrayList<ClazzEntity> clazzEntities = new ArrayList<>(session.createQuery("from ClazzEntity ").list());
+
+        testEntities.forEach(testEntity -> testNames.add(testEntity.getName()));
+        syswebEntities.forEach(syswebEntity -> syswebs.add(syswebEntity.getName()));
+        localeEntities.forEach(localeEntity -> locales.add(localeEntity.getLocale()));
+        clazzEntities.forEach(clazzEntity -> clazzes.add(clazzEntity.getName()));
 
         setTestNames(testNames);
         setLocales(locales);
@@ -69,8 +79,7 @@ public class SearchView implements Serializable {
     }
 
     public ArrayList<EventEntity> getResultEventsList() {
-        EventService service = new EventService();
-        resultEventsList = service.findBySelected(getClazzName(), getTestName(), getSysweb(), getLocale(), getStartDate(), getEndDate());
+        resultEventsList = new EventDao(session).findBySelected(getClazzName(), getTestName(), getSysweb(), getLocale(), getStartDate(), getEndDate());
         return resultEventsList;
     }
 
