@@ -1,15 +1,18 @@
 package db_worker.service;
 
 
+import db_worker.dao.BaseDao;
 import db_worker.dao.TestCaseDao;
 import db_worker.entities.TestcaseEntity;
+import org.hibernate.Session;
 
 import java.util.ArrayList;
 
-import static db_worker.service.EventService.session;
+
 
 public class TestCaseService{
     private static TestCaseDao testCaseDao;
+    public Session session = new BaseDao().openCurrentSession();
 
     public TestCaseService() {
         testCaseDao = new TestCaseDao(session);

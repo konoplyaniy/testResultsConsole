@@ -2,14 +2,16 @@ package db_worker.dao;
 
 
 import db_worker.entities.EventEntity;
-import db_worker.service.EventService;
 import org.hibernate.*;
 
 import java.util.ArrayList;
 import java.util.Date;
 
-public class EventDao extends BaseDao<Integer, EventEntity> {
+public class EventDao {
     Session session;
+
+    public EventDao() {
+    }
 
     public EventDao(Session session) {
         this.session = session;
@@ -28,7 +30,7 @@ public class EventDao extends BaseDao<Integer, EventEntity> {
         return event;
     }
 
-    public EventEntity findByDate(Date date){
+    public EventEntity findByDate(Date date) {
         Query query = session.createQuery("from EventEntity where data =:date ");
         query.setParameter("date", date);
         return (EventEntity) query.uniqueResult();
@@ -188,7 +190,7 @@ public class EventDao extends BaseDao<Integer, EventEntity> {
     public ArrayList<EventEntity> findByPcName(String pcName) throws HibernateException {
         Query query = session.createQuery("from EventEntity where pcByPcId.name =:pcName");
         query.setParameter("pcName", pcName);
-        Transaction transaction = getCurrentSession().beginTransaction();
+        Transaction transaction = session.beginTransaction();
         ArrayList<EventEntity> results = (ArrayList<EventEntity>) query.list();
         transaction.commit();
         return results;

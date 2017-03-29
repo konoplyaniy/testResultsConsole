@@ -1,14 +1,14 @@
-package db_worker.dao;
+package db_worker;
 
-
-import org.hibernate.*;
+import org.hibernate.SessionFactory;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 
-public class BaseDao<K, T> {
+public class HibernateUtil {
+
     private static final SessionFactory sessionFactory = buildSessionFactory();
 
-    public static SessionFactory buildSessionFactory() {
+    private static SessionFactory buildSessionFactory() {
         try {
             Configuration configuration = new Configuration().configure();
             StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder()
@@ -25,29 +25,29 @@ public class BaseDao<K, T> {
         return sessionFactory;
     }
 
-    private Session currentSession;
+   /* private static Session currentSession;
 
     private static Transaction currentTransaction;
 
-    public Session openCurrentSession() {
+    public static Session openCurrentSession() {
         currentSession = getSessionFactory().openSession();
         return currentSession;
     }
 
-    public Session openCurrentSessionwithTransaction() {
+    public static Session openCurrentSessionwithTransaction() {
         currentSession = getSessionFactory().openSession();
         currentTransaction = currentSession.beginTransaction();
         return currentSession;
     }
 
-    public void closeCurrentSession() {
+    public static void closeCurrentSession() {
         if (currentSession != null && currentSession.isOpen()) {
             currentSession.close();
             currentSession = null;
         }
     }
 
-    public void closeCurrentSessionwithTransaction() {
+    public static void closeCurrentSessionwithTransaction() {
         currentTransaction.commit();
         currentSession.flush();
         if (currentSession != null && currentSession.isOpen()) {
@@ -57,11 +57,12 @@ public class BaseDao<K, T> {
         } else {
             System.out.println("session with tr is closed already");
         }
-        /*currentSession.close();*/
-        /*closeSession();*/
+        *//*currentSession.close();*//*
+        *//*closeSession();*//*
     }
 
-    public Session getCurrentSession() {
+    public static Session getCurrentSession() {
         return currentSession;
-    }
+    }*/
+
 }

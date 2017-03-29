@@ -13,6 +13,8 @@
         <property name="hibernate.connection.password">Selenium2015DreamTest</property>
         <property name="hibernate.current_session_context_class">thread</property>
         <property name="connection.pool_size">12</property>
+<!--        <property name="show_sql">true</property>-->
+        <property name="hibernate.enable_lazy_load_no_trans">true</property>
         <!--Entities-->
         <mapping class="db_worker.entities.BrowserEntity"/>
         <mapping class="db_worker.entities.ClazzEntity"/>
