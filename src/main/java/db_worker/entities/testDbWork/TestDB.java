@@ -2,7 +2,7 @@ package db_worker.entities.testDbWork;
 
 import db_worker.dao.*;
 import db_worker.entities.*;
-import db_worker.service.EventService;
+
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -152,8 +152,8 @@ public class TestDB {
     }
 
     public static void main(String[] args) {
-        EventService eventService = new EventService();
-        System.out.println(eventService.findByCurrentDayEvents().size());
+     /*   EventService eventService = new EventService();
+        System.out.println(eventService.findByCurrentDayEvents().size());*/
 
      /*   System.out.println(new EventService().findbyId(1).getUrl());
 

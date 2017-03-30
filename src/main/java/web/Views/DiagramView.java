@@ -5,6 +5,7 @@ import db_worker.dao.EventDao;
 import db_worker.entities.*;
 
 import org.hibernate.Session;
+import org.hibernate.Transaction;
 import org.primefaces.model.chart.*;
 
 import javax.annotation.PostConstruct;
@@ -16,6 +17,8 @@ import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
+
+import static web.Views.SearchView.*;
 
 @ManagedBean
 @SessionScoped
@@ -61,25 +64,30 @@ public class DiagramView implements Serializable {
 
     //  INIT DROPDOWNS LIST
     private void initDropdownsData() {
-        HashSet<String> testNames = new HashSet<>();
-        HashSet<String> syswebs = new HashSet<>();
-        HashSet<String> locales = new HashSet<>();
-        HashSet<String> clazzes = new HashSet<>();
+        setTestNames(getTestNamesList());
+        setLocales(getLocalesList());
+        setSyswebs(getSyswebsList());
+        setClazzNames(getClassNamesList());
 
-        ArrayList<TestEntity> testEntities = new ArrayList<>(session.createQuery("from TestEntity").list());
-        ArrayList<SyswebEntity> syswebEntities = new ArrayList<>(session.createQuery("from SyswebEntity ").list());
-        ArrayList<LocaleEntity> localeEntities = new ArrayList<>(session.createQuery("from LocaleEntity ").list());
-        ArrayList<ClazzEntity> clazzEntities = new ArrayList<>(session.createQuery("from ClazzEntity ").list());
-
-        testEntities.forEach(testEntity -> testNames.add(testEntity.getName()));
-        syswebEntities.forEach(syswebEntity -> syswebs.add(syswebEntity.getName()));
-        localeEntities.forEach(localeEntity -> locales.add(localeEntity.getLocale()));
-        clazzEntities.forEach(clazzEntity -> clazzes.add(clazzEntity.getName()));
-
-        setTestNames(testNames);
-        setLocales(locales);
-        setSyswebs(syswebs);
-        setClazzNames(clazzes);
+//        HashSet<String> testNames = new HashSet<>();
+//        HashSet<String> syswebs = new HashSet<>();
+//        HashSet<String> locales = new HashSet<>();
+//        HashSet<String> clazzes = new HashSet<>();
+//
+//        ArrayList<TestEntity> testEntities = new ArrayList<>(session.createQuery("from TestEntity").list());
+//        ArrayList<SyswebEntity> syswebEntities = new ArrayList<>(session.createQuery("from SyswebEntity ").list());
+//        ArrayList<LocaleEntity> localeEntities = new ArrayList<>(session.createQuery("from LocaleEntity ").list());
+//        ArrayList<ClazzEntity> clazzEntities = new ArrayList<>(session.createQuery("from ClazzEntity ").list());
+//
+//        testEntities.forEach(testEntity -> testNames.add(testEntity.getName()));
+//        syswebEntities.forEach(syswebEntity -> syswebs.add(syswebEntity.getName()));
+//        localeEntities.forEach(localeEntity -> locales.add(localeEntity.getLocale()));
+//        clazzEntities.forEach(clazzEntity -> clazzes.add(clazzEntity.getName()));
+//
+//        setTestNames(testNames);
+//        setLocales(locales);
+//        setSyswebs(syswebs);
+//        setClazzNames(clazzes);
     }
 
     public void clickBuildButton() {
@@ -88,7 +96,7 @@ public class DiagramView implements Serializable {
                 && getLocale() != null) {
             if (getStartDate().before(getEndDate())) {
                 lineChartModelCustom = initLineChartModel(true);
-                modelByLocaleCustom = initBarChartModel(true, true, "locale", "Locales");
+                modelByLocaleCustom = initBarChartModel(true, true, "", "Locales");
                 modelBySyswebCustom = initBarChartModel(false, true, "", "Syswebs");
                 clickedBuild = true;
             } else {
@@ -224,12 +232,27 @@ public class DiagramView implements Serializable {
     }
 
     private ArrayList<EventEntity> getEvents() {
-        return new EventDao(session).findByMonthEvents(new Date());
-
+        /*Transaction tr = session.beginTransaction();*/
+        ArrayList<EventEntity> resultEventsList = new EventDao(session).findByMonthEvents(new Date());
+       /* try {
+            tr.commit();
+        } catch (Exception e) {
+            System.out.println("occur error in ArrayList<EventEntity> getEvents() class DiagramView");
+            e.printStackTrace();
+        }*/
+        return resultEventsList;
     }
 
     private ArrayList<EventEntity> getEventsCustom() {
-        return new EventDao(session).findBySelected(getClazzName(), getTestName(), getSysweb(), getLocale(), getStartDate(), getEndDate());
+       /* Transaction tr = session.beginTransaction();*/
+        ArrayList<EventEntity> resultEventsList = new EventDao(session).findBySelected(getClazzName(), getTestName(), getSysweb(), getLocale(), getStartDate(), getEndDate());
+        /*try {
+            tr.commit();
+        } catch (Exception e) {
+            System.out.println("occur error in ArrayList<EventEntity> getEventsCustom() class DiagramView");
+            e.printStackTrace();
+        }*/
+        return resultEventsList;
     }
 
     public BarChartModel getModelByLocale() {

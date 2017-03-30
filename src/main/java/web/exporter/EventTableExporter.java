@@ -9,6 +9,7 @@ import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.IndexedColors;
 import org.apache.poi.ss.usermodel.Row;
+import org.hibernate.CacheMode;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.primefaces.component.datatable.DataTable;
@@ -45,16 +46,12 @@ public class EventTableExporter implements Serializable {
     private EventEntity selectedEvent;
     private List<EventEntity> selectedEvents;
 
-    public static void main(String[] args) {
-        Session session = HibernateUtil.getSessionFactory().openSession();
-        ArrayList<EventEntity> events = new EventDao(session).findByDayEvents(new Date());
-        System.out.println(events.size());
-        session.close();
-    }
-
     @PostConstruct
     public void init() {
+        Transaction tr = session.beginTransaction();
         events = new EventDao(session).findByDayEvents(new Date());
+        tr.commit();
+
         eventsComAuLocale = new ArrayList<>();
         eventsCoUkLocale = new ArrayList<>();
         eventsInLocale = new ArrayList<>();
@@ -65,21 +62,27 @@ public class EventTableExporter implements Serializable {
         events.forEach(eventEntity -> {
             switch (eventEntity.getLocaleByLocaleId().getLocale().toLowerCase()) {
                 case "com.au":
+                    System.out.println("add COM.AU locale event");
                     eventsComAuLocale.add(eventEntity);
                     break;
                 case "co.uk":
+                    System.out.println("add CO.UK locale event");
                     eventsCoUkLocale.add(eventEntity);
                     break;
                 case "in":
+                    System.out.println("add IN locale event");
                     eventsInLocale.add(eventEntity);
                     break;
                 case "co.nz":
+                    System.out.println("add NZ locale event");
                     eventsCoNzLocale.add(eventEntity);
                     break;
                 case "nz":
+                    System.out.println("add NZ locale event");
                     eventsCoNzLocale.add(eventEntity);
                     break;
                 case "ae":
+                    System.out.println("add AE locale event");
                     eventsAeLocale.add(eventEntity);
                     break;
             }
@@ -168,7 +171,7 @@ public class EventTableExporter implements Serializable {
         }
     }
 
-    public void onCellEdit(CellEditEvent event) throws ParseException {
+    public void onCellEdit(CellEditEvent event) {
         Object newValue = event.getNewValue();
         EventEntity eventEntity = (EventEntity) ((DataTable) event.getComponent()).getRowData();
         System.out.println("edit event,  data = " + eventEntity.getData());

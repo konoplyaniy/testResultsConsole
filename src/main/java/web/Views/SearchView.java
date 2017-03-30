@@ -5,7 +5,9 @@ import db_worker.HibernateUtil;
 import db_worker.dao.EventDao;
 import db_worker.entities.*;
 
+import org.hibernate.HibernateException;
 import org.hibernate.Session;
+import org.hibernate.Transaction;
 
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
@@ -47,26 +49,54 @@ public class SearchView implements Serializable {
         initDropdownsData();
     }
 
-    private void initDropdownsData() {
+    public static HashSet<String> getTestNamesList() throws HibernateException {
         HashSet<String> testNames = new HashSet<>();
-        HashSet<String> syswebs = new HashSet<>();
-        HashSet<String> locales = new HashSet<>();
-        HashSet<String> clazzes = new HashSet<>();
-
         ArrayList<TestEntity> testEntities = new ArrayList<>(session.createQuery("from TestEntity").list());
-        ArrayList<SyswebEntity> syswebEntities = new ArrayList<>(session.createQuery("from SyswebEntity ").list());
-        ArrayList<LocaleEntity> localeEntities = new ArrayList<>(session.createQuery("from LocaleEntity ").list());
-        ArrayList<ClazzEntity> clazzEntities = new ArrayList<>(session.createQuery("from ClazzEntity ").list());
-
         testEntities.forEach(testEntity -> testNames.add(testEntity.getName()));
-        syswebEntities.forEach(syswebEntity -> syswebs.add(syswebEntity.getName()));
-        localeEntities.forEach(localeEntity -> locales.add(localeEntity.getLocale()));
-        clazzEntities.forEach(clazzEntity -> clazzes.add(clazzEntity.getName()));
+        return testNames;
+    }
 
-        setTestNames(testNames);
-        setLocales(locales);
-        setSyswebs(syswebs);
-        setClazzNames(clazzes);
+    public static HashSet<String> getClassNamesList() throws HibernateException {
+        HashSet<String> clazzes = new HashSet<>();
+        ArrayList<ClazzEntity> clazzEntities = new ArrayList<>(session.createQuery("from ClazzEntity ").list());
+        clazzEntities.forEach(clazzEntity -> clazzes.add(clazzEntity.getName()));
+        return clazzes;
+    }
+
+    public static HashSet<String> getLocalesList() throws HibernateException {
+        HashSet<String> locales = new HashSet<>();
+        ArrayList<LocaleEntity> localeEntities = new ArrayList<>(session.createQuery("from LocaleEntity ").list());
+        localeEntities.forEach(localeEntity -> locales.add(localeEntity.getLocale()));
+        return locales;
+    }
+
+    public static HashSet<String> getSyswebsList() throws HibernateException {
+        HashSet<String> syswebs = new HashSet<>();
+        ArrayList<SyswebEntity> syswebEntities = new ArrayList<>(session.createQuery("from SyswebEntity ").list());
+        syswebEntities.forEach(syswebEntity -> syswebs.add(syswebEntity.getName()));
+        return syswebs;
+    }
+
+    private void initDropdownsData() {
+        /*HashSet<String> testNames = new HashSet<>();*/
+        /*HashSet<String> syswebs = new HashSet<>();*/
+        /*HashSet<String> locales = new HashSet<>();*/
+        /*HashSet<String> clazzes = new HashSet<>();*/
+
+        /*ArrayList<TestEntity> testEntities = new ArrayList<>(session.createQuery("from TestEntity").list());*/
+        /*ArrayList<SyswebEntity> syswebEntities = new ArrayList<>(session.createQuery("from SyswebEntity ").list());*/
+        /*ArrayList<LocaleEntity> localeEntities = new ArrayList<>(session.createQuery("from LocaleEntity ").list());*/
+        /*ArrayList<ClazzEntity> clazzEntities = new ArrayList<>(session.createQuery("from ClazzEntity ").list());*/
+
+        /*testEntities.forEach(testEntity -> testNames.add(testEntity.getName()));*/
+        /*syswebEntities.forEach(syswebEntity -> syswebs.add(syswebEntity.getName()));*/
+        /*localeEntities.forEach(localeEntity -> locales.add(localeEntity.getLocale()));*/
+        /*clazzEntities.forEach(clazzEntity -> clazzes.add(clazzEntity.getName()));*/
+
+        setTestNames(getTestNamesList());
+        setLocales(getLocalesList());
+        setSyswebs(getSyswebsList());
+        setClazzNames(getClassNamesList());
     }
 
     public void clickSearchButton() {
@@ -79,7 +109,14 @@ public class SearchView implements Serializable {
     }
 
     public ArrayList<EventEntity> getResultEventsList() {
+        /*Transaction tr = session.beginTransaction();*/
         resultEventsList = new EventDao(session).findBySelected(getClazzName(), getTestName(), getSysweb(), getLocale(), getStartDate(), getEndDate());
+        /*try {
+            tr.commit();
+        } catch (Exception e) {
+            System.out.println("occur error in ArrayList<EventEntity> getResultEventsList() class SearchView");
+            e.printStackTrace();
+        }*/
         return resultEventsList;
     }
 
